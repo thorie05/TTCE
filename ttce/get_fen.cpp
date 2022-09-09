@@ -6,6 +6,7 @@
 #include <iostream>
 #include <algorithm>
 
+
 std::string Chessboard::getFen() {
     std::string fenString;
 

@@ -6,13 +6,32 @@
 #include <pybind11/stl.h>
 namespace py = pybind11;
 
+
 PYBIND11_MODULE(ttce, handle) {
     py::class_<Chessboard>(handle, "Chessboard")
+
         .def(py::init<const std::string&>(), 
             "Initializes the board using the given FEN-String. If no string is passed the normal starting position is used.", 
             py::arg("inputFenString") = defaultFenString)
+
         .def("get_board", &Chessboard::getBoard, "Returns the current board position")
+
         .def("__str__", &Chessboard::toString, "Converts the current board position into a readable string.")
+
         .def("get_fen", &Chessboard::getFen, "Returns the FEN of the current board position.")
+
+        .def("make_move", py::overload_cast<int, int, const std::string&>(&Chessboard::makeMove), 
+            "Make a move on the board from the start square to the end square using bitboard square numbering.", 
+            py::arg("startSquare"), py::arg("endSquare"), py::arg("promotion") = "")
+
+        .def("make_move", py::overload_cast<
+            const std::tuple<int,int>&, const std::tuple<int,int>&, const std::string&>(&Chessboard::makeMove), 
+            "Make a move on the board from the start square to the end square using the square coordinates.", 
+            py::arg("startSquare"), py::arg("endSquare"), py::arg("promotion") = "")
+
+        .def("make_move", py::overload_cast<
+            const std::string&, const std::string&, const std::string&>(&Chessboard::makeMove), 
+            "Make a move on the board from the start square to the end square using algebraic notation.", 
+            py::arg("startSquare"), py::arg("endSquare"), py::arg("promotion") = "")
         ;
 }

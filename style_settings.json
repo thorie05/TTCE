@@ -1,0 +1,27 @@
+{
+    "window_size": {
+        "use_absolute_values": false,
+        "width": 800,
+        "height":800,
+        "width_ratio": 1.2,
+        "height_ratio": 0.85
+    },
+
+    "colors": {
+        "white": [255, 255, 255],
+        "light_brown": [238, 197, 145],
+        "dark_brown": [139, 69, 19],
+        "dark_brown2": [81, 38, 11],
+        "gray": [120, 120, 120]
+    },
+
+    "pieces": {
+        "piece_style": "wikipedia",
+        "piece_size_ratio": 0.9
+    },
+
+    "bottom_padding_ratio": 0.11,
+    "board_border_size_ratio": 1.05,
+    "active_square_border_size_ratio": 0.05,
+    "possible_move_circle_radius_ratio": 0.08
+}

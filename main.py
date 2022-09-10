@@ -45,9 +45,6 @@ def main():
     player_color = "w"
     active_square = None
 
-    print(board.make_move.__doc__)
-    print(board.get_fen.__doc__)
-
     # main loop
     while True:
         draw_board, turn, castling_rights, en_passant_square, \

@@ -6,10 +6,15 @@
 #include <algorithm>
 
 std::string Chessboard::toString() {
+    // converts the chessboard into a readable string
+
     std::string out;
 
-    out += turn + " ";
+    // the first line is the same as the additional info of a fen string
+    // turn
+    out += turn + " "; 
 
+    // castling rights
     if (castlingRights[0]) {
         out += "K";
     }
@@ -27,6 +32,7 @@ std::string Chessboard::toString() {
     }
     out += " ";
 
+    // en passant square
     if (enPassantSquare == -1) {
         out += "- ";
     }
@@ -34,10 +40,13 @@ std::string Chessboard::toString() {
         out += bitboardToAlgebraicSquare(enPassantSquare) + " ";
     }
 
+    // half move clock
     out += std::to_string(halfmoveClock) + " ";
 
+    // number of full moves
     out += std::to_string(fullMoveNumber) + "\n";
 
+    // convert the bitboards into a 8x8 vector of strings containing the pieces
     std::vector<std::string> stringBoard(8, "........");
     for (int i = 0; i < 64; i++) {
         if (bitboards.whitePawns & (1ULL << i)) {

@@ -5,9 +5,13 @@
 #include <tuple>
 #include <algorithm>
 
-std::tuple<std::vector<std::vector<std::string>>,std::string,std::tuple<bool,bool,bool,bool>,std::tuple<int,int>,int,int> Chessboard::getBoard() {
+std::tuple<std::vector<std::vector<std::string>>,std::string,std::tuple<bool,bool,bool,bool>,
+    std::tuple<int,int>,int,int> Chessboard::getBoard() {
+    // returns all properties of the chessboard like casling_rights or board position
+
     std::vector<std::vector<std::string>> twoDBoard(8, std::vector<std::string>(8, "."));
 
+    // converts the board into a 8x8 2d vector of strings containing the pieces
     for (int i = 0; i < 64; i++) {
         if (bitboards.whitePawns & (1ULL << i)) {
             twoDBoard[i % 8][i / 8] = 'P';
@@ -48,7 +52,8 @@ std::tuple<std::vector<std::vector<std::string>>,std::string,std::tuple<bool,boo
     }
     std::reverse(twoDBoard.begin(), twoDBoard.end());
 
-    std::tuple<bool,bool,bool,bool> castlingRightsTuple = {castlingRights[0], castlingRights[1], castlingRights[2], castlingRights[3]};
+    std::tuple<bool,bool,bool,bool> castlingRightsTuple = {castlingRights[0], castlingRights[1], 
+        castlingRights[2], castlingRights[3]};
 
     std::tuple<int,int> enPassantSquareTuple = {enPassantSquare % 8, enPassantSquare / 8};
     if (enPassantSquare == -1) {

@@ -55,7 +55,7 @@ for k, v in piece_images.items():
 
 
 def draw(screen, perspective, board, active_square, possible_moves, turn):
-    """Draws everything on the screen"""
+    # draws everything on the screen
 
     # turn the board by 180 degrees if the perspective is from black
     original_board = [e.copy() for e in board]

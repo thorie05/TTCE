@@ -29,17 +29,24 @@ pygame.display.set_caption("Chess")
 
 
 def get_color(draw_board, pos):
-    if draw_board[pos[0]][pos[1]].isupper():
+    # returns the color of a piece on the board
+
+    if draw_board[pos[0]][pos[1]] == ".": # empty square
+        return None
+    if draw_board[pos[0]][pos[1]].isupper(): # white is uppercase
         return "w"
-    return "b"
+    return "b" # black is lowercase
 
 
 def main():
-    """Main function"""
+    # main function to start everything
 
     board = ttce.Chessboard()
     player_color = "w"
     active_square = None
+
+    print(board.make_move.__doc__)
+    print(board.get_fen.__doc__)
 
     # main loop
     while True:
@@ -68,8 +75,10 @@ def main():
                 active_square = pos
 
 
+        # get the possible moves for the piece on the active square
         possible_moves = []
 
+        # draw everything on the screen
         draw(screen, player_color, draw_board, active_square, possible_moves, 
             turn)
 

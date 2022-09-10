@@ -26,7 +26,7 @@ left_padding = round(width / 2 - 4 * cell_size)
 
 
 def events(perspective, turn):
-    """Handles the events"""
+    # handles all pygame events
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:

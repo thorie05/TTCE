@@ -14,9 +14,9 @@ PYBIND11_MODULE(ttce, handle) {
             "Initializes the board using the given FEN-String. If no string is passed the normal starting position is used.", 
             py::arg("inputFenString") = defaultFenString)
 
-        .def("get_board", &Chessboard::getBoard, "Returns the current board position")
-
         .def("__str__", &Chessboard::toString, "Converts the current board position into a readable string.")
+
+        .def("get_board", &Chessboard::getBoard, "Returns the current board position")
 
         .def("get_fen", &Chessboard::getFen, "Returns the FEN of the current board position.")
 

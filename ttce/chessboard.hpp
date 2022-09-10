@@ -11,6 +11,8 @@ inline std::string defaultFenString = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKB
 
 
 struct Board {
+    // Board struct containing all necessary bitboards
+
    U64 whitePawns = 0;
    U64 whiteKnights = 0;
    U64 whiteBishops = 0;
@@ -46,8 +48,11 @@ class Chessboard {
         Chessboard(const std::string& fenString);
         std::tuple<std::vector<std::vector<std::string>>,std::string,
             std::tuple<bool,bool,bool,bool>,std::tuple<int,int>,int,int> getBoard();
+
         std::string getFen();
+
         std::string toString();
+
         void makeMove(int, int, const std::string&);
         void makeMove(const std::tuple<int,int>&, const std::tuple<int,int>&, const std::string&);
         void makeMove(const std::string&, const std::string&, const std::string&);

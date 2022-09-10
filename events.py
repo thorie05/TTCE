@@ -29,8 +29,14 @@ def events(perspective, turn):
     # handles all pygame events
 
     for event in pygame.event.get():
+        # quit the game if the close button is pressed
         if event.type == pygame.QUIT:
             sys.exit()
+
+        # quit the game if q is pressed
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_q:
+                sys.exit()
 
         # if the user clicks the window
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:

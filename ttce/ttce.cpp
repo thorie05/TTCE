@@ -20,18 +20,18 @@ PYBIND11_MODULE(ttce, handle) {
 
         .def("get_fen", &Chessboard::getFen, "Returns the FEN of the current board position.")
 
-        .def("make_move", py::overload_cast<int, int, const std::string&>(&Chessboard::makeMove), 
+        .def("make_move", py::overload_cast<int, int, const std::string&, bool>(&Chessboard::makeMove), 
             "Make a move on the board from the start square to the end square using bitboard square numbering.", 
-            py::arg("startSquare"), py::arg("endSquare"), py::arg("promotion") = "")
+            py::arg("start_square"), py::arg("end_square"), py::arg("promotion") = "", py::arg("change_turn") = true)
 
         .def("make_move", py::overload_cast<
-            const std::tuple<int,int>&, const std::tuple<int,int>&, const std::string&>(&Chessboard::makeMove), 
+            const std::tuple<int,int>&, const std::tuple<int,int>&, const std::string&, bool>(&Chessboard::makeMove), 
             "Make a move on the board from the start square to the end square using the square coordinates.", 
-            py::arg("startSquare"), py::arg("endSquare"), py::arg("promotion") = "")
+            py::arg("start_square"), py::arg("end_square"), py::arg("promotion") = "", py::arg("change_turn") = true)
 
         .def("make_move", py::overload_cast<
-            const std::string&, const std::string&, const std::string&>(&Chessboard::makeMove), 
+            const std::string&, const std::string&, const std::string&, bool>(&Chessboard::makeMove), 
             "Make a move on the board from the start square to the end square using algebraic notation.", 
-            py::arg("startSquare"), py::arg("endSquare"), py::arg("promotion") = "")
+            py::arg("start_square"), py::arg("end_square"), py::arg("promotion") = "", py::arg("change_turn") = true)
         ;
 }

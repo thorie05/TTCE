@@ -34,7 +34,9 @@ struct Board {
 
 
 class Chessboard {
+ 
     private:
+
         std::string inputFenString;
         Board bitboards;
         std::string turn;
@@ -45,7 +47,9 @@ class Chessboard {
         std::pair<int,int> lastMove;
 
     public:
+
         Chessboard(const std::string& fenString);
+
         std::tuple<std::vector<std::vector<std::string>>,std::string,
             std::tuple<bool,bool,bool,bool>,std::tuple<int,int>,int,int> getBoard();
 
@@ -53,9 +57,9 @@ class Chessboard {
 
         std::string toString();
 
-        void makeMove(int, int, const std::string&);
-        void makeMove(const std::tuple<int,int>&, const std::tuple<int,int>&, const std::string&);
-        void makeMove(const std::string&, const std::string&, const std::string&);
+        void makeMove(int, int, const std::string&, bool);
+        void makeMove(const std::tuple<int,int>&, const std::tuple<int,int>&, const std::string&, bool);
+        void makeMove(const std::string&, const std::string&, const std::string&, bool);
 };
 
 

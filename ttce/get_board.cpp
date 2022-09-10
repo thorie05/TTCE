@@ -50,7 +50,6 @@ std::tuple<std::vector<std::vector<std::string>>,std::string,std::tuple<bool,boo
             twoDBoard[i % 8][i / 8] = 'k';
         }
     }
-    std::reverse(twoDBoard.begin(), twoDBoard.end());
 
     std::tuple<bool,bool,bool,bool> castlingRightsTuple = {castlingRights[0], castlingRights[1], 
         castlingRights[2], castlingRights[3]};

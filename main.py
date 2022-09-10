@@ -64,7 +64,7 @@ def main():
                     and pos != active_square:
                     active_square = pos
                 else:
-                    board.make_move(active_square, pos)
+                    board.make_move(active_square, pos, change_turn=False)
                     active_square = None
 
             # if the player clicks one of his own pieces make the square active

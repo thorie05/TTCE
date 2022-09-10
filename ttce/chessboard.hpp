@@ -3,6 +3,7 @@
 #include <utility>
 #include <tuple>
 #include <vector>
+#include <stack>
 
 #define U64 unsigned long long
 
@@ -33,6 +34,16 @@ struct Board {
 };
 
 
+struct HistoryBoard {
+    Board bitboards;
+    std::string turn;
+    std::array<bool,4> castlingRights;
+    int enPassantSquare;
+    int halfmoveClock;
+    int fullMoveNumber;
+};
+
+
 class Chessboard {
  
     private:
@@ -44,7 +55,7 @@ class Chessboard {
         int enPassantSquare = -1;
         int halfmoveClock;
         int fullMoveNumber;
-        std::pair<int,int> lastMove;
+        std::stack<HistoryBoard> history;
 
     public:
 
@@ -60,6 +71,8 @@ class Chessboard {
         void makeMove(int, int, const std::string&, bool);
         void makeMove(const std::tuple<int,int>&, const std::tuple<int,int>&, const std::string&, bool);
         void makeMove(const std::string&, const std::string&, const std::string&, bool);
+
+        void unmakeLastMove();
 };
 
 

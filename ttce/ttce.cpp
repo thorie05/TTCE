@@ -33,5 +33,7 @@ PYBIND11_MODULE(ttce, handle) {
             const std::string&, const std::string&, const std::string&, bool>(&Chessboard::makeMove), 
             "Make a move on the board from the start square to the end square using algebraic notation.", 
             py::arg("start_square"), py::arg("end_square"), py::arg("promotion") = "", py::arg("change_turn") = true)
+
+        .def("unmake_last_move", &Chessboard::unmakeLastMove, "Unmakes the last move.")
         ;
 }

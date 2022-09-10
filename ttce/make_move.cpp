@@ -9,6 +9,10 @@
 void Chessboard::makeMove(int startSquare, int endSquare, const std::string& promotion = "", bool changeTurn = true) {
     // makes a move on the chessboard from start square to end square in bitboard square numbering
 
+    // save the current state of the board to the history before making any changes
+    HistoryBoard currentBoard = {bitboards, turn, castlingRights, enPassantSquare, halfmoveClock, fullMoveNumber};
+    history.push(currentBoard);
+
     // clear the end square
     bitboards.whitePawns &= ~(1ULL << endSquare);
     bitboards.whiteKnights &= ~(1ULL << endSquare);

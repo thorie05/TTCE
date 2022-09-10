@@ -35,5 +35,11 @@ PYBIND11_MODULE(ttce, handle) {
             py::arg("start_square"), py::arg("end_square"), py::arg("promotion") = "", py::arg("change_turn") = true)
 
         .def("unmake_last_move", &Chessboard::unmakeLastMove, "Unmakes the last move.")
+
+        .def("get_valid_moves_bitboard", &Chessboard::getValidMovesBitboard, "Get all valid moves in bitboard format.")
+
+        .def("get_valid_moves_coordinates", &Chessboard::getValidMovesCoordinates, "Get all valid moves by the coordinates of start and end square.")
+
+        .def("get_valid_moves_algebraic", &Chessboard::getValidMovesAlgebraic, "Get all valid moves in algebraic square notation.")
         ;
 }

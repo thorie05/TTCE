@@ -125,7 +125,7 @@ def draw(screen, perspective, board, active_square, possible_moves, turn):
                 draw_move = (7 - move[0], move[1])
 
             # if the move captures a piece
-            if original_board[move[0]][move[1]]:
+            if original_board[move[0]][move[1]] != ".":
                 pygame.draw.circle(screen, colors["gray"], (left_padding \
                     + round(cell_size / 2) + draw_move[0] * cell_size, 
                     bottom_padding + round(cell_size / 2) + draw_move[1] \

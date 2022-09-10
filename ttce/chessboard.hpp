@@ -35,6 +35,8 @@ struct Board {
 
 
 struct HistoryBoard {
+    // struct containing all information about a board state
+
     Board bitboards;
     std::string turn;
     std::array<bool,4> castlingRights;
@@ -73,6 +75,10 @@ class Chessboard {
         void makeMove(const std::string&, const std::string&, const std::string&, bool);
 
         void unmakeLastMove();
+
+        std::vector<std::tuple<int,int,std::string>> getValidMovesBitboard();
+        std::vector<std::tuple<std::tuple<int,int>,std::tuple<int,int>,std::string>> getValidMovesCoordinates();
+        std::vector<std::string> getValidMovesAlgebraic();
 };
 
 

@@ -63,8 +63,14 @@ def main():
                 if get_color(draw_board, pos) == player_color \
                     and pos != active_square:
                     active_square = pos
-                else:
+
+                elif (active_square, pos, "") in \
+                    board.get_valid_moves_coordinates():
+
                     board.make_move(active_square, pos, change_turn=False)
+                    active_square = None
+                
+                else:
                     active_square = None
 
             # if the player clicks one of his own pieces make the square active
@@ -73,7 +79,9 @@ def main():
 
 
         # get the possible moves for the piece on the active square
-        possible_moves = []
+        possible_moves = board.get_valid_moves_coordinates()
+        possible_moves = [(m[0], m[1]) for m in possible_moves \
+            if m[0] == active_square]
 
         # draw everything on the screen
         draw(screen, player_color, draw_board, active_square, possible_moves, 

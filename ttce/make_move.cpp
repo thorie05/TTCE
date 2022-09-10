@@ -115,6 +115,8 @@ void Chessboard::makeMove(int startSquare, int endSquare, const std::string& pro
         bitboards.blackPieces |= (1ULL << endSquare);
     }
 
+    bitboards.pieces = bitboards.whitePieces | bitboards.blackPieces;
+
     if (changeTurn) {
         // change turn from w to b and from b to w
         turn = turn == "w" ? "b" : "w";

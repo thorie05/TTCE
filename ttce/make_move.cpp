@@ -78,6 +78,13 @@ void Chessboard::makeMove(int startSquare, int endSquare, const std::string& pro
 
         bitboards.whitePieces &= ~(1ULL << startSquare);
         bitboards.whitePieces |= (1ULL << endSquare);
+
+        if (startSquare == 0) {
+            castlingRights[1] = false;
+        }
+        else if (startSquare == 7) {
+            castlingRights[0] = false;
+        }
     }
     else if (bitboards.blackRooks & (1ULL << startSquare)) {
         bitboards.blackRooks &= ~(1ULL << startSquare);
@@ -85,6 +92,13 @@ void Chessboard::makeMove(int startSquare, int endSquare, const std::string& pro
 
         bitboards.blackPieces &= ~(1ULL << startSquare);
         bitboards.blackPieces |= (1ULL << endSquare);
+
+        if (startSquare == 56) {
+            castlingRights[3] = false;
+        }
+        else if (startSquare == 63) {
+            castlingRights[2] = false;
+        }
     }
     else if (bitboards.whiteQueens & (1ULL << startSquare)) {
         bitboards.whiteQueens &= ~(1ULL << startSquare);
@@ -106,6 +120,22 @@ void Chessboard::makeMove(int startSquare, int endSquare, const std::string& pro
 
         bitboards.whitePieces &= ~(1ULL << startSquare);
         bitboards.whitePieces |= (1ULL << endSquare);
+
+        castlingRights[0] = false;
+        castlingRights[1] = false;
+
+        if (startSquare == 4 && endSquare == 2) { // O-O-O
+            bitboards.whiteRooks &= ~(1ULL << 0);
+            bitboards.whiteRooks |= (1ULL << 3);
+            bitboards.whitePieces &= ~(1ULL << 0);
+            bitboards.whitePieces |= (1ULL << 3);
+        }
+        else if (startSquare == 4 && endSquare == 6) { // O-O
+            bitboards.whiteRooks &= ~(1ULL << 7);
+            bitboards.whiteRooks |= (1ULL << 5);
+            bitboards.whitePieces &= ~(1ULL << 7);
+            bitboards.whitePieces |= (1ULL << 5);
+        }
     }
     else if (bitboards.blackKing & (1ULL << startSquare)) {
         bitboards.blackKing &= ~(1ULL << startSquare);
@@ -113,6 +143,22 @@ void Chessboard::makeMove(int startSquare, int endSquare, const std::string& pro
 
         bitboards.blackPieces &= ~(1ULL << startSquare);
         bitboards.blackPieces |= (1ULL << endSquare);
+
+        castlingRights[2] = false;
+        castlingRights[3] = false;
+
+        if (startSquare == 60 && endSquare == 58) { // O-O-O
+            bitboards.blackRooks &= ~(1ULL << 56);
+            bitboards.blackRooks |= (1ULL << 59);
+            bitboards.blackPieces &= ~(1ULL << 56);
+            bitboards.blackPieces |= (1ULL << 59);
+        }
+        else if (startSquare == 60 && endSquare == 62) { // O-O
+            bitboards.blackRooks &= ~(1ULL << 63);
+            bitboards.blackRooks |= (1ULL << 61);
+            bitboards.blackPieces &= ~(1ULL << 63);
+            bitboards.blackPieces |= (1ULL << 61);
+        }
     }
 
     bitboards.pieces = bitboards.whitePieces | bitboards.blackPieces;

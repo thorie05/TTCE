@@ -38,6 +38,9 @@ def get_color(draw_board, pos):
     return "b" # black is lowercase
 
 
+count = 0
+
+
 def main():
     # main function to start everything
 
@@ -76,7 +79,6 @@ def main():
             # if the player clicks one of his own pieces make the square active
             elif get_color(draw_board, pos) == player_color:
                 active_square = pos
-
 
         # get the possible moves for the piece on the active square
         possible_moves = board.get_valid_moves_coordinates()

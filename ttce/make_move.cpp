@@ -13,6 +13,19 @@ void Chessboard::makeMove(int startSquare, int endSquare, const std::string& pro
     HistoryBoard currentBoard = {bitboards, turn, castlingRights, enPassantSquare, halfmoveClock, fullMoveNumber};
     history.push(currentBoard);
 
+    // update castling rights if rooks are moved
+    if (startSquare == 0 || endSquare == 0) castlingRights[1] = false;
+    else if (startSquare == 7 || endSquare == 7) castlingRights[0] = false;
+    else if (startSquare == 56 || endSquare == 56) castlingRights[3] = false;
+    else if (startSquare == 63 || endSquare == 63) castlingRights[2] = false;
+
+    if (bitboards.pieces & (1ULL << endSquare)) {
+        halfmoveClock = 0; // set the halfmove clock to 0 if a piece is captured
+    }
+    else {
+        halfmoveClock++;
+    }
+
     // clear the end square
     bitboards.whitePawns &= ~(1ULL << endSquare);
     bitboards.whiteKnights &= ~(1ULL << endSquare);
@@ -36,6 +49,20 @@ void Chessboard::makeMove(int startSquare, int endSquare, const std::string& pro
 
         bitboards.whitePieces &= ~(1ULL << startSquare);
         bitboards.whitePieces |= (1ULL << endSquare);
+
+        // if en passant move capture the pawn
+        if (endSquare == enPassantSquare) {
+            bitboards.blackPawns &= ~(1ULL << (enPassantSquare - 8));
+            bitboards.blackPieces &= ~(1ULL << (enPassantSquare - 8));
+        }
+
+        // set the en passant square if a pawn is moved two squares
+        enPassantSquare = -1;
+        if (startSquare / 8 == 1 && endSquare / 8 == 3) {
+            enPassantSquare = endSquare - 8;
+        }
+
+        halfmoveClock = 0;
     }
     else if (bitboards.blackPawns & (1ULL << startSquare)) {
         bitboards.blackPawns &= ~(1ULL << startSquare);
@@ -43,6 +70,20 @@ void Chessboard::makeMove(int startSquare, int endSquare, const std::string& pro
 
         bitboards.blackPieces &= ~(1ULL << startSquare);
         bitboards.blackPieces |= (1ULL << endSquare);
+
+        // if en passant move capture the pawn
+        if (endSquare == enPassantSquare) {
+            bitboards.whitePawns &= ~(1ULL << (enPassantSquare + 8));
+            bitboards.whitePieces &= ~(1ULL << (enPassantSquare + 8));
+        }
+
+        // set the en passant square if a pawn is moved two squares
+        enPassantSquare = -1;
+        if (startSquare / 8 == 6 && endSquare / 8 == 4) {
+            enPassantSquare = endSquare + 8;
+        }
+
+        halfmoveClock = 0;
     }
     else if (bitboards.whiteKnights & (1ULL << startSquare)) {
         bitboards.whiteKnights &= ~(1ULL << startSquare);
@@ -50,6 +91,8 @@ void Chessboard::makeMove(int startSquare, int endSquare, const std::string& pro
 
         bitboards.whitePieces &= ~(1ULL << startSquare);
         bitboards.whitePieces |= (1ULL << endSquare);
+
+        enPassantSquare = -1;
     }
     else if (bitboards.blackKnights & (1ULL << startSquare)) {
         bitboards.blackKnights &= ~(1ULL << startSquare);
@@ -57,6 +100,8 @@ void Chessboard::makeMove(int startSquare, int endSquare, const std::string& pro
 
         bitboards.blackPieces &= ~(1ULL << startSquare);
         bitboards.blackPieces |= (1ULL << endSquare);
+
+        enPassantSquare = -1;
     }
     else if (bitboards.whiteBishops & (1ULL << startSquare)) {
         bitboards.whiteBishops &= ~(1ULL << startSquare);
@@ -64,6 +109,8 @@ void Chessboard::makeMove(int startSquare, int endSquare, const std::string& pro
 
         bitboards.whitePieces &= ~(1ULL << startSquare);
         bitboards.whitePieces |= (1ULL << endSquare);
+
+        enPassantSquare = -1;
     }
     else if (bitboards.blackBishops & (1ULL << startSquare)) {
         bitboards.blackBishops &= ~(1ULL << startSquare);
@@ -71,6 +118,8 @@ void Chessboard::makeMove(int startSquare, int endSquare, const std::string& pro
 
         bitboards.blackPieces &= ~(1ULL << startSquare);
         bitboards.blackPieces |= (1ULL << endSquare);
+
+        enPassantSquare = -1;
     }
     else if (bitboards.whiteRooks & (1ULL << startSquare)) {
         bitboards.whiteRooks &= ~(1ULL << startSquare);
@@ -79,12 +128,7 @@ void Chessboard::makeMove(int startSquare, int endSquare, const std::string& pro
         bitboards.whitePieces &= ~(1ULL << startSquare);
         bitboards.whitePieces |= (1ULL << endSquare);
 
-        if (startSquare == 0) {
-            castlingRights[1] = false;
-        }
-        else if (startSquare == 7) {
-            castlingRights[0] = false;
-        }
+        enPassantSquare = -1;
     }
     else if (bitboards.blackRooks & (1ULL << startSquare)) {
         bitboards.blackRooks &= ~(1ULL << startSquare);
@@ -93,12 +137,7 @@ void Chessboard::makeMove(int startSquare, int endSquare, const std::string& pro
         bitboards.blackPieces &= ~(1ULL << startSquare);
         bitboards.blackPieces |= (1ULL << endSquare);
 
-        if (startSquare == 56) {
-            castlingRights[3] = false;
-        }
-        else if (startSquare == 63) {
-            castlingRights[2] = false;
-        }
+        enPassantSquare = -1;
     }
     else if (bitboards.whiteQueens & (1ULL << startSquare)) {
         bitboards.whiteQueens &= ~(1ULL << startSquare);
@@ -106,6 +145,8 @@ void Chessboard::makeMove(int startSquare, int endSquare, const std::string& pro
 
         bitboards.whitePieces &= ~(1ULL << startSquare);
         bitboards.whitePieces |= (1ULL << endSquare);
+
+        enPassantSquare = -1;
     }
     else if (bitboards.blackQueens & (1ULL << startSquare)) {
         bitboards.blackQueens &= ~(1ULL << startSquare);
@@ -113,6 +154,8 @@ void Chessboard::makeMove(int startSquare, int endSquare, const std::string& pro
 
         bitboards.blackPieces &= ~(1ULL << startSquare);
         bitboards.blackPieces |= (1ULL << endSquare);
+
+        enPassantSquare = -1;
     }
     else if (bitboards.whiteKing & (1ULL << startSquare)) {
         bitboards.whiteKing &= ~(1ULL << startSquare);
@@ -124,18 +167,22 @@ void Chessboard::makeMove(int startSquare, int endSquare, const std::string& pro
         castlingRights[0] = false;
         castlingRights[1] = false;
 
-        if (startSquare == 4 && endSquare == 2) { // O-O-O
+        // long caslte O-O-O white
+        if (startSquare == 4 && endSquare == 2) {
             bitboards.whiteRooks &= ~(1ULL << 0);
             bitboards.whiteRooks |= (1ULL << 3);
             bitboards.whitePieces &= ~(1ULL << 0);
             bitboards.whitePieces |= (1ULL << 3);
         }
-        else if (startSquare == 4 && endSquare == 6) { // O-O
+        //short caslte O-O white
+        else if (startSquare == 4 && endSquare == 6) {
             bitboards.whiteRooks &= ~(1ULL << 7);
             bitboards.whiteRooks |= (1ULL << 5);
             bitboards.whitePieces &= ~(1ULL << 7);
             bitboards.whitePieces |= (1ULL << 5);
         }
+
+        enPassantSquare = -1;
     }
     else if (bitboards.blackKing & (1ULL << startSquare)) {
         bitboards.blackKing &= ~(1ULL << startSquare);
@@ -147,21 +194,29 @@ void Chessboard::makeMove(int startSquare, int endSquare, const std::string& pro
         castlingRights[2] = false;
         castlingRights[3] = false;
 
-        if (startSquare == 60 && endSquare == 58) { // O-O-O
+        // long caslte O-O-O black
+        if (startSquare == 60 && endSquare == 58) {
             bitboards.blackRooks &= ~(1ULL << 56);
             bitboards.blackRooks |= (1ULL << 59);
             bitboards.blackPieces &= ~(1ULL << 56);
             bitboards.blackPieces |= (1ULL << 59);
         }
-        else if (startSquare == 60 && endSquare == 62) { // O-O
+        // short caslte O-O black
+        else if (startSquare == 60 && endSquare == 62) {
             bitboards.blackRooks &= ~(1ULL << 63);
             bitboards.blackRooks |= (1ULL << 61);
             bitboards.blackPieces &= ~(1ULL << 63);
             bitboards.blackPieces |= (1ULL << 61);
         }
+
+        enPassantSquare = -1;
     }
 
     bitboards.pieces = bitboards.whitePieces | bitboards.blackPieces;
+
+    if (turn == "b") {
+        fullMoveNumber++;
+    }
 
     if (changeTurn) {
         // change turn from w to b and from b to w

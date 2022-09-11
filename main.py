@@ -48,11 +48,16 @@ def main():
     player_color = "w"
     active_square = None
 
+    print(board.get_fen())
+
     # main loop
     while True:
         draw_board, turn, castling_rights, en_passant_square, \
             half_move_clock, full_move_number = board.get_board()
-        event = events(player_color, turn)
+
+        #event = events(player_color, turn)
+        # always white perspective for testing
+        event = events("w", turn)
 
         # if the player clicked outside the chessboard deactivate active square
         if event[0] == 1:
@@ -70,8 +75,12 @@ def main():
                 elif (active_square, pos, "") in \
                     board.get_valid_moves_coordinates():
 
-                    board.make_move(active_square, pos, change_turn=False)
+                    board.make_move(active_square, pos, change_turn=True)
                     active_square = None
+
+                    # change player color for testing
+                    player_color = "b" if player_color == "w" else "w"
+                    print(board.get_fen())
                 
                 else:
                     active_square = None
@@ -86,8 +95,10 @@ def main():
             if m[0] == active_square]
 
         # draw everything on the screen
-        draw(screen, player_color, draw_board, active_square, possible_moves, 
-            turn)
+        #draw(screen, player_color, draw_board, active_square, possible_moves, 
+        #    turn)
+        # always white perspective for testing
+        draw(screen, "w", draw_board, active_square, possible_moves, turn)
 
 
 if __name__ == "__main__":

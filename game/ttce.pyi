@@ -3,7 +3,7 @@ from typing import Optional
 class Chessboard:
     """The Chessboard class"""
 
-    def __init__(self, inputFen: Optional[str] = None) -> None:
+    def __init__(self, fen: Optional[str] = None) -> None:
         """Constructor"""
         ...
 

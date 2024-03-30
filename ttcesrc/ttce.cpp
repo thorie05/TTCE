@@ -1,9 +1,8 @@
 #include "chessboard.hpp"
-
 #include <string>
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 namespace py = pybind11;
-
 
 PYBIND11_MODULE(ttce, handle) {
     handle.doc() = "Thomas the Chess Engine";
@@ -11,8 +10,8 @@ PYBIND11_MODULE(ttce, handle) {
     py::class_<Chessboard>(handle, "Chessboard")
 
         .def(py::init<const std::string&>(),
-            py::arg("inputFen") = defaultFen)
+            py::arg("fen") = defaultFen)
 
-        .def("add", &Chessboard::add)
+        .def("get_status", &Chessboard::getStatus)
     ;
 }

@@ -1,1 +1,1 @@
-g++ -O3 -march=native -Wall -shared -std=c++23 -fPIC $(python3 -m pybind11 --includes) $(find ttcesrc -type f -name "*.cpp") -o game/ttce$(python3-config --extension-suffix)
+g++ -O0 -Wall -shared -std=c++23 -fPIC $(python3 -m pybind11 --includes) $(find ttcesrc -type f -name "*.cpp") -o game/ttce$(python3-config --extension-suffix)

@@ -93,11 +93,13 @@ Chessboard::Chessboard(const std::string& fen): inputFen(fen) {
         }
     }
 
-    board.whitePieces = board.whitePawns | board.whiteKnights | board.whiteBishops | 
-        board.whiteRooks | board.whiteQueens | board.whiteKing;
+    board.whitePieces = board.whitePawns | board.whiteKnights 
+        | board.whiteBishops | board.whiteRooks | board.whiteQueens 
+        | board.whiteKing;
 
-    board.blackPieces = board.blackPawns | board.blackKnights | board.blackBishops | 
-        board.blackRooks | board.blackQueens | board.blackKing;
+    board.blackPieces = board.blackPawns | board.blackKnights 
+        | board.blackBishops | board.blackRooks | board.blackQueens 
+        | board.blackKing;
 
     board.pieces = board.whitePieces | board.blackPieces;
 

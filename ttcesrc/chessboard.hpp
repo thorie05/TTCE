@@ -49,5 +49,6 @@ class Chessboard {
 
     public:
         Chessboard(const std::string& fen);
-        std::tuple<std::vector<char>, char, bool, bool, bool, bool, int, int, int> getStatus();
+        std::tuple<std::vector<char>, char, bool, bool, bool, bool, int, int, 
+            int> getStatus();
 };

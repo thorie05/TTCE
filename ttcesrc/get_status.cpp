@@ -3,7 +3,8 @@
 #include <vector>
 #include <iostream>
 
-std::tuple<std::vector<char>, char, bool, bool, bool, bool, int, int, int> Chessboard::getStatus() {
+std::tuple<std::vector<char>, char, bool, bool, bool, bool, int, int, int> 
+    Chessboard::getStatus() {
     // returns the current state of the board
 
     std::vector returnBoard(64, ' ');
@@ -48,7 +49,8 @@ std::tuple<std::vector<char>, char, bool, bool, bool, bool, int, int, int> Chess
 
     char returnTurn = board.turn ? 'w': 'b';
 
-    return std::make_tuple(returnBoard, returnTurn, board.whiteCastleKingside, board.whiteCastleQueenside, 
-        board.blackCastleKingside, board.blackCastleQueenside, board.enPassantSquare,
-        board.halfmoveClock, board.turnNumber);
+    return std::make_tuple(returnBoard, returnTurn, board.whiteCastleKingside, 
+        board.whiteCastleQueenside, board.blackCastleKingside, 
+        board.blackCastleQueenside, board.enPassantSquare, board.halfmoveClock, 
+        board.turnNumber);
 }

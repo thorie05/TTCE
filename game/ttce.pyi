@@ -1,12 +1,13 @@
-from typing import Optional
+from typing import Optional, List, Tuple
 
 class Chessboard:
     """The Chessboard class"""
 
     def __init__(self, fen: Optional[str] = None) -> None:
-        """Constructor"""
+        """Initialize board using FEN-String"""
         ...
 
-    def add(arg1: float, arg2: float) -> float:
-        "A function that adds two numbers"
+    def get_status() -> Tuple[List[str], str, bool, bool, bool, bool, int, int,
+        int]:
+        "Returns the current status of the board"
         ...

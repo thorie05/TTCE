@@ -1,0 +1,26 @@
+{
+    "window": {
+        "use_absolute_values": false,
+        "width": 900,
+        "height": 600,
+        "relative_width": 1.2,
+        "relative_height": 0.8
+    },
+
+    "tile_width": 0.1,
+    "active_square_border_width": 0.05,
+    "board_border_width": 0.015,
+
+    "pieces": {
+        "relative_piece_width": 0.95,
+        "piece_style": "wikipedia"
+    },
+
+    "colors": {
+        "black": [0, 0, 0],
+        "white": [255, 255, 255],
+        "light_squares": [246, 221, 155],
+        "dark_squares": [135, 62, 35],
+        "board_border": [51, 15, 2]
+    }
+}

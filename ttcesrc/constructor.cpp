@@ -22,62 +22,62 @@ Chessboard::Chessboard(const std::string& fen): inputFen(fen) {
         char currentChar = splitFen[0][i];
         switch (currentChar) {
             case 'P': // white pawn
-                boardInfo.whitePawns |= (1ULL << currentSquare);
+                board.whitePawns |= (1ULL << currentSquare);
                 currentSquare++;
                 break;
 
             case 'N': // white knight
-                boardInfo.whiteKnights |= (1ULL << currentSquare);
+                board.whiteKnights |= (1ULL << currentSquare);
                 currentSquare++;
                 break;
 
             case 'B': // white bishop
-                boardInfo.whiteBishops |= (1ULL << currentSquare);
+                board.whiteBishops |= (1ULL << currentSquare);
                 currentSquare++;
                 break;
 
             case 'R': // white rook
-                boardInfo.whiteRooks |= (1ULL << currentSquare);
+                board.whiteRooks |= (1ULL << currentSquare);
                 currentSquare++;
                 break;
 
             case 'Q': // white queen
-                boardInfo.whiteQueens |= (1ULL << currentSquare);
+                board.whiteQueens |= (1ULL << currentSquare);
                 currentSquare++;
                 break;
 
             case 'K': // white king
-                boardInfo.whiteKing |= (1ULL << currentSquare);
+                board.whiteKing |= (1ULL << currentSquare);
                 currentSquare++;
                 break;
 
             case 'p': // black pawn
-                boardInfo.blackPawns |= (1ULL << currentSquare);
+                board.blackPawns |= (1ULL << currentSquare);
                 currentSquare++;
                 break;
 
             case 'n': // black knight
-                boardInfo.blackKnights |= (1ULL << currentSquare);
+                board.blackKnights |= (1ULL << currentSquare);
                 currentSquare++;
                 break;
 
             case 'b': // black bishop
-                boardInfo.blackBishops |= (1ULL << currentSquare);
+                board.blackBishops |= (1ULL << currentSquare);
                 currentSquare++;
                 break;
 
             case 'r': // black rook
-                boardInfo.blackRooks |= (1ULL << currentSquare);
+                board.blackRooks |= (1ULL << currentSquare);
                 currentSquare++;
                 break;
 
             case 'q': // black queen
-                boardInfo.blackQueens |= (1ULL << currentSquare);
+                board.blackQueens |= (1ULL << currentSquare);
                 currentSquare++;
                 break;
 
             case 'k': // black king
-                boardInfo.blackKing |= (1ULL << currentSquare);
+                board.blackKing |= (1ULL << currentSquare);
                 currentSquare++;
                 break;
             
@@ -93,46 +93,46 @@ Chessboard::Chessboard(const std::string& fen): inputFen(fen) {
         }
     }
 
-    boardInfo.whitePieces = boardInfo.whitePawns | boardInfo.whiteKnights | boardInfo.whiteBishops | 
-        boardInfo.whiteRooks | boardInfo.whiteQueens | boardInfo.whiteKing;
+    board.whitePieces = board.whitePawns | board.whiteKnights | board.whiteBishops | 
+        board.whiteRooks | board.whiteQueens | board.whiteKing;
 
-    boardInfo.blackPieces = boardInfo.blackPawns | boardInfo.blackKnights | boardInfo.blackBishops | 
-        boardInfo.blackRooks | boardInfo.blackQueens | boardInfo.blackKing;
+    board.blackPieces = board.blackPawns | board.blackKnights | board.blackBishops | 
+        board.blackRooks | board.blackQueens | board.blackKing;
 
-    boardInfo.pieces = boardInfo.whitePieces | boardInfo.blackPieces;
+    board.pieces = board.whitePieces | board.blackPieces;
 
     // whites turn is true, blacks turn is false
-    boardInfo.turn = splitFen[1] == "w" ? true : false;
+    board.turn = splitFen[1] == "w" ? true : false;
 
     // assign castling rights
     for (int i = 0; i < (int)splitFen[2].length(); i++) {
         if (splitFen[2][i] == 'K') {
-            boardInfo.whiteCastleKingside = true;
+            board.whiteCastleKingside = true;
         }
         if (splitFen[2][i] == 'Q') {
-            boardInfo.whiteCastleQueenside = true;
+            board.whiteCastleQueenside = true;
         }
         if (splitFen[2][i] == 'k') {
-            boardInfo.blackCastleKingside = true;
+            board.blackCastleKingside = true;
         }
         if (splitFen[2][i] == 'q') {
-            boardInfo.blackCastleKingside = true;
+            board.blackCastleKingside = true;
         }
     }
 
     // en passant square
     if (splitFen[3] == "-") { // no en passant square
-        boardInfo.enPassantSquare = 64;
+        board.enPassantSquare = 64;
     }
     else { // convert algebraic notation
         int file = splitFen[4][0] - 'a'; 
         int rank = splitFen[4][1] - '1';
-        boardInfo.enPassantSquare = 8 * rank + file;
+        board.enPassantSquare = 8 * rank + file;
     }
 
     // initialize the half move clock
-    boardInfo.halfmoveClock = stoi(splitFen[4]);
+    board.halfmoveClock = stoi(splitFen[4]);
 
     // initialize the number of full moves
-    boardInfo.turnNumber = stoi(splitFen[5]);
+    board.turnNumber = stoi(splitFen[5]);
 }

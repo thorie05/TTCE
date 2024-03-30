@@ -9,6 +9,7 @@ typedef unsigned short U16;
 const std::string defaultFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 struct Board {
+    // bitboards
     U64 whitePawns = 0;
     U64 whiteKnights = 0;
     U64 whiteBishops = 0;
@@ -28,10 +29,13 @@ struct Board {
     U64 pieces = 0;
 
     bool turn;
+
+    // castling rights
     bool whiteCastleKingside;
     bool whiteCastleQueenside;
     bool blackCastleKingside;
     bool blackCastleQueenside;
+
     U16 enPassantSquare;
     U16 halfmoveClock;
     U16 turnNumber;
@@ -40,7 +44,7 @@ struct Board {
 class Chessboard {
     private:
         std::string inputFen;
-        Board boardInfo;
+        Board board;
         std::stack<Board> history;
 
     public:

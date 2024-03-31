@@ -49,6 +49,17 @@ class Chessboard {
 
     public:
         Chessboard(const std::string& fen);
-        std::tuple<std::vector<char>, char, bool, bool, bool, bool, int, int, 
-            int> getStatus();
+
+        std::tuple<std::vector<std::vector<char>>, char, bool, bool, bool, bool,
+            std::tuple<int,int>, int, int> getStatus();
+
+        void pushMove(U16 move);
+
+        void pushMove(std::tuple<int,int> startSquare, 
+            std::tuple<int,int> endSquare, char promotion);
+
+        std::vector<U16> getPseudoLegalMoves();
+
+        std::vector<std::tuple<std::tuple<int, int>, std::tuple<int, int>, 
+            char>> getPseudoLegalMovesPy();
 };

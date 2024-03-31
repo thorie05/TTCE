@@ -7,7 +7,12 @@ class Chessboard:
         """Initialize board using FEN-String"""
         ...
 
-    def get_status() -> Tuple[List[str], str, bool, bool, bool, bool, int, int,
+    def get_status() -> Tuple[List[str], str, bool, bool, bool, bool, int, int, 
         int]:
         "Returns the current status of the board"
+        ...
+
+    def push_move(start_square: Tuple[int, int], end_square: Tuple[int, int]) -> \
+        None:
+        """Moves a piece on the board"""
         ...

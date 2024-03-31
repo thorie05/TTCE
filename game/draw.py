@@ -12,8 +12,8 @@ def draw(draw_board, active_square, perspective):
     screen.fill(colors["white"])
 
     # draw chessboard and pieces
-    for y in range(8):
-        for x in range(8):
+    for x in range(8):
+        for y in range(8):
             # draw squares
             if (x + y) % 2 == 0: # light square
                 pygame.draw.rect(screen, colors["light_squares"], 
@@ -28,9 +28,9 @@ def draw(draw_board, active_square, perspective):
 
             # draw pieces
             if perspective == "w":
-                piece = draw_board[56 - 8 * y + x]
+                piece = draw_board[x][7 - y]
             else:
-                piece = draw_board[7 + 8 * y - x]
+                piece = draw_board[7 - x][y]
             if piece != " ":
                 screen.blit(piece_images[piece], (start_x_board + x \
                     * absolute_tile_width + round((absolute_tile_width \
@@ -58,6 +58,13 @@ def draw(draw_board, active_square, perspective):
 
     # draw active square
     if active_square:
+        # adjust for perspective
+        if perspective == "w":
+            active_square = (active_square[0], 7 - active_square[1])
+        else:
+            active_square = (7 - active_square[0], active_square[1])
+
+        # draw lines
         pygame.draw.rect(screen, colors["white"], (start_x_board \
             + active_square[0] * absolute_tile_width, start_y_board \
             + active_square[1] * absolute_tile_width, absolute_tile_width, 

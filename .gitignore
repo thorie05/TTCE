@@ -1,2 +1,3 @@
-ttce.cpython-311-x86_64-linux-gnu.so
-.vscode
+game/ttce.cpython-311-x86_64-linux-gnu.so
+.vscode/
+__pycache__/

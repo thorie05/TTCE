@@ -30,13 +30,13 @@ void Chessboard::pushMove(U16 move) {
     bool foundStart = false;
     bool foundEnd = false;
     for (int i = 0; i < 12; i++) {
-        if (*bitboards[i] & (1ULL << end)) {
-            *bitboards[i] ^= (1ULL << end);
+        if (*bitboards[i] & 1ULL<<end) {
+            *bitboards[i] ^= 1ULL<<end;
             foundEnd = true;
         }
-        if (*bitboards[i] & (1ULL << start)) {
-            *bitboards[i] ^= (1ULL << start);
-            *bitboards[i] |= (1ULL << end);
+        if (*bitboards[i] & 1ULL<<start) {
+            *bitboards[i] ^= 1ULL<<start;
+            *bitboards[i] |= 1ULL<<end;
             foundStart = true;
         }
         if (foundEnd && foundStart) {
@@ -63,19 +63,17 @@ void Chessboard::pushMove(std::tuple<int,int> startSquare,
     // translate to move tuple U16
     U16 move = 0;
     move |= (std::get<1>(startSquare) * 8 + std::get<0>(startSquare));
-    move |= ((std::get<1>(endSquare) * 8 + std::get<0>(endSquare)) << 6);
+    move |= ((std::get<1>(endSquare) * 8 + std::get<0>(endSquare))<<6);
     switch (promotion) {
-        case 'n':
+        // queen is 0
+        case 'r':
             move |= 4096; // 1 shifted 12 bits
             break;
         case 'b':
             move |= 8192; // 2 shifted 12 bits
             break;
-        case 'r':
+        case 'n':
             move |= 12288; // 3 shifted 12 bits
-            break;
-        case 'q':
-            move |= 16384; // 4 shifted 12 bits
             break;
     }
 

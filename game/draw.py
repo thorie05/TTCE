@@ -6,7 +6,7 @@ screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Thomas the Chess Engine")
 
 
-def draw(draw_board, active_square, perspective):
+def draw(draw_board, active_square, legal_moves, perspective):
     """Draws everything to the screen"""
 
     screen.fill(colors["white"])
@@ -56,15 +56,16 @@ def draw(draw_board, active_square, perspective):
         - absolute_board_border_width, absolute_board_border_width, 
         8 * absolute_tile_width + 2 * absolute_board_border_width))
 
-    # draw active square
     if active_square:
         # adjust for perspective
         if perspective == "w":
             active_square = (active_square[0], 7 - active_square[1])
+            legal_moves = [(move[0], 7 - move[1]) for move in legal_moves]
         else:
             active_square = (7 - active_square[0], active_square[1])
+            legal_moves = [(7 - move[0], move[1]) for move in legal_moves]
 
-        # draw lines
+        # draw active square
         pygame.draw.rect(screen, colors["white"], (start_x_board \
             + active_square[0] * absolute_tile_width, start_y_board \
             + active_square[1] * absolute_tile_width, absolute_tile_width, 
@@ -83,5 +84,13 @@ def draw(draw_board, active_square, perspective):
             + active_square[0] * absolute_tile_width, 
             start_y_board + active_square[1] * absolute_tile_width,
             absolute_active_square_border_width, absolute_tile_width,))
+
+        # draw legal moves
+        for move in legal_moves:
+            pygame.draw.circle(screen, colors["legal_moves_circle"], 
+                (start_x_board + round(absolute_tile_width / 2) + move[0] \
+                * absolute_tile_width, start_y_board \
+                + round(absolute_tile_width / 2) + move[1] \
+                * absolute_tile_width), absolute_legal_move_circle_radius)
 
     pygame.display.flip()

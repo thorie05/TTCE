@@ -26,6 +26,8 @@ absolute_board_border_width = round(height
     * style_settings["board_border_width"])
 absolute_active_square_border_width = round(absolute_tile_width \
     * style_settings["active_square_border_width"])
+absolute_legal_move_circle_radius = round(absolute_tile_width \
+    * style_settings["legal_move_circle_radius"])
 
 piece_style = style_settings["pieces"]["piece_style"]
 absolute_piece_width = round(absolute_tile_width \

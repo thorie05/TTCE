@@ -16,3 +16,8 @@ class Chessboard:
         None:
         """Moves a piece on the board"""
         ...
+
+    def get_pseudo_legal_moves() -> Tuple[Tuple[int, int], Tuple[int, int], 
+        str]:
+        """Returns all pseudo legal moves"""
+        ...

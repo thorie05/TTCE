@@ -8,47 +8,46 @@ std::tuple<std::vector<std::vector<char>>, char, bool, bool, bool, bool,
     // returns the current state of the board
 
     std::vector<std::vector<char>> returnBoard(8, std::vector<char>(8, ' '));
-    int i = 0;
-    for (int y = 0; y < 8; y++) {
-        for (int x = 0; x < 8; x++) {
-            if (board.whitePawns & 1ULL<<i) {
-                returnBoard[x][y] = 'P'; // white pawn
+    for (int x = 0; x < 8; x++) {
+        for (int y = 0; y < 8; y++) {
+            switch (board.mailbox[y * 8 + x]) {
+                case WHITE_PAWN:
+                    returnBoard[x][y] = 'P';
+                    break;
+                case WHITE_KNIGHT:
+                    returnBoard[x][y] = 'N';
+                    break;
+                case WHITE_BISHOP:
+                    returnBoard[x][y] = 'B';
+                    break;
+                case WHITE_ROOK:
+                    returnBoard[x][y] = 'R';
+                    break;
+                case WHITE_QUEEN:
+                    returnBoard[x][y] = 'Q';
+                    break;
+                case WHITE_KING:
+                    returnBoard[x][y] = 'K';
+                    break;
+                case BLACK_PAWN:
+                    returnBoard[x][y] = 'p';
+                    break;
+                case BLACK_KNIGHT:
+                    returnBoard[x][y] = 'n';
+                    break;
+                case BLACK_BISHOP:
+                    returnBoard[x][y] = 'b';
+                    break;
+                case BLACK_ROOK:
+                    returnBoard[x][y] = 'r';
+                    break;
+                case BLACK_QUEEN:
+                    returnBoard[x][y] = 'q';
+                    break;
+                case BLACK_KING:
+                    returnBoard[x][y] = 'k';
+                    break;
             }
-            if (board.whiteKnights & 1ULL<<i) {
-                returnBoard[x][y] = 'N'; // white knight
-            }
-            if (board.whiteBishops & 1ULL<<i) {
-                returnBoard[x][y] = 'B'; // white bishop
-            }
-            if (board.whiteRooks & 1ULL<<i) {
-                returnBoard[x][y] = 'R'; // white rook
-            }
-            if (board.whiteQueens & 1ULL<<i) {
-                returnBoard[x][y] = 'Q'; // white queen
-            }
-            if (board.whiteKing & 1ULL<<i) {
-                returnBoard[x][y] = 'K'; // white king
-            }
-            if (board.blackPawns & 1ULL<<i) {
-                returnBoard[x][y] = 'p'; // black pawn
-            }
-            if (board.blackKnights & 1ULL<<i) {
-                returnBoard[x][y] = 'n'; // black knight
-            }
-            if (board.blackBishops & 1ULL<<i) {
-                returnBoard[x][y] = 'b'; // black bishop
-            }
-            if (board.blackRooks & 1ULL<<i) {
-                returnBoard[x][y] = 'r'; // black rook
-            }
-            if (board.blackQueens & 1ULL<<i) {
-                returnBoard[x][y] = 'q'; // black queen
-            }
-            if (board.blackKing & 1ULL<<i) {
-                returnBoard[x][y] = 'k'; // black king
-            }
-
-            i++;
         }
     }
 

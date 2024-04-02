@@ -2,31 +2,40 @@
 #include <stack>
 #include <tuple>
 #include <vector>
+#include <iostream>
+#include <array>
 
 typedef unsigned long long U64;
 typedef unsigned short U16;
 
-const std::string defaultFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+const std::string DEFAULT_FEN = 
+    "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+
+// constants for encoding pieces in bitboards and mailbox array
+const int WHITE_PAWN = 0;
+const int WHITE_KNIGHT = 1;
+const int WHITE_BISHOP = 2;
+const int WHITE_ROOK = 3;
+const int WHITE_QUEEN = 4;
+const int WHITE_KING = 5;
+const int BLACK_PAWN = 6;
+const int BLACK_KNIGHT = 7;
+const int BLACK_BISHOP = 8;
+const int BLACK_ROOK = 9;
+const int BLACK_QUEEN = 10;
+const int BLACK_KING = 11;
+
+const int WHITE_PIECES = 12;
+const int BLACK_PIECES = 13;
+const int PIECES = 14;
+
+const int EMPTY_SQUARE = 15;
 
 struct Board {
-    // bitboards
-    U64 whitePawns = 0;
-    U64 whiteKnights = 0;
-    U64 whiteBishops = 0;
-    U64 whiteRooks = 0;
-    U64 whiteQueens = 0;
-    U64 whiteKing = 0;
+    // struct representing board position
 
-    U64 blackPawns = 0;
-    U64 blackKnights = 0;
-    U64 blackBishops = 0;
-    U64 blackRooks = 0;
-    U64 blackQueens = 0;
-    U64 blackKing = 0;
-
-    U64 whitePieces = 0;
-    U64 blackPieces = 0;
-    U64 pieces = 0;
+    std::array<U16, 64> mailbox;
+    std::array<U64, 16> bitboards{}; // index 15 redundant
 
     bool turn;
 

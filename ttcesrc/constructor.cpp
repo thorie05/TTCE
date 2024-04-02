@@ -7,6 +7,10 @@
 Chessboard::Chessboard(const std::string& fen): inputFen(fen) {
     // initializes the board using the given fen string
 
+    for (int i = 0; i < 64; i++) {
+        board.mailbox[i] = EMPTY_SQUARE;
+    }
+
     // split fen by spaces
     std::string s;
     std::stringstream ss(fen);
@@ -16,92 +20,80 @@ Chessboard::Chessboard(const std::string& fen): inputFen(fen) {
         splitFen[i] = s;
     }
 
-    // fill bitboards
+    // fill bitboards and mailbox array
     int currentSquare = 56;
     for (int i = 0; i < (int)splitFen[0].length(); i++) {
         char currentChar = splitFen[0][i];
+
+        bool isPiece = true;
+        int index;
+
         switch (currentChar) {
-            case 'P': // white pawn
-                board.whitePawns |= (1ULL << currentSquare);
-                currentSquare++;
+            case 'P':
+                index = WHITE_PAWN;
                 break;
-
-            case 'N': // white knight
-                board.whiteKnights |= (1ULL << currentSquare);
-                currentSquare++;
+            case 'N':
+                index = WHITE_KNIGHT;
                 break;
-
-            case 'B': // white bishop
-                board.whiteBishops |= (1ULL << currentSquare);
-                currentSquare++;
+            case 'B':
+                index = WHITE_BISHOP;
                 break;
-
-            case 'R': // white rook
-                board.whiteRooks |= (1ULL << currentSquare);
-                currentSquare++;
+            case 'R':
+                index = WHITE_ROOK;
                 break;
-
-            case 'Q': // white queen
-                board.whiteQueens |= (1ULL << currentSquare);
-                currentSquare++;
+            case 'Q':
+                index = WHITE_QUEEN;
                 break;
-
-            case 'K': // white king
-                board.whiteKing |= (1ULL << currentSquare);
-                currentSquare++;
+            case 'K':
+                index = WHITE_KING;
                 break;
-
-            case 'p': // black pawn
-                board.blackPawns |= (1ULL << currentSquare);
-                currentSquare++;
+            case 'p':
+                index = BLACK_PAWN;
                 break;
-
-            case 'n': // black knight
-                board.blackKnights |= (1ULL << currentSquare);
-                currentSquare++;
+            case 'n':
+                index = BLACK_KNIGHT;
                 break;
-
-            case 'b': // black bishop
-                board.blackBishops |= (1ULL << currentSquare);
-                currentSquare++;
+            case 'b':
+                index = BLACK_BISHOP;
                 break;
-
-            case 'r': // black rook
-                board.blackRooks |= (1ULL << currentSquare);
-                currentSquare++;
+            case 'r':
+                index = BLACK_ROOK;
                 break;
-
-            case 'q': // black queen
-                board.blackQueens |= (1ULL << currentSquare);
-                currentSquare++;
+            case 'q':
+                index = BLACK_QUEEN;
                 break;
-
-            case 'k': // black king
-                board.blackKing |= (1ULL << currentSquare);
-                currentSquare++;
+            case 'k':
+                index = BLACK_KING;
                 break;
-            
             case '/': // new rank
                 currentSquare -= 16;
+                isPiece = false;
                 break;
-
             default: // digit
                 if (isdigit(currentChar)) {
                     currentSquare += currentChar - '0';
                 }
+                isPiece = false;
                 break;
+        }
+
+        if (isPiece) {
+            board.bitboards[index] |= (1ULL << currentSquare);
+            board.mailbox[currentSquare] = index;
+            currentSquare++;
         }
     }
 
-    board.whitePieces = board.whitePawns | board.whiteKnights 
-        | board.whiteBishops | board.whiteRooks | board.whiteQueens 
-        | board.whiteKing;
+    // calculate additional bitboards
+    board.bitboards[12] = board.bitboards[0] | board.bitboards[1] 
+        | board.bitboards[2] | board.bitboards[3] | board.bitboards[4] 
+        | board.bitboards[5];
 
-    board.blackPieces = board.blackPawns | board.blackKnights 
-        | board.blackBishops | board.blackRooks | board.blackQueens 
-        | board.blackKing;
+    board.bitboards[13] = board.bitboards[6] | board.bitboards[7] 
+        | board.bitboards[8] | board.bitboards[9] | board.bitboards[10] 
+        | board.bitboards[11];
 
-    board.pieces = board.whitePieces | board.blackPieces;
+    board.bitboards[14] = board.bitboards[12] | board.bitboards[13];
 
     // whites turn is true, blacks turn is false
     board.turn = splitFen[1] == "w" ? true : false;

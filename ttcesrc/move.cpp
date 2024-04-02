@@ -11,49 +11,29 @@ void Chessboard::pushMove(U16 move) {
     U16 end = (move & 4032) >> 6; // next 6 bits represent the end square
     // U16 promotion = (move & 64512) >> 12; // last 4 bits contain promotion info
 
-    std::array<U64*,12> bitboards = {
-        &board.whitePawns,
-        &board.whiteKnights,
-        &board.whiteBishops,
-        &board.whiteRooks,
-        &board.whiteQueens,
-        &board.whiteKing,
-        &board.blackPawns,
-        &board.blackKnights,
-        &board.blackBishops,
-        &board.blackRooks,
-        &board.blackQueens,
-        &board.blackKing,
-    };
+    // find moving piece and potentially captured piece
+    int startPiece = board.mailbox[start];
+    int endPiece = board.mailbox[end];
 
-    // adjust bitboards
-    bool foundStart = false;
-    bool foundEnd = false;
-    for (int i = 0; i < 12; i++) {
-        if (*bitboards[i] & 1ULL<<end) {
-            *bitboards[i] ^= 1ULL<<end;
-            foundEnd = true;
-        }
-        if (*bitboards[i] & 1ULL<<start) {
-            *bitboards[i] ^= 1ULL<<start;
-            *bitboards[i] |= 1ULL<<end;
-            foundStart = true;
-        }
-        if (foundEnd && foundStart) {
-            break;
-        }
-    }
+    // move start piece and remove end piece on the bitboards
+    board.bitboards[startPiece] ^= 1ULL<<start;
+    board.bitboards[startPiece] |= 1ULL<<end;
+    board.bitboards[endPiece] ^= 1ULL<<end;
 
-    // calculate new pieces bitboards
-    board.whitePieces = board.whitePawns | board.whiteKnights 
-        | board.whiteBishops | board.whiteRooks | board.whiteQueens 
-        | board.whiteKing;
+    // move start piece and remove end piece in the mailbox array
+    board.mailbox[start] = EMPTY_SQUARE;
+    board.mailbox[end] = startPiece;
 
-    board.blackPieces = board.blackPawns | board.blackKnights 
-        | board.blackBishops | board.blackRooks | board.blackQueens 
-        | board.blackKing;
+    // calculate new bitboards
+    board.bitboards[12] = board.bitboards[0] | board.bitboards[1] 
+        | board.bitboards[2] | board.bitboards[3] | board.bitboards[4] 
+        | board.bitboards[5];
 
-    board.pieces = board.whitePieces | board.blackPieces;
+    board.bitboards[13] = board.bitboards[6] | board.bitboards[7] 
+        | board.bitboards[8] | board.bitboards[9] | board.bitboards[10] 
+        | board.bitboards[11];
+
+    board.bitboards[14] = board.bitboards[12] | board.bitboards[13];
 }
 
 void Chessboard::pushMove(std::tuple<int,int> startSquare, 
@@ -77,6 +57,5 @@ void Chessboard::pushMove(std::tuple<int,int> startSquare,
             break;
     }
 
-    // call move
     Chessboard::pushMove(move);
 }

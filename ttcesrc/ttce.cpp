@@ -11,7 +11,7 @@ PYBIND11_MODULE(ttce, handle) {
     py::class_<Chessboard>(handle, "Chessboard")
 
         .def(py::init<const std::string&>(),
-            py::arg("fen") = defaultFen)
+            py::arg("fen") = DEFAULT_FEN)
 
         .def("get_status", &Chessboard::getStatus)
 

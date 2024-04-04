@@ -1,18 +1,23 @@
 import pygame
-import sys
 import math
-from static import *
+import sys
+import draw_variables
 
 
 def events(perspective):
     """Handles the events"""
 
+    absolute_tile_width, start_x_board, start_y_board, _, _, _, _, _ = \
+        draw_variables.get_draw_variables()
+
     pos = None
 
     for event in pygame.event.get():
-
         if event.type == pygame.QUIT:
             sys.exit()
+
+        elif event.type == pygame.VIDEORESIZE:
+            return "resized", None
 
         if event.type == pygame.MOUSEBUTTONUP: # left mouse button clicked
             if event.button == 1:
@@ -30,5 +35,7 @@ def events(perspective):
                         pos = (pos[0], 7 - pos[1])
                     else:
                         pos = (7 - pos[0], pos[1])
+                return "click", pos
 
-    return pos
+    return None, None
+

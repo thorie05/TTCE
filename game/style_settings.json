@@ -13,8 +13,8 @@
     "legal_move_circle_radius": 0.09,
 
     "pieces": {
-        "relative_piece_width": 0.95,
-        "piece_style": "wikipedia"
+        "relative_piece_width": 0.9,
+        "piece_style": "maestro"
     },
 
     "colors": {

@@ -40,7 +40,7 @@ void Chessboard::pushMove(std::tuple<int,int> startSquare,
     std::tuple<int,int> endSquare, char promotion = 'q') {
     // moves a piece on the board
 
-    // translate to move tuple U16
+    // translate move tuple to U16
     U16 move = 0;
     move |= (std::get<1>(startSquare) * 8 + std::get<0>(startSquare));
     move |= ((std::get<1>(endSquare) * 8 + std::get<0>(endSquare))<<6);

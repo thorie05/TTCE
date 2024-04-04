@@ -1,13 +1,19 @@
 import pygame
-from static import *
+import draw_variables
 
 # pygame screen object
-screen = pygame.display.set_mode((width, height))
+screen = pygame.display.set_mode((0, 0), pygame.RESIZABLE)
 pygame.display.set_caption("Thomas the Chess Engine")
 
+colors = draw_variables.colors
 
 def draw(draw_board, active_square, legal_moves, perspective):
     """Draws everything to the screen"""
+
+    absolute_tile_width, start_x_board, start_y_board, \
+    absolute_board_border_width, absolute_active_square_border_width, \
+    absolute_legal_move_circle_radius, absolute_piece_width, piece_images = \
+        draw_variables.get_draw_variables()
 
     screen.fill(colors["white"])
 

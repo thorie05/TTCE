@@ -1,4 +1,5 @@
 #include "chessboard.hpp"
+#include <iostream>
 #include <tuple>
 
 std::vector<U16> Chessboard::getPseudoLegalMoves() {
@@ -23,21 +24,7 @@ std::vector<U16> Chessboard::getPseudoLegalMoves() {
         }
     }
     else { // blacks turn
-        for (int i = 0; i < 64; i++) {
 
-            // pawn moves
-            if (board.bitboards[BLACK_PAWN] & 1ULL<<i) {
-                if (!(board.bitboards[PIECES] & 1ULL<<(i - 8))) {
-                    // move one square forward
-                    pseudoLegalMoves.push_back(i | (i - 8) << 6);
-                    if (!(board.bitboards[PIECES] & 1ULL<<(i - 16)) 
-                        && i >= 48 && i <= 55) {
-                        // move two squares forward
-                        pseudoLegalMoves.push_back(i | (i - 16) << 6);
-                    }
-                }
-            }
-        }
     }
 
     return pseudoLegalMoves;

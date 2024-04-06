@@ -32,6 +32,7 @@ void printBoard(U64 board) {
 
 
 int main() {
+    std::ofstream fout("../engine/magics_rook.txt");
 
     vector<U64> rookMaskWithoutBorder(64);
 
@@ -61,6 +62,15 @@ int main() {
 
         rookMaskWithoutBorder[i] = mask;
     }
+
+    cout << "{";
+    for (int i = 0; i < 64; i++) {
+        cout << rookMaskWithoutBorder[i];
+        if (i < 63) {
+            cout << ", ";
+        }
+    }
+    cout << "}";
 
     vector<vector<U64>> keys(64);
 
@@ -111,7 +121,7 @@ int main() {
                 k--;
             }
             k = i + 1;
-            while (k <= i - i % 8 + 8) {
+            while (k < i - i % 8 + 8) {
                 moves |= 1ULL << k;
                 if (blockers & 1ULL << k) break;
                 k++;
@@ -120,24 +130,17 @@ int main() {
         }
     }
 
-    ofstream RookKeys("rook_keys");
+    int cnt = 0;
+    for (int i = 0; i < 64; i++) {
+        cnt += keys[i].size();
+    }
+
+    fout << cnt << endl;
     for (int i = 0; i < 64; i++) {
         for (int j = 0; j < keys[i].size(); j++) {
-            RookKeys << keys[i][j] << " ";
+            fout << i << " " << keys[i][j] << " " << values[i][j] << endl;
         }
-        RookKeys << endl;
     }
-    RookKeys.close();
-
-    ofstream RookValues("rook_values");
-    for (int i = 0; i < 64; i++) {
-        RookValues << i << endl;
-        for (int j = 0; j < values[i].size(); j++) {
-            RookValues << values[i][j] << " ";
-        }
-        RookValues << endl;
-    }
-    RookValues.close();
 
     return 0;
 }

@@ -8,18 +8,32 @@ std::vector<U16> Chessboard::getPseudoLegalMoves() {
 
     if (board.turn) { // whites turn
         for (int i = 0; i < 64; i++) {
+            int piece = board.mailbox[i];
 
-            // pawn moves
-            if (board.bitboards[WHITE_PAWN] & 1ULL<<i) {
-                if (!(board.bitboards[PIECES] & 1ULL<<(i + 8))) {
-                    // move one square forward
-                    pseudoLegalMoves.push_back(i | (i + 8) << 6);
-                    if (!(board.bitboards[PIECES] & 1ULL<<(i + 16)) 
-                        && i >= 8 && i <= 15) {
-                        // move two squares forward
-                        pseudoLegalMoves.push_back(i | (i + 16) << 6);
+            switch (piece) {
+                case WHITE_PAWN:
+                    if (!(board.bitboards[PIECES] & 1ULL<<(i + 8))) {
+                        // move one square forward
+                        pseudoLegalMoves.push_back(i | (i + 8) << 6);
+                        if (!(board.bitboards[PIECES] & 1ULL<<(i + 16)) 
+                            && i >= 8 && i <= 15) {
+                            // move two squares forward
+                            pseudoLegalMoves.push_back(i | (i + 16) << 6);
+                        }
                     }
-                }
+                    break;
+                case WHITE_ROOK:
+                    U64 key = board.bitboards[PIECES] & rookMask[i];
+                    key *= rookMagics[i];
+                    key >>= (64 - rookShifts[i]);
+                    U64 moveMask = magicsRook[i][key];
+                    moveMask &= ~board.bitboards[WHITE_PIECES];
+                    for (int j = 0; j < 64; j++) {
+                        if (moveMask & 1ULL << j) {
+                            pseudoLegalMoves.push_back(i | j << 6);
+                        }
+                    }
+                    break;
             }
         }
     }

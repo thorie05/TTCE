@@ -1,41 +1,68 @@
 import pygame
 import math
 import sys
-import draw_variables
+from dataclasses import dataclass
+from typing import Tuple
+from display_settings import ds
+
+@dataclass
+class GameEvent():
+    """
+    A brief description of the class.
+
+    Attributes:
+        event_type (str): Event type of the event (click or resized)
+        clicked_pos (Tuple[int, int]): Position of the click if clicked
+
+    Methods:
+        None
+    """
+
+    event_type: str
+    clicked_pos: Tuple[int, int] = None
 
 
 def events(perspective):
-    """Handles the events"""
+    """
+    Handles the events
 
-    absolute_tile_width, start_x_board, start_y_board, _, _, _, _, _ = \
-        draw_variables.get_draw_variables()
+    Args:
+        None
 
-    pos = None
+    Returns:
+        None
+    """
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            sys.exit()
+            sys.exit() # exit the game
 
-        elif event.type == pygame.VIDEORESIZE:
-            return "resized", None
+        # window resized
+        elif ds.resizable and event.type == pygame.VIDEORESIZE:
+            return GameEvent(event_type="resized")
 
-        if event.type == pygame.MOUSEBUTTONUP: # left mouse button clicked
+        # mouse clicked
+        if event.type == pygame.MOUSEBUTTONUP:
+            # left mouse button clicked
             if event.button == 1:
-                # calculate tile clicked by the mouse
-                pos = pygame.mouse.get_pos()
-                pos = (math.floor((pos[0] - start_x_board) \
-                    / absolute_tile_width), math.floor((pos[1] \
-                    - start_y_board) / absolute_tile_width))
+                # calculate coordinates of the clicked square
+                clicked_pos = pygame.mouse.get_pos()
+                clicked_pos = (math.floor((clicked_pos[0] \
+                    - ds.start_x_board) / ds.absolute_tile_width), 
+                    math.floor((clicked_pos[1] - ds.start_y_board) \
+                    / ds.absolute_tile_width))
 
                 # if clicked outisde of the board
-                if pos[0] < 0 or pos[0] > 7 or pos[1] < 0 or pos[1] > 7:
-                    pos = (-1, -1) 
-                else: # adjust for perspective
+                if clicked_pos[0] < 0 or clicked_pos[0] > 7 \
+                    or clicked_pos[1] < 0 or clicked_pos[1] > 7:
+                    clicked_pos = None 
+                else:
+                    # account for perspective
                     if perspective == "w":
-                        pos = (pos[0], 7 - pos[1])
+                        clicked_pos = (clicked_pos[0], 7 - clicked_pos[1])
                     else:
-                        pos = (7 - pos[0], pos[1])
-                return "click", pos
+                        clicked_pos = (7 - clicked_pos[0], clicked_pos[1])
 
-    return None, None
+                return GameEvent(event_type="click", clicked_pos=clicked_pos)
 
+    return GameEvent("none")

@@ -2,37 +2,47 @@ import ttce
 import pygame
 from draw import draw
 from events import events
-import draw_variables
+from display_settings import ds
 
 pygame.init()
 
 
 def main():
-    """Main function"""
+    """
+    Main function running everything
 
+    Args:
+        None
+
+    Returns:
+        None
+    """
+
+    # initialize chessboard class from the ttce module
     chessboard = ttce.Chessboard()
 
-    active_square = None
-    perspective = "w"
+    active_square = None # square currently clicked by the player
+    perspective = "w" # perspective of the drawn chessboard (w or b)
 
+    # main loop
     while True:
         # get board status
         board_status = chessboard.get_status()
         board = board_status[0]
 
         event = events(perspective)
-        if event[0] == "click":
-            click_pos = event[1]
+        if event.event_type == "click":
+            clicked_pos = event.clicked_pos
 
             # if clicked outside of the board remove active square
-            if click_pos == (-1, -1):
+            if clicked_pos == (-1, -1):
                 active_square = None
             else:
                 # if already active square
                 if active_square:
                     active_piece = \
                         board[active_square[0]][active_square[1]]
-                    new_piece = board[click_pos[0]][click_pos[1]]
+                    new_piece = board[clicked_pos[0]][clicked_pos[1]]
 
                     active_piece_color = "w" if active_piece.isupper() else "b"
                     new_piece_color = "w" if new_piece.isupper() else "b"
@@ -41,24 +51,24 @@ def main():
 
                     # if clicked on enemy piece or empty square push move
                     if active_piece_color != new_piece_color: 
-                        chessboard.push_move(active_square, click_pos)
+                        chessboard.push_move(active_square, clicked_pos)
                         active_square = None
 
                     # if clicked on friendly piece
                     if active_piece_color == new_piece_color:
                         # if other piece make new active square
-                        if active_square != click_pos:
-                            active_square = click_pos
+                        if active_square != clicked_pos:
+                            active_square = clicked_pos
                         # if same piece remove active square
                         else:
                             active_square = None
 
                 # if no active square make new active square
-                elif board[click_pos[0]][click_pos[1]] != " ":
-                    active_square = click_pos
-        elif event[0] == "resized":
+                elif board[clicked_pos[0]][clicked_pos[1]] != " ":
+                    active_square = clicked_pos
+        elif event.event_type == "resized":
             new_width, new_height = pygame.display.get_surface().get_size()
-            draw_variables.update_draw_variables(new_height, new_width)
+            ds.update(new_width, new_height)
 
         # calculate legal moves for active square for visualisation
         legal_active_square_moves = []

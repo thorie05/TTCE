@@ -9,12 +9,14 @@ pygame.init()
 
 def main():
     """
-    Main function running everything
+    The main function running the game loop.
 
-    Args:
+    Parameters
+    ----------
         None
 
-    Returns:
+    Returns
+    -------
         None
     """
 
@@ -31,17 +33,15 @@ def main():
         board = board_status[0]
 
         event = events(perspective)
+        # if clicked
         if event.event_type == "click":
             clicked_pos = event.clicked_pos
 
             # if clicked outside of the board remove active square
-            if clicked_pos == (-1, -1):
-                active_square = None
-            else:
+            if clicked_pos:
                 # if already active square
                 if active_square:
-                    active_piece = \
-                        board[active_square[0]][active_square[1]]
+                    active_piece = board[active_square[0]][active_square[1]]
                     new_piece = board[clicked_pos[0]][clicked_pos[1]]
 
                     active_piece_color = "w" if active_piece.isupper() else "b"
@@ -66,6 +66,9 @@ def main():
                 # if no active square make new active square
                 elif board[clicked_pos[0]][clicked_pos[1]] != " ":
                     active_square = clicked_pos
+            else: # if clicked outside of the board remove active square
+                active_square = None
+        # if resized window
         elif event.event_type == "resized":
             new_width, new_height = pygame.display.get_surface().get_size()
             ds.update(new_width, new_height)

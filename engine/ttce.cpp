@@ -18,7 +18,7 @@ PYBIND11_MODULE(ttce, handle) {
         .def("push_move", py::overload_cast<std::tuple<int,int>, 
             std::tuple<int,int>, char>(&Chessboard::pushMove), 
             py::arg("start_square"), py::arg("end_square"), 
-            py::arg("promotion") = 'q')
+            py::arg("promotion_piece") = 'q')
 
         .def("get_pseudo_legal_moves", &Chessboard::getPseudoLegalMovesPy)
     ;

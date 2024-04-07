@@ -8,13 +8,17 @@ from display_settings import ds
 @dataclass
 class GameEvent():
     """
-    A brief description of the class.
+    Dataclass containing information about an event in the game.
 
-    Attributes:
-        event_type (str): Event type of the event (click or resized)
-        clicked_pos (Tuple[int, int]): Position of the click if clicked
+    Attributes
+    ----------
+        event_type : str
+            event type of the event (click or resized)
+        clicked_pos : Tuple[int, int]
+            position of the click if clicked else None
 
-    Methods:
+    Methods
+    -------
         None
     """
 
@@ -24,13 +28,17 @@ class GameEvent():
 
 def events(perspective):
     """
-    Handles the events
+    Handles the events.
 
-    Args:
-        None
+    Parameters
+    ----------
+        perspective : str
+            perspective of the player (w or b)
 
-    Returns:
-        None
+    Returns
+    -------
+        event : GameEvent
+            GameEvent object containing information about the event
     """
 
     for event in pygame.event.get():

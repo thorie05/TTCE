@@ -2,20 +2,23 @@ import pygame
 from display_settings import ds, screen
 
 def draw(draw_board, active_square, legal_moves, perspective):
-    """Draws everything to the screen
+    """
+    Draws everything to the screen.
     
-        Args:
-            draw_board (List[str]): Mailbox list showing which piece stands on 
-                                    which square
-            active_square (Tuple[int, int]): Square currently selected by the 
-                                            player, i.e. active square
-            legal_moves (List[Tuple[Tuple[int, int]]]): List of legal moves of 
-                                                        the piece standing on 
-                                                        the selected square
-            perspective (str): Perspective of the player (w or b)
+    Parameters
+    ----------
+        draw_board : List[str]
+            mailbox list showing which piece stands on which square
+        active_square : Tuple[int, int]
+            square currently selected by the player, i.e. active square
+        legal_moves : List[Tuple[Tuple[int, int]]]
+            list of legal moves of the piece standing on the selected square
+        perspective : str)
+            perspective of the player (w or b)
 
-        Returns:
-            None
+    Returns
+    -------
+        None
     """
 
     screen.fill(ds.colors["white"]) # clear last screen with white color
@@ -102,8 +105,8 @@ def draw(draw_board, active_square, legal_moves, perspective):
         # draw legal moves
         for move in legal_moves:
             pygame.draw.circle(screen, ds.colors["legal_moves_circle"], 
-                (ds.start_x_board + round(ds.absolute_tile_width / 2) + move[0] \
-                * ds.absolute_tile_width, ds.start_y_board \
+                (ds.start_x_board + round(ds.absolute_tile_width / 2) \
+                + move[0] * ds.absolute_tile_width, ds.start_y_board \
                 + round(ds.absolute_tile_width / 2) + move[1] \
                 * ds.absolute_tile_width), ds.absolute_legal_move_circle_radius)
 

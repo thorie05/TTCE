@@ -5,12 +5,14 @@ import json
 class DisplaySettings():
     def __init__(self):
         """
-        Initializes the DisplaySettings class
+        Initializes the DisplaySettings class.
 
-        Args:
-            self: Instance of DisplaySettings
+        Parameters
+        ----------
+            None
 
-        Returns:
+        Returns
+        -------
             None
         """
 

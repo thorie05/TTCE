@@ -46,7 +46,7 @@ def draw(draw_board, active_square, legal_moves, perspective):
 
             # draw pieces
             if piece != " ":
-                screen.blit(ds.scaled_piece_images[piece], (ds.start_x_board \
+                screen.blit(ds.scaled_piece_sprites[piece], (ds.start_x_board \
                     + x * ds.absolute_tile_width \
                     + round((ds.absolute_tile_width \
                     - ds.absolute_piece_width) / 2), ds.start_y_board \

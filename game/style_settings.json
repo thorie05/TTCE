@@ -12,7 +12,7 @@
 
     "pieces": {
         "relative_piece_width": 0.9,
-        "piece_style": "governor"
+        "piece_style": "maestro"
     },
 
     "colors": {

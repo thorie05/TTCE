@@ -6,8 +6,6 @@ from display_settings import ds
 
 pygame.init()
 
-print(type(ds.icon))
-
 
 def main():
     """

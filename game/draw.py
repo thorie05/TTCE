@@ -29,14 +29,12 @@ def draw(draw_board, active_square, legal_moves, perspective):
             # draw squares
             if (x + y) % 2 == 0: # light square
                 pygame.draw.rect(screen, ds.colors["light_squares"], 
-                    (ds.start_x_board + x * ds.absolute_tile_width, 
-                    ds.start_y_board + y * ds.absolute_tile_width,
-                    ds.absolute_tile_width, ds.absolute_tile_width))
+                    (ds.start_x_board + x * ds.tile_width, ds.start_y_board \
+                    + y * ds.tile_width, ds.tile_width, ds.tile_width))
             else: # dark square
                 pygame.draw.rect(screen, ds.colors["dark_squares"], 
-                    (ds.start_x_board + x * ds.absolute_tile_width, 
-                    ds.start_y_board + y * ds.absolute_tile_width,
-                    ds.absolute_tile_width, ds.absolute_tile_width))
+                    (ds.start_x_board + x * ds.tile_width, ds.start_y_board \
+                    + y * ds.tile_width, ds.tile_width, ds.tile_width))
 
             # account for players perspective
             if perspective == "w":
@@ -47,30 +45,24 @@ def draw(draw_board, active_square, legal_moves, perspective):
             # draw pieces
             if piece != " ":
                 screen.blit(ds.scaled_piece_sprites[piece], (ds.start_x_board \
-                    + x * ds.absolute_tile_width \
-                    + round((ds.absolute_tile_width \
-                    - ds.absolute_piece_width) / 2), ds.start_y_board \
-                    + y * ds.absolute_tile_width \
-                    + round((ds.absolute_tile_width \
-                    - ds.absolute_piece_width) / 2)))
+                    + x * ds.tile_width + round((ds.tile_width \
+                    - ds.piece_width) / 2), ds.start_y_board \
+                    + y * ds.tile_width + round((ds.tile_width \
+                    - ds.piece_width) / 2)))
 
     # draw border around board
+    pygame.draw.rect(screen, ds.colors["board_border"], (ds.start_x_board
+        - ds.board_border_width, ds.start_y_board - ds.board_border_width,
+        8 * ds.tile_width + 2 * ds.board_border_width, ds.board_border_width))
     pygame.draw.rect(screen, ds.colors["board_border"], (ds.start_x_board 
-        - ds.absolute_board_border_width, ds.start_y_board 
-        - ds.absolute_board_border_width, 8 * ds.absolute_tile_width 
-        + 2 * ds.absolute_board_border_width, ds.absolute_board_border_width))
-    pygame.draw.rect(screen, ds.colors["board_border"], (ds.start_x_board 
-        - ds.absolute_board_border_width, ds.start_y_board 
-        + 8 * ds.absolute_tile_width, 8 * ds.absolute_tile_width 
-        + 2 * ds.absolute_board_border_width, ds.absolute_board_border_width))
-    pygame.draw.rect(screen, ds.colors["board_border"], (ds.start_x_board 
-        - ds.absolute_board_border_width, ds.start_y_board 
-        - ds.absolute_board_border_width, ds.absolute_board_border_width, 
-        8 * ds.absolute_tile_width + 2 * ds.absolute_board_border_width))
+        - ds.board_border_width, ds.start_y_board + 8 * ds.tile_width,
+        8 * ds.tile_width + 2 * ds.board_border_width, ds.board_border_width))
+    pygame.draw.rect(screen, ds.colors["board_border"], (ds.start_x_board
+        - ds.board_border_width, ds.start_y_board - ds.board_border_width,
+        ds.board_border_width, 8 * ds.tile_width + 2 * ds.board_border_width))
     pygame.draw.rect(screen, ds.colors["board_border"], (ds.start_x_board +
-        8 * ds.absolute_tile_width, ds.start_y_board 
-        - ds.absolute_board_border_width, ds.absolute_board_border_width, 
-        8 * ds.absolute_tile_width + 2 * ds.absolute_board_border_width))
+        8 * ds.tile_width, ds.start_y_board - ds.board_border_width, 
+        ds.board_border_width, 8 * ds.tile_width + 2 * ds.board_border_width))
 
     # draw active square and legal moves
     if active_square:
@@ -84,31 +76,28 @@ def draw(draw_board, active_square, legal_moves, perspective):
 
         # draw active square
         pygame.draw.rect(screen, ds.colors["white"], (ds.start_x_board \
-            + active_square[0] * ds.absolute_tile_width, ds.start_y_board \
-            + active_square[1] * ds.absolute_tile_width, ds.absolute_tile_width, 
-            ds.absolute_active_square_border_width))
+            + active_square[0] * ds.tile_width, ds.start_y_board \
+            + active_square[1] * ds.tile_width, ds.tile_width, 
+            ds.active_square_border_width))
         pygame.draw.rect(screen, ds.colors["white"], (ds.start_x_board \
-            + active_square[0] * ds.absolute_tile_width, ds.start_y_board \
-            + ds.absolute_tile_width - ds.absolute_active_square_border_width \
-            + active_square[1] * ds.absolute_tile_width, ds.absolute_tile_width, 
-            ds.absolute_active_square_border_width))
+            + active_square[0] * ds.tile_width, ds.start_y_board \
+            + ds.tile_width - ds.active_square_border_width + active_square[1] \
+            * ds.tile_width, ds.tile_width, ds.active_square_border_width))
         pygame.draw.rect(screen, ds.colors["white"], (ds.start_x_board \
-            + active_square[0] * ds.absolute_tile_width, ds.start_y_board \
-            + active_square[1] * ds.absolute_tile_width,
-            ds.absolute_active_square_border_width, ds.absolute_tile_width,))
+            + active_square[0] * ds.tile_width, ds.start_y_board \
+            + active_square[1] * ds.tile_width, ds.active_square_border_width, 
+            ds.tile_width,))
         pygame.draw.rect(screen, ds.colors["white"], (ds.start_x_board \
-            + ds.absolute_tile_width - ds.absolute_active_square_border_width \
-            + active_square[0] * ds.absolute_tile_width, 
-            ds.start_y_board + active_square[1] * ds.absolute_tile_width,
-            ds.absolute_active_square_border_width, ds.absolute_tile_width,))
+            + ds.tile_width - ds.active_square_border_width + active_square[0] \
+            * ds.tile_width, ds.start_y_board + active_square[1] \
+            * ds.tile_width, ds.active_square_border_width, ds.tile_width,))
 
         # draw legal moves
         for move in legal_moves:
             pygame.draw.circle(screen, ds.colors["legal_moves_circle"], 
-                (ds.start_x_board + round(ds.absolute_tile_width / 2) \
-                + move[0] * ds.absolute_tile_width, ds.start_y_board \
-                + round(ds.absolute_tile_width / 2) + move[1] \
-                * ds.absolute_tile_width), ds.absolute_legal_move_circle_radius)
+                (ds.start_x_board + round(ds.tile_width / 2) + move[0] \
+                * ds.tile_width, ds.start_y_board + round(ds.tile_width / 2) \
+                + move[1] * ds.tile_width), ds.legal_move_circle_radius)
 
     # flip screen to show changes
     pygame.display.flip()

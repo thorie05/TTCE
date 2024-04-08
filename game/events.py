@@ -55,10 +55,9 @@ def events(perspective):
             if event.button == 1:
                 # calculate coordinates of the clicked square
                 clicked_pos = pygame.mouse.get_pos()
-                clicked_pos = (math.floor((clicked_pos[0] \
-                    - ds.start_x_board) / ds.absolute_tile_width), 
-                    math.floor((clicked_pos[1] - ds.start_y_board) \
-                    / ds.absolute_tile_width))
+                clicked_pos = (math.floor((clicked_pos[0] - ds.start_x_board) \
+                    / ds.tile_width), math.floor((clicked_pos[1] \
+                    - ds.start_y_board) / ds.tile_width))
 
                 # if clicked outisde of the board
                 if clicked_pos[0] < 0 or clicked_pos[0] > 7 \

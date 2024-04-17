@@ -63,15 +63,17 @@ U64 generateMoves(int square, const U64& blockers,
 int main() {
     // generate piece masks
 
-    array<U64, 64> bishopMasks; // array of bishop moves masks
-    array<U64, 64> rookMasks; // array of rook moves masks
+    array<U64, 64> bishopPreMasks;
+    array<U64, 64> rookPreMasks;
+    array<U64, 64> bishopPostMasks;
+    array<U64, 64> rookPostMasks;
 
     int a = 0;
     int b = 0;
 
     for (int i = 0; i < 64; i++) {
-        bishopMasks[i] = generateMoves(i, 0ULL, {7, 9, -7, -9});
-        rookMasks[i] = generateMoves(i, 0ULL, {-1, 8, 1, -8});
+        bishopPostMasks[i] = generateMoves(i, 0ULL, {7, 9, -7, -9});
+        rookPostMasks[i] = generateMoves(i, 0ULL, {-1, 8, 1, -8});
 
         // remove last square in every direction for piece mask since there
         // is no difference if it is there or not
@@ -90,8 +92,8 @@ int main() {
         if (0x101010101010101ULL & 1ULL << i) { // left
             relevantSquares |= 0x1010101010100ULL;
         }
-        bishopMasks[i] &= relevantSquares;
-        rookMasks[i] &= relevantSquares;
+        bishopPreMasks[i] = bishopPostMasks[i] & relevantSquares;
+        rookPreMasks[i] = rookPostMasks[i] & relevantSquares;
     }
 
     // generate key value pairs
@@ -103,8 +105,8 @@ int main() {
     array<vector<U64>, 64> rookValues;
 
     for (int sq = 0; sq < 64; sq++) { // iterate over every square
-        U64 bishopMask = bishopMasks[sq];
-        U64 rookMask = rookMasks[sq];
+        U64 bishopMask = bishopPreMasks[sq];
+        U64 rookMask = rookPreMasks[sq];
 
         vector<int> blockerPositionsBishop; // store the index of every blocker
         vector<int> blockerPositionsRook;
@@ -189,6 +191,16 @@ int main() {
         }
     }
     foutRooks.close();
+
+    // write post masks to file
+    ofstream foutMasks("masks.txt");
+    for (int i = 0; i < 64; i++) {
+        foutMasks << bishopPostMasks[i] << " ";
+    }
+    foutMasks << endl;
+    for (int i = 0; i < 64; i++) {
+        foutMasks << rookPostMasks[i] << " ";
+    }
 
     return 0;
 }

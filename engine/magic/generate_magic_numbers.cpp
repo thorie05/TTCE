@@ -115,7 +115,6 @@ int main() {
 
     int numberOfMagicTrys = 100;
 
-    /*
     // find magic numbers and shifts for bishops
     cout << "bishops: " << endl;
     array<U64, 64> magicNumbersBishops;
@@ -133,7 +132,6 @@ int main() {
         foutBishops << shiftsBishops[i] << " ";
     }
     foutBishops.close();
-    */
 
     // find magic numbers and shifts for rooks
     cout << "rooks:" << endl;

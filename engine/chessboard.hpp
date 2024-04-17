@@ -28,8 +28,7 @@ class Chessboard {
         void move(U16 move);
 
     public:
-        // init
-        Chessboard(const std::string& fen);
+        Chessboard(const std::string& fen); // init
 
         // methods for the python module
 

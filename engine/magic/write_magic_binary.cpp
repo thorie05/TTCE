@@ -3,7 +3,56 @@ using namespace std;
 
 typedef unsigned long long U64;
 
+
+void writeToBinary(std::string filename, std::array<U64, 64> magicNumbers,
+    std::array<int, 64> shifts, std::array<U64, 64> masks,
+    std::array<int, 64> lookupIndex, std::vector<U64> lookup) {
+
+    std::ofstream file(filename, std::ios::binary);
+
+    // write magic numbers
+    for (const auto& value : magicNumbers) {
+        file.write(reinterpret_cast<const char*>(&value), sizeof(U64));
+    }
+
+    // write shifts
+    for (const auto& value : shifts) {
+        file.write(reinterpret_cast<const char*>(&value), sizeof(int));
+    }
+
+    // write masks
+    for (const auto& value : masks) {
+        file.write(reinterpret_cast<const char*>(&value), sizeof(U64));
+    }
+
+    // write lookup index array
+    for (const auto& value : lookupIndex) {
+        file.write(reinterpret_cast<const char*>(&value), sizeof(int));
+    }
+
+    // write lookup array
+    for (const auto& value : lookup) {
+        file.write(reinterpret_cast<const char*>(&value), sizeof(U64));
+    }
+
+    file.close();
+}
+
+
 int main() {
+
+    // read masks
+    ifstream finMasks("masks.txt");
+
+    array<U64, 64> bishopMasks;
+    array<U64, 64> rookMasks;
+    for (int i = 0; i < 64; i++) {
+        finMasks >> bishopMasks[i];
+    }
+    for (int i = 0; i < 64; i++) {
+        finMasks >> rookMasks[i];
+    }
+
     // read key value pairs
 
     ifstream finBishops("key_value_pairs_bishops.txt");
@@ -42,14 +91,13 @@ int main() {
     }
 
     // read magic numbers and shifts
-
     ifstream finMagicBishops("magic_numbers_bishops.txt");
     ifstream finMagicRooks("magic_numbers_rooks.txt");
 
     array<U64, 64> magicNumbersBishops;
-    array<U64, 64> shiftsBishops;
+    array<int, 64> shiftsBishops;
     array<U64, 64> magicNumbersRooks;
-    array<U64, 64> shiftsRooks;
+    array<int, 64> shiftsRooks;
 
     // read bishops
     for (int i = 0; i < 64; i++) {
@@ -67,6 +115,7 @@ int main() {
         finMagicRooks >> shiftsRooks[i];
     }
 
+    // calculate total size of bishop lookup array
     int bishopLookupSize = 0;
     array<int, 64> bishopLookupIndex;
     for (int i = 0; i < 64; i++) {
@@ -74,6 +123,7 @@ int main() {
         bishopLookupSize += 1 << (64 - shiftsBishops[i]);
     }
 
+    // calculate total size of rook lookup array
     int rookLookupSize = 0;
     array<int, 64> rookLookupIndex;
     for (int i = 0; i < 64; i++) {
@@ -82,46 +132,43 @@ int main() {
     }
 
     // make lookup arrays
-    array<vector<U64>, 64> bishopLookup;
-    array<vector<U64>, 64> rookLookup;
+    vector<U64> bishopLookup(bishopLookupSize);
+    vector<U64> rookLookup(rookLookupSize);
 
+    int currentIndexBishops = 0;
+    int currentIndexRooks = 0;
     for (int i = 0; i < 64; i++) {
-        bishopLookup[i].resize(1 << (64 - shiftsBishops[i]));
-        rookLookup[i].resize(1 << (64 - shiftsRooks[i]));
-
         for (int j = 0; j < bishopKeys[i].size(); j++) {
-            U64 newIndex = (bishopKeys[i][j] * magicNumbersBishops[i]) >> shiftsBishops[i];
-            bishopLookup[i][newIndex] = bishopValues[i][j];
+            U64 newIndex = (bishopKeys[i][j] * magicNumbersBishops[i])
+                >> shiftsBishops[i];
+            bishopLookup[currentIndexBishops + newIndex] = bishopValues[i][j];
+            currentIndexBishops++;
         }
 
         for (int j = 0; j < rookKeys[i].size(); j++) {
-            U64 newIndex = (rookKeys[i][j] * magicNumbersRooks[i]) >> shiftsRooks[i];
-            rookLookup[i][newIndex] = rookValues[i][j];
+            U64 newIndex = (rookKeys[i][j] * magicNumbersRooks[i])
+                >> shiftsRooks[i];
+            rookLookup[currentIndexRooks + newIndex] = rookValues[i][j];
+            currentIndexRooks++;
         }
     }
 
-    cout << "bishop lookup" << endl;
-    for (int i = 0; i < 64; i++) {
-        cout << i << ": ";
-        cout << 64 - shiftsBishops[i] << " / " << log2(bishopKeys[i].size()) << endl;
-        for (int j = 0; j < bishopLookup[i].size(); j++) {
-            if (bishopLookup[i][j]) cout << 1;
-            else cout << 0;
-        }
-        cout << endl;
-    }
-    cout << endl;
+    cout << "size of lookup array bishops: " << bishopLookupSize << endl;
+    cout << "size of lookup array rooks: " << rookLookupSize << endl;
 
-    cout << "rook lookup" << endl;
-    for (int i = 0; i < 64; i++) {
-        cout << i << ": ";
-        cout << 64 - shiftsRooks[i] << " / " << log2(rookKeys[i].size()) << endl;
-        for (int j = 0; j < rookLookup[i].size(); j++) {
-            if (rookLookup[i][j]) cout << 1;
-            else cout << 0;
-        }
-        cout << endl;
-    }
+    // relevant information
+    // magic numbers 64
+    // shifts 64
+    // masks 64
+    // lookup index for squares 64
+    // lookup array
+
+    // lookup array size -> needs to be hardcoded
+
+    writeToBinary("bishop_magic.dat", magicNumbersBishops, shiftsBishops, 
+        bishopMasks, bishopLookupIndex, bishopLookup);
+    writeToBinary("rook_magic.dat", magicNumbersRooks, shiftsRooks, 
+        rookMasks, rookLookupIndex, rookLookup);
 
     return 0;
 }

@@ -1,4 +1,5 @@
 #include "chessboard.hpp"
+#include "constants.hpp"
 #include <string>
 #include <tuple>
 #include <pybind11/pybind11.h>
@@ -13,10 +14,10 @@ PYBIND11_MODULE(ttce, handle) {
         .def(py::init<const std::string&>(),
             py::arg("fen") = DEFAULT_FEN)
 
-        .def("get_status", &Chessboard::getStatus)
+        .def("get_board_info", &Chessboard::getBoardInfoPy)
 
-        .def("push_move", py::overload_cast<std::tuple<int,int>, 
-            std::tuple<int,int>, char>(&Chessboard::pushMove), 
+        .def("move", py::overload_cast<std::tuple<int,int>, 
+            std::tuple<int,int>, char>(&Chessboard::movePy), 
             py::arg("start_square"), py::arg("end_square"), 
             py::arg("promotion_piece") = 'q')
 

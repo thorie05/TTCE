@@ -1,10 +1,11 @@
 #include "chessboard.hpp"
+#include "constants.hpp"
 #include <tuple>
 #include <vector>
 #include <iostream>
 
 std::tuple<std::vector<std::vector<char>>, char, bool, bool, bool, bool, 
-    std::tuple<int,int>, int, int> Chessboard::getStatus() {
+    std::tuple<int,int>, int, int> Chessboard::getBoardInfoPy() {
     // returns the current state of the board
 
     std::vector<std::vector<char>> returnBoard(8, std::vector<char>(8, ' '));

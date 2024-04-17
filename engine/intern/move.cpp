@@ -1,9 +1,10 @@
 #include "chessboard.hpp"
+#include "constants.hpp"
 #include <array>
 #include <iostream>
 #include <tuple>
 
-void Chessboard::pushMove(U16 move) {
+void Chessboard::move(U16 move) {
     // moves a piece on the board
 
     // apply move bitmask
@@ -34,28 +35,4 @@ void Chessboard::pushMove(U16 move) {
         | board.bitboards[11];
 
     board.bitboards[14] = board.bitboards[12] | board.bitboards[13];
-}
-
-void Chessboard::pushMove(std::tuple<int,int> startSquare, 
-    std::tuple<int,int> endSquare, char promotion = 'q') {
-    // moves a piece on the board
-
-    // translate move tuple to U16
-    U16 move = 0;
-    move |= (std::get<1>(startSquare) * 8 + std::get<0>(startSquare));
-    move |= ((std::get<1>(endSquare) * 8 + std::get<0>(endSquare))<<6);
-    switch (promotion) {
-        // queen is 0
-        case 'r':
-            move |= 4096; // 1 shifted 12 bits
-            break;
-        case 'b':
-            move |= 8192; // 2 shifted 12 bits
-            break;
-        case 'n':
-            move |= 12288; // 3 shifted 12 bits
-            break;
-    }
-
-    Chessboard::pushMove(move);
 }

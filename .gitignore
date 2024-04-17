@@ -6,3 +6,6 @@ generate_keys_values
 key_value_pairs_bishops.txt
 key_value_pairs_rooks.txt
 generate_magic_numbers
+magic_numbers_bishops.txt
+magic_numbers_rooks.txt
+write_magic_binary

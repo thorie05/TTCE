@@ -1,34 +1,15 @@
 #include "chessboard.hpp"
+#include "constants.hpp"
 #include <string>
 #include <sstream>
-#include <fstream>
-#include <iostream>
 #include <array>
-#include <unordered_map>
+
 
 Chessboard::Chessboard(const std::string& fen): inputFen(fen) {
     // initializes the board using the given fen string
 
     for (int i = 0; i < 64; i++) {
         board.mailbox[i] = EMPTY_SQUARE;
-    }
-
-    // load magic bitboards for rooks
-    magicsRook.resize(64);
-    for (int i = 0; i < 64; i++) {
-        magicsRook[i].resize(1 << rookShifts[i]);
-    }
-
-    std::ifstream fin("engine/magics_rook.txt");
-    int n;
-    fin >> n;
-    for (int i = 0; i < n; i++) {
-        int j;
-        U64 key, value;
-        fin >> j >> key >> value;
-        key *= rookMagics[j];
-        key >>= (64 - rookShifts[j]);
-        magicsRook[j][key] = value;
     }
 
     // split fen by spaces

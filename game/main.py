@@ -1,3 +1,6 @@
+import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide" # hide pygame welcome message
+
 import ttce
 import pygame
 from draw import draw
@@ -29,7 +32,7 @@ def main():
     # main loop
     while True:
         # get board status
-        board_status = chessboard.get_status()
+        board_status = chessboard.get_board_info()
         board = board_status[0]
 
         event = events(perspective)
@@ -51,7 +54,7 @@ def main():
 
                     # if clicked on enemy piece or empty square push move
                     if active_piece_color != new_piece_color: 
-                        chessboard.push_move(active_square, clicked_pos)
+                        chessboard.move(active_square, clicked_pos)
                         active_square = None
 
                     # if clicked on friendly piece

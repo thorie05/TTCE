@@ -168,8 +168,8 @@ int main() {
         cntRooks += rookKeys[i].size();
     }
 
-    // write key value pairs for rooks into a file
-    std::ofstream foutBishops("key_value_pairs_bishops.txt");
+    // write key value pairs for bishops into a file
+    ofstream foutBishops("key_value_pairs_bishops.txt");
     foutBishops << cntBishops << endl;
     for (int i = 0; i < 64; i++) {
         for (int j = 0; j < bishopKeys[i].size(); j++) {
@@ -179,8 +179,8 @@ int main() {
     }
     foutBishops.close();
 
-    std::ofstream foutRooks("key_value_pairs_rooks.txt");
     // write key value pairs for rooks into a file
+    ofstream foutRooks("key_value_pairs_rooks.txt");
     foutRooks << cntRooks << endl;
     for (int i = 0; i < 64; i++) {
         for (int j = 0; j < rookKeys[i].size(); j++) {

@@ -33,8 +33,8 @@ class Chessboard:
         """
         ...
 
-    def get_status() -> Tuple[List[str], str, bool, bool, bool, bool, int, int, 
-        int]:
+    def get_board_info() -> Tuple[List[str], str, bool, bool, bool, bool, int,
+        int, int]:
         """
         Returns the current board state, like the pieces or castling rights.
 
@@ -48,7 +48,7 @@ class Chessboard:
         """
         ...
 
-    def push_move(start_square: Tuple[int, int], end_square: Tuple[int, int], 
+    def move(start_square: Tuple[int, int], end_square: Tuple[int, int], 
         promotion_piece: Optional[str]) -> None:
         """
         Moves a piece on the board from start_square to end_square.

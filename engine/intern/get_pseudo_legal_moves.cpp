@@ -23,6 +23,8 @@ std::vector<U16> Chessboard::getPseudoLegalMoves() {
                         }
                     }
                     break;
+                case WHITE_BISHOP:
+                    break;
             }
         }
     }

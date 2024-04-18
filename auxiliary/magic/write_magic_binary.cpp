@@ -135,21 +135,18 @@ int main() {
     vector<U64> bishopLookup(bishopLookupSize);
     vector<U64> rookLookup(rookLookupSize);
 
-    int currentIndexBishops = 0;
-    int currentIndexRooks = 0;
     for (int i = 0; i < 64; i++) {
         for (int j = 0; j < bishopKeys[i].size(); j++) {
             U64 newIndex = (bishopKeys[i][j] * magicNumbersBishops[i])
                 >> shiftsBishops[i];
-            bishopLookup[currentIndexBishops + newIndex] = bishopValues[i][j];
-            currentIndexBishops++;
+            bishopLookup[bishopLookupIndex[i] + newIndex] = bishopValues[i][j];
         }
 
         for (int j = 0; j < rookKeys[i].size(); j++) {
             U64 newIndex = (rookKeys[i][j] * magicNumbersRooks[i])
                 >> shiftsRooks[i];
-            rookLookup[currentIndexRooks + newIndex] = rookValues[i][j];
-            currentIndexRooks++;
+            rookLookup[rookLookupIndex[i] + newIndex] = rookValues[i][j];
+            std::cout << rookLookupIndex[i] + newIndex << std::endl;
         }
     }
 
@@ -165,10 +162,9 @@ int main() {
 
     // lookup array size -> needs to be hardcoded
 
-    writeToBinary("../../engine/data/magic/bishop_magic.dat", magicNumbersBishops, shiftsBishops, 
-        bishopMasks, bishopLookupIndex, bishopLookup);
-    writeToBinary("../../engine/data/magic/rook_magic.dat", magicNumbersRooks, shiftsRooks, 
-        rookMasks, rookLookupIndex, rookLookup);
+    writeToBinary("../../engine/data/bishop_magic.dat", 
+        magicNumbersBishops, shiftsBishops, bishopMasks, bishopLookupIndex, bishopLookup);
+    writeToBinary("../../engine/data/rook_magic.dat", magicNumbersRooks, shiftsRooks, rookMasks, rookLookupIndex, rookLookup);
 
     return 0;
 }

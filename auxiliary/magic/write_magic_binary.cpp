@@ -165,9 +165,9 @@ int main() {
 
     // lookup array size -> needs to be hardcoded
 
-    writeToBinary("bishop_magic.dat", magicNumbersBishops, shiftsBishops, 
+    writeToBinary("../../engine/data/magic/bishop_magic.dat", magicNumbersBishops, shiftsBishops, 
         bishopMasks, bishopLookupIndex, bishopLookup);
-    writeToBinary("rook_magic.dat", magicNumbersRooks, shiftsRooks, 
+    writeToBinary("../../engine/data/magic/rook_magic.dat", magicNumbersRooks, shiftsRooks, 
         rookMasks, rookLookupIndex, rookLookup);
 
     return 0;

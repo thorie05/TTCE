@@ -39,7 +39,7 @@ void findMagics(int n, const array<vector<U64>, 64>& keys,
             int shift;
 
             // try ignoring more and more bits until threre is a collision
-            for (int k = 0; k < 64; k++) {
+            for (int k = 50; k < 64; k++) {
                 unordered_map<U64, U64> remapped;
                 bool uniqueIndices = true;
 
@@ -113,7 +113,7 @@ int main() {
         rookValues[ind].push_back(value);
     }
 
-    int numberOfMagicTrys = 100;
+    int numberOfMagicTrys = 100000;
 
     // find magic numbers and shifts for bishops
     cout << "bishops: " << endl;

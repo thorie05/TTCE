@@ -69,9 +69,35 @@ struct MagicInfo {
             64 * sizeof(int));
         // lookup
         rookFile.read(reinterpret_cast<char*>(rookLookup.data()), 
-            MAGIC_BISHOP_LOOKUP_SIZE * sizeof(U64));
+            MAGIC_ROOK_LOOKUP_SIZE * sizeof(U64));
 
         rookFile.close();
+
+        for (int i = 0; i < MAGIC_ROOK_LOOKUP_SIZE; i++) {
+            std::cout << i << " " << rookLookup[i] << std::endl;
+        }
+
+
+        std::cout << "magic numbers:" << std::endl;
+        for (int i = 0; i < 64; i++) {
+            std::cout << rookMagicNumbers[i] << " ";
+        }
+        std::cout << std::endl;
+        std::cout << "shifts:" << std::endl;
+        for (int i = 0; i < 64; i++) {
+            std::cout << rookShifts[i] << " ";
+        }
+        std::cout << std::endl;
+        std::cout << "masks:" << std::endl;
+        for (int i = 0; i < 64; i++) {
+            std::cout << rookMasks[i] << " ";
+        }
+        std::cout << std::endl;
+        std::cout << "lookup index:" << std::endl;
+        for (int i = 0; i < 64; i++) {
+            std::cout << rookLookupIndex[i] << " ";
+        }
+        std::cout << std::endl;
     }
 };
 

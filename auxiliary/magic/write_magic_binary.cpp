@@ -146,7 +146,6 @@ int main() {
             U64 newIndex = (rookKeys[i][j] * magicNumbersRooks[i])
                 >> shiftsRooks[i];
             rookLookup[rookLookupIndex[i] + newIndex] = rookValues[i][j];
-            std::cout << rookLookupIndex[i] + newIndex << std::endl;
         }
     }
 

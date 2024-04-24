@@ -27,6 +27,7 @@ struct MagicInfo {
 
     MagicInfo() {
         // read bishops
+
         std::ifstream bishopFile("engine/data/bishop_magic.dat", 
             std::ios::binary);
         if (!bishopFile.is_open()) {
@@ -59,6 +60,7 @@ struct MagicInfo {
         bishopFile.close();
 
         // read rooks
+
         std::ifstream rookFile("engine/data/rook_magic.dat", std::ios::binary);
         if (!rookFile.is_open()) {
             std::cerr << "Error opening rook_magic.dat for reading.\n";

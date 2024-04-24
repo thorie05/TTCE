@@ -18,60 +18,55 @@ U64 randomFewNonzeroBits() {
 }
 
 
-void findMagics(int n, const array<vector<U64>, 64>& keys,
-    const array<vector<U64>, 64>& values, array<U64, 64>& magicNumbers,
-    array<int, 64>& shifts) {
+pair<U64, U64> findMagics(int n, int square, const array<vector<U64>, 64>& keys,
+    const array<vector<U64>, 64>& values) {
     /*
-    finds magic numbers for the given keys and values
+    finds a magic number for the given square and the given keys and values
     */
 
-   // loop over every square
-    for (int i = 0; i < 64; i++) {
-        cout << 100 * i / 64.0 << "%" << endl;
+    int startingShift = 50;
+    int bestShift = 0;
+    U64 bestMagicNumber = 0;
 
-        int bestShift = 0;
-        U64 bestMagicNumber;
+    // try n magic numbers and store the best result
+    for (int i = 0; i < n; i++) {
+        U64 magicNumber = randomFewNonzeroBits(); // random number
 
-        // try n magic numbers and store the best
-        for (int j = 0; j < n; j++) {
+        int shift = startingShift;
+        // increment the starting shift until the remapping is no longer valid
+        while (true) {
+            unordered_map<U64, U64> remapped;
+            bool ok = true;
 
-            U64 magicNumber = randomFewNonzeroBits();
-            int shift;
+            // apply magic number and check if it creates a valid remapping
+            for (int j = 0; j < keys[square].size(); j++) { 
 
-            // try ignoring more and more bits until threre is a collision
-            for (int k = 50; k < 64; k++) {
-                unordered_map<U64, U64> remapped;
-                bool uniqueIndices = true;
+                U64 oldIndex = keys[square][j];
+                U64 newIndex = (oldIndex * magicNumber) >> shift;
 
-                // apply magic number and check if it creates a valid remapping
-                for (int l = 0; l < keys[i].size(); l++) { 
-
-                    U64 oldIndex = keys[i][l];
-                    U64 newIndex = (oldIndex * magicNumber) >> k;
-
-                    if (remapped.find(newIndex) != remapped.end()) {
-                        // allow constructive collisions
-                        if (remapped[newIndex] != values[i][l]) {
-                            uniqueIndices = false;
-                            break;
-                        }
+                if (remapped.find(newIndex) != remapped.end()) {
+                    // allow constructive collisions
+                    if (remapped[newIndex] != values[square][j]) {
+                        ok = false;
+                        break;
                     }
-                    remapped[newIndex] = values[i][l];
                 }
-                if (!uniqueIndices) {
-                    shift = k - 1; // best valid shift with the given number
-                    break;
-                }
+                remapped[newIndex] = values[square][j];
             }
 
-            if (shift > bestShift) { // store best shift and magic number
-                bestShift = shift;
-                bestMagicNumber = magicNumber;
+            if (!ok) {
+                if (shift > startingShift && shift - 1 > bestShift) {
+                    bestShift = shift - 1;
+                    bestMagicNumber = magicNumber;
+                }
+                break;
             }
+
+            shift++;
         }
-        magicNumbers[i] = bestMagicNumber;
-        shifts[i] = bestShift;
     }
+
+    return make_pair(bestShift, bestMagicNumber);
 }
 
 
@@ -113,14 +108,19 @@ int main() {
         rookValues[ind].push_back(value);
     }
 
-    int numberOfMagicTrys = 100000;
+    int numberOfTrys = 100000;
 
     // find magic numbers and shifts for bishops
     cout << "bishops: " << endl;
     array<U64, 64> magicNumbersBishops;
     array<int, 64> shiftsBishops;
-    findMagics(numberOfMagicTrys, bishopKeys, bishopValues, magicNumbersBishops, 
-        shiftsBishops);
+    for (int i = 0; i < 64; i++) {
+        cout << i << endl;
+        pair<U64, U64> magicResult = findMagics(numberOfTrys, i, bishopKeys,
+            bishopValues);
+        shiftsBishops[i] = magicResult.first;
+        magicNumbersBishops[i] = magicResult.second;
+    }
 
     // write to file
     ofstream foutBishops("magic_numbers_bishops.txt");
@@ -137,8 +137,13 @@ int main() {
     cout << "rooks:" << endl;
     array<U64, 64> magicNumbersRooks;
     array<int, 64> shiftsRooks;
-    findMagics(numberOfMagicTrys, rookKeys, rookValues, magicNumbersRooks, 
-        shiftsRooks);
+    for (int i = 0; i < 64; i++) {
+        cout << i << endl;
+        pair<U64, U64> magicResult = findMagics(numberOfTrys, i, rookKeys,
+            rookValues);
+        shiftsRooks[i] = magicResult.first;
+        magicNumbersRooks[i] = magicResult.second;
+    }
 
     // write to file
     ofstream foutRooks("magic_numbers_rooks.txt");

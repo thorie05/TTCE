@@ -30,6 +30,10 @@ void writeToBinary(std::string filename, std::array<U64, 64> magicNumbers,
         file.write(reinterpret_cast<const char*>(&value), sizeof(int));
     }
 
+    // write lookup size
+    size_t lookupSize = lookup.size();
+    file.write(reinterpret_cast<const char*>(&lookupSize), sizeof(size_t));
+
     // write lookup array
     for (const auto& value : lookup) {
         file.write(reinterpret_cast<const char*>(&value), sizeof(U64));
@@ -160,6 +164,21 @@ int main() {
     // lookup array
 
     // lookup array size -> needs to be hardcoded
+
+    int ind = 27;
+    int arrsize = bishopLookupIndex[ind + 1] - bishopLookupIndex[ind];
+    vector<int> test(arrsize);
+    for (int i = 0; i < bishopKeys[ind].size(); i++) {
+        U64 newIndex = (bishopKeys[ind][i] * magicNumbersBishops[ind])
+            >> shiftsBishops[ind];
+        cout << i << " " << newIndex << endl;
+        test[newIndex]++;
+    }
+    for (int i = 0; i < arrsize; i++) {
+        cout << test[i];
+    }
+    cout << endl;
+    cout << 0 << " -> " << bishopLookup[bishopLookupIndex[ind] + 0] << endl;
 
     writeToBinary("../../engine/data/bishop_magic.dat", 
         magicNumbersBishops, shiftsBishops, bishopMasks, bishopLookupIndex, bishopLookup);

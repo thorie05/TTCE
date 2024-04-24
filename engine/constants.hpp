@@ -27,7 +27,4 @@ constexpr int PIECES = 14;
 
 constexpr int EMPTY_SQUARE = 15;
 
-constexpr int MAGIC_BISHOP_LOOKUP_SIZE = 5760;
-constexpr int MAGIC_ROOK_LOOKUP_SIZE = 113664;
-
 #endif

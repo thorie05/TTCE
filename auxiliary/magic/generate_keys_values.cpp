@@ -195,11 +195,11 @@ int main() {
     // write post masks to file
     ofstream foutMasks("masks.txt");
     for (int i = 0; i < 64; i++) {
-        foutMasks << bishopPostMasks[i] << " ";
+        foutMasks << bishopPreMasks[i] << " ";
     }
     foutMasks << endl;
     for (int i = 0; i < 64; i++) {
-        foutMasks << rookPostMasks[i] << " ";
+        foutMasks << rookPreMasks[i] << " ";
     }
 
     return 0;

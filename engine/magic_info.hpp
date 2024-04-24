@@ -3,10 +3,12 @@
 
 #include "constants.hpp"
 #include <array>
+#include <vector>
 #include <iostream>
 #include <fstream>
 
 typedef unsigned long long U64;
+
 
 struct MagicInfo {
     // bishops
@@ -14,26 +16,26 @@ struct MagicInfo {
     std::array<int, 64> bishopShifts;
     std::array<U64, 64> bishopMasks;
     std::array<int, 64> bishopLookupIndex;
-    std::array<U64, MAGIC_BISHOP_LOOKUP_SIZE> bishopLookup;
+    std::vector<U64> bishopLookup;
 
     // rooks
     std::array<U64, 64> rookMagicNumbers;
     std::array<int, 64> rookShifts;
     std::array<U64, 64> rookMasks;
     std::array<int, 64> rookLookupIndex;
-    std::array<U64, MAGIC_ROOK_LOOKUP_SIZE> rookLookup;
+    std::vector<U64> rookLookup;
 
     MagicInfo() {
-        // read bishop info
+        // read bishops
         std::ifstream bishopFile("engine/data/bishop_magic.dat", 
             std::ios::binary);
         if (!bishopFile.is_open()) {
-            std::cerr << "Error opening bishop_magic.dat for reading\n";
+            std::cerr << "Error opening bishop_magic.dat for reading.\n";
         }
 
         // magic numbers
         bishopFile.read(reinterpret_cast<char*>(bishopMagicNumbers.data()), 
-            64 *sizeof(U64));
+            64 * sizeof(U64));
         // shifts
         bishopFile.read(reinterpret_cast<char*>(bishopShifts.data()), 
             64 * sizeof(int));
@@ -43,16 +45,23 @@ struct MagicInfo {
         // lookup index
         bishopFile.read(reinterpret_cast<char*>(bishopLookupIndex.data()), 
             64 * sizeof(int));
-        // lookup
+
+        // read lookup size
+        size_t bishopLookupSize;
+        bishopFile.read(reinterpret_cast<char*>(&bishopLookupSize),
+            sizeof(size_t));
+        bishopLookup.resize(bishopLookupSize);
+
+        // read lookup vector
         bishopFile.read(reinterpret_cast<char*>(bishopLookup.data()), 
-            MAGIC_BISHOP_LOOKUP_SIZE * sizeof(U64));
+            bishopLookupSize * sizeof(U64));
 
         bishopFile.close();
 
-        // read rook info
+        // read rooks
         std::ifstream rookFile("engine/data/rook_magic.dat", std::ios::binary);
         if (!rookFile.is_open()) {
-            std::cerr << "Error opening rook_magic.dat for reading\n";
+            std::cerr << "Error opening rook_magic.dat for reading.\n";
         }
 
         // magic numbers
@@ -67,37 +76,17 @@ struct MagicInfo {
         // lookup index
         rookFile.read(reinterpret_cast<char*>(rookLookupIndex.data()), 
             64 * sizeof(int));
-        // lookup
+
+        // read lookup size
+        size_t rookLookupSize;
+        rookFile.read(reinterpret_cast<char*>(&rookLookupSize), sizeof(size_t));
+        rookLookup.resize(rookLookupSize);
+
+        // read lookup vector
         rookFile.read(reinterpret_cast<char*>(rookLookup.data()), 
-            MAGIC_ROOK_LOOKUP_SIZE * sizeof(U64));
+            rookLookupSize * sizeof(U64));
 
         rookFile.close();
-
-        for (int i = 0; i < MAGIC_ROOK_LOOKUP_SIZE; i++) {
-            std::cout << i << " " << rookLookup[i] << std::endl;
-        }
-
-
-        std::cout << "magic numbers:" << std::endl;
-        for (int i = 0; i < 64; i++) {
-            std::cout << rookMagicNumbers[i] << " ";
-        }
-        std::cout << std::endl;
-        std::cout << "shifts:" << std::endl;
-        for (int i = 0; i < 64; i++) {
-            std::cout << rookShifts[i] << " ";
-        }
-        std::cout << std::endl;
-        std::cout << "masks:" << std::endl;
-        for (int i = 0; i < 64; i++) {
-            std::cout << rookMasks[i] << " ";
-        }
-        std::cout << std::endl;
-        std::cout << "lookup index:" << std::endl;
-        for (int i = 0; i < 64; i++) {
-            std::cout << rookLookupIndex[i] << " ";
-        }
-        std::cout << std::endl;
     }
 };
 

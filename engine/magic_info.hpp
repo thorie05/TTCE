@@ -34,12 +34,12 @@ struct MagicInfo {
             std::cerr << "Error opening bishop_magic.dat for reading.\n";
         }
 
-        // magic numbers
-        bishopFile.read(reinterpret_cast<char*>(bishopMagicNumbers.data()), 
-            64 * sizeof(U64));
         // shifts
         bishopFile.read(reinterpret_cast<char*>(bishopShifts.data()), 
             64 * sizeof(int));
+        // magic numbers
+        bishopFile.read(reinterpret_cast<char*>(bishopMagicNumbers.data()), 
+            64 * sizeof(U64));
         // masks
         bishopFile.read(reinterpret_cast<char*>(bishopMasks.data()), 
             64 * sizeof(U64));
@@ -66,12 +66,12 @@ struct MagicInfo {
             std::cerr << "Error opening rook_magic.dat for reading.\n";
         }
 
-        // magic numbers
-        rookFile.read(reinterpret_cast<char*>(rookMagicNumbers.data()), 
-            64 * sizeof(U64));
         // shifts
         rookFile.read(reinterpret_cast<char*>(rookShifts.data()), 
             64 * sizeof(int));
+        // magic numbers
+        rookFile.read(reinterpret_cast<char*>(rookMagicNumbers.data()), 
+            64 * sizeof(U64));
         // masks
         rookFile.read(reinterpret_cast<char*>(rookMasks.data()), 
             64 * sizeof(U64));

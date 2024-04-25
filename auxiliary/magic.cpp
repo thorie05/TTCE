@@ -1,6 +1,7 @@
 #include "bits/stdc++.h"
 #include "generate_keys_values.hpp"
 #include "generate_magic_numbers.hpp"
+#include "construct_lookup_arrays.hpp"
 #include "write_magic.hpp"
 using namespace std;
 
@@ -49,7 +50,7 @@ int main() {
     int numberOfTrys = 10000;
 
     for (int sq = 0; sq < 64; sq++) {
-        cout << sq << " / 64" << endl;
+        cout << sq + 1 << " / 64" << endl;
         // bishops
         pair<U64, U64> bishopMagic = findMagicNumber(numberOfTrys,
             bishopLookupTable[sq]);
@@ -63,43 +64,18 @@ int main() {
         rookMagicNumbers[sq] = rookMagic.second;
     }
 
-    // calculate total size of the lookup arrays and the lookup indices for 
-    // each squares
-
-    int bishopLookupSize = 0;
-    int rookLookupSize = 0;
     array<int, 64> bishopLookupIndex;
     array<int, 64> rookLookupIndex;
-    for (int i = 0; i < 64; i++) {
-        bishopLookupIndex[i] = bishopLookupSize;
-        bishopLookupSize += 1 << (64 - bishopShifts[i]);
-        rookLookupIndex[i] = rookLookupSize;
-        rookLookupSize += 1 << (64 - rookShifts[i]);
-    }
 
-    // construct lookup arrays
+    vector<U64> bishopLookupArray;
+    vector<U64> rookLookupArray;
 
-    vector<U64> bishopLookupArray(bishopLookupSize);
-    vector<U64> rookLookupArray(rookLookupSize);
+    constructLookupArrays(bishopLookupTable, rookLookupTable, bishopShifts,
+        bishopMagicNumbers, rookShifts, rookMagicNumbers, bishopLookupIndex,
+        bishopLookupArray, rookLookupIndex, rookLookupArray);
 
-    for (int sq = 0; sq < 64; sq++) {
-        // bishops
-        for (auto& it: bishopLookupTable[sq]) {
-            U64 oldKey = it.first;
-            U64 newKey = (oldKey * bishopMagicNumbers[sq]) >> bishopShifts[sq];
-            bishopLookupArray[bishopLookupIndex[sq] + newKey] = it.second;
-        }
-
-        // rooks
-        for (auto& it: rookLookupTable[sq]) {
-            U64 oldKey = it.first;
-            U64 newKey = (oldKey * rookMagicNumbers[sq]) >> rookShifts[sq];
-            rookLookupArray[rookLookupIndex[sq] + newKey] = it.second;
-        }
-    }
-
-    cout << "size of bishop lookup array: " << bishopLookupSize << endl;
-    cout << "size of rook lookup array: " << rookLookupSize << endl;
+    cout << "size of bishop lookup array: " << bishopLookupArray.size() << endl;
+    cout << "size of rook lookup array: " << rookLookupArray.size() << endl;
 
     writeMagic("../engine/data/bishop_magic.dat", bishopMagicNumbers,
         bishopShifts, bishopMasks, bishopLookupIndex, bishopLookupArray);

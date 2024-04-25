@@ -26,6 +26,7 @@ pair<U64, U64> findMagicNumber(int numberOfTrys,
 
     int minShift = 50;
 
+    int rightmostIndex = INT_MAX;
     int bestShift = 0;
     U64 bestMagicNumber = 0;
 
@@ -34,6 +35,8 @@ pair<U64, U64> findMagicNumber(int numberOfTrys,
         U64 magicNumber = randomFewNonzeroBits();
 
         int shift = minShift;
+        int lastRight = 0;
+        U64 right = 0;
         // increment the starting shift until the remapping is no longer valid
         while (true) {
             unordered_map<U64, U64> remapped;
@@ -52,18 +55,24 @@ pair<U64, U64> findMagicNumber(int numberOfTrys,
                     }
                 }
                 remapped[newKey] = it.second;
+                right = max(right, newKey); // note the rightmost remapped index
             }
 
             if (!ok) {
                 // if magic number worked with min shift and better than best
-                // shift make it new best magic number
-                if (shift > minShift && shift - 1 > bestShift) {
+                // shift make it new best magic number - favor magic numbers
+                // where rightmost remapped index is as small as possible
+                if (shift > minShift && ((shift - 1 > bestShift) ||
+                    (shift - 1 == bestShift && lastRight < rightmostIndex))) {
                     bestShift = shift - 1;
                     bestMagicNumber = magicNumber;
+                    rightmostIndex = lastRight;
                 }
                 break;
             }
 
+            lastRight = right;
+            right = 0;
             shift++;
         }
     }

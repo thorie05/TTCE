@@ -19,14 +19,14 @@ void writeMagic(std::string filename, std::array<U64, 64> magicNumbers,
 
     std::ofstream file(filename, std::ios::binary);
 
-    // write magic numbers
-    for (const auto& value : magicNumbers) {
-        file.write(reinterpret_cast<const char*>(&value), sizeof(U64));
-    }
-
     // write shifts
     for (const auto& value : shifts) {
         file.write(reinterpret_cast<const char*>(&value), sizeof(int));
+    }
+
+    // write magic numbers
+    for (const auto& value : magicNumbers) {
+        file.write(reinterpret_cast<const char*>(&value), sizeof(U64));
     }
 
     // write masks

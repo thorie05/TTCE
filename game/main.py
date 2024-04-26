@@ -79,7 +79,7 @@ def main():
         # calculate legal moves for active square for visualisation
         legal_active_square_moves = []
         if active_square:
-            legal_moves = chessboard.get_pseudo_legal_moves()
+            legal_moves = chessboard.get_legal_moves()
             legal_active_square_moves = [move[1] for move in legal_moves \
                 if move[0] == active_square]
 

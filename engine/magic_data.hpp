@@ -10,7 +10,7 @@
 typedef unsigned long long U64;
 
 
-struct MagicInfo {
+struct MagicData {
     // bishops
     std::array<U64, 64> bishopMagicNumbers;
     std::array<int, 64> bishopShifts;
@@ -25,7 +25,7 @@ struct MagicInfo {
     std::array<int, 64> rookLookupIndex;
     std::vector<U64> rookLookup;
 
-    MagicInfo() {
+    MagicData() {
         // read bishops
 
         std::ifstream bishopFile("engine/data/bishop_magic.dat", 

@@ -21,6 +21,6 @@ PYBIND11_MODULE(ttce, handle) {
             py::arg("start_square"), py::arg("end_square"), 
             py::arg("promotion_piece") = 'q')
 
-        .def("get_pseudo_legal_moves", &Chessboard::getPseudoLegalMovesPy)
+        .def("get_legal_moves", &Chessboard::getLegalMovesPy)
     ;
 }

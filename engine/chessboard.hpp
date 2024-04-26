@@ -2,7 +2,7 @@
 #define CHESSBOARD_HPP
 
 #include "position.hpp"
-#include "magic_info.hpp"
+#include "magic_data.hpp"
 #include <string>
 #include <stack>
 #include <tuple>
@@ -19,11 +19,11 @@ class Chessboard {
     private:
         std::string inputFen;
         Position board;
-        MagicInfo magic;
+        MagicData magic;
 
         // engine intern methods
 
-        std::vector<U16> getPseudoLegalMoves();
+        std::vector<U16> getLegalMoves();
 
         void move(U16 move);
 
@@ -33,7 +33,7 @@ class Chessboard {
         // methods for the python module
 
         std::vector<std::tuple<std::tuple<int, int>, std::tuple<int, int>, 
-            char>> getPseudoLegalMovesPy();
+            char>> getLegalMovesPy();
 
         std::tuple<std::vector<std::vector<char>>, char, bool, bool, bool, bool,
             std::tuple<int,int>, int, int> getBoardInfoPy();

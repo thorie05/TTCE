@@ -47,7 +47,7 @@ int main() {
     array<int, 64> rookShifts;
     array<U64, 64> rookMagicNumbers;
 
-    int numberOfTrys = 10000;
+    int numberOfTrys = 1000000;
 
     for (int sq = 0; sq < 64; sq++) {
         cout << sq + 1 << " / 64" << endl;
@@ -63,6 +63,8 @@ int main() {
         rookShifts[sq] = rookMagic.first;
         rookMagicNumbers[sq] = rookMagic.second;
     }
+
+    // construct lookup arrays
 
     array<int, 64> bishopLookupIndex;
     array<int, 64> rookLookupIndex;

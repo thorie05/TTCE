@@ -3,17 +3,17 @@
 #include <tuple>
 
 std::vector<std::tuple<std::tuple<int, int>, std::tuple<int, int>, char>> 
-    Chessboard::getPseudoLegalMovesPy() {
+    Chessboard::getLegalMovesPy() {
     // returns all pseudo legal moves
 
-    // generate pseudo legal moves in short move format
-    std::vector<U16> pseudoLegalMoves = getPseudoLegalMoves();
+    // generate legal moves in short move format
+    std::vector<U16> legalMoves = getLegalMoves();
     std::vector<std::tuple<std::tuple<int, int>, std::tuple<int, int>, char>> 
         returnMoves;
 
-    for (int i = 0; i < (int)pseudoLegalMoves.size(); i++) {
+    for (int i = 0; i < (int)legalMoves.size(); i++) {
         // read values from short move format
-        U16 move = pseudoLegalMoves[i];
+        U16 move = legalMoves[i];
         int start = move & 63;
         int end = (move & 4032) >> 6;
         int promotion = (move & 64512) >> 12;

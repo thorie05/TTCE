@@ -1,0 +1,3 @@
+https://peterellisjones.com/posts/generating-legal-chess-moves-efficiently/
+https://ameye.dev/notes/chess-engine/
+    helper functions constexpr

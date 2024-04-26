@@ -3,6 +3,7 @@
 
 #include "position.hpp"
 #include "magic_data.hpp"
+#include "board_info.hpp"
 #include <string>
 #include <stack>
 #include <tuple>
@@ -35,8 +36,7 @@ class Chessboard {
         std::vector<std::tuple<std::tuple<int, int>, std::tuple<int, int>, 
             char>> getLegalMovesPy();
 
-        std::tuple<std::vector<std::vector<char>>, char, bool, bool, bool, bool,
-            std::tuple<int,int>, int, int> getBoardInfoPy();
+        BoardInfo getBoardInfoPy();
 
         void movePy(std::tuple<int,int> startSquare, 
             std::tuple<int,int> endSquare, char promotion);

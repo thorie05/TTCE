@@ -32,8 +32,7 @@ def main():
     # main loop
     while True:
         # get board status
-        board_status = chessboard.get_board_info()
-        board = board_status[0]
+        board_info = chessboard.get_board_info()
 
         event = events(perspective)
         # if clicked
@@ -44,8 +43,9 @@ def main():
             if clicked_pos:
                 # if already active square
                 if active_square:
-                    active_piece = board[active_square[0]][active_square[1]]
-                    new_piece = board[clicked_pos[0]][clicked_pos[1]]
+                    active_piece = \
+                        board_info.board[active_square[0]][active_square[1]]
+                    new_piece = board_info.board[clicked_pos[0]][clicked_pos[1]]
 
                     active_piece_color = "w" if active_piece.isupper() else "b"
                     new_piece_color = "w" if new_piece.isupper() else "b"
@@ -67,7 +67,7 @@ def main():
                             active_square = None
 
                 # if no active square make new active square
-                elif board[clicked_pos[0]][clicked_pos[1]] != " ":
+                elif board_info.board[clicked_pos[0]][clicked_pos[1]] != " ":
                     active_square = clicked_pos
             else: # if clicked outside of the board remove active square
                 active_square = None
@@ -83,7 +83,8 @@ def main():
             legal_active_square_moves = [move[1] for move in legal_moves \
                 if move[0] == active_square]
 
-        draw(board, active_square, legal_active_square_moves, perspective)
+        draw(board_info.board, active_square, legal_active_square_moves,
+            perspective)
 
 
 if __name__ == "__main__":

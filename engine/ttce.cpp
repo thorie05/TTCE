@@ -9,6 +9,13 @@ namespace py = pybind11;
 PYBIND11_MODULE(ttce, handle) {
     handle.doc() = "Thomas the Chess Engine";
 
+    py::class_<BoardInfo>(handle, "BoardInfo")
+
+        .def_readwrite("board", &BoardInfo::board)
+
+        .def_readwrite("turn", &BoardInfo::turn)
+    ;
+
     py::class_<Chessboard>(handle, "Chessboard")
 
         .def(py::init<const std::string&>(),

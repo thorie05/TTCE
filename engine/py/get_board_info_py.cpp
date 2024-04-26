@@ -1,68 +1,73 @@
 #include "chessboard.hpp"
 #include "constants.hpp"
+#include "board_info.hpp"
 #include <tuple>
 #include <vector>
 #include <iostream>
 
-std::tuple<std::vector<std::vector<char>>, char, bool, bool, bool, bool, 
-    std::tuple<int,int>, int, int> Chessboard::getBoardInfoPy() {
-    // returns the current state of the board
 
-    std::vector<std::vector<char>> returnBoard(8, std::vector<char>(8, ' '));
+BoardInfo Chessboard::getBoardInfoPy() {
+    /*
+    returns the current state of the board using the boardInfo class
+    */
+
+    BoardInfo info;
+
+    // construct 2D board from mailbox
     for (int x = 0; x < 8; x++) {
         for (int y = 0; y < 8; y++) {
             switch (board.mailbox[y * 8 + x]) {
                 case WHITE_PAWN:
-                    returnBoard[x][y] = 'P';
+                    info.board[x][y] = 'P';
                     break;
                 case WHITE_KNIGHT:
-                    returnBoard[x][y] = 'N';
+                    info.board[x][y] = 'N';
                     break;
                 case WHITE_BISHOP:
-                    returnBoard[x][y] = 'B';
+                    info.board[x][y] = 'B';
                     break;
                 case WHITE_ROOK:
-                    returnBoard[x][y] = 'R';
+                    info.board[x][y] = 'R';
                     break;
                 case WHITE_QUEEN:
-                    returnBoard[x][y] = 'Q';
+                    info.board[x][y] = 'Q';
                     break;
                 case WHITE_KING:
-                    returnBoard[x][y] = 'K';
+                    info.board[x][y] = 'K';
                     break;
                 case BLACK_PAWN:
-                    returnBoard[x][y] = 'p';
+                    info.board[x][y] = 'p';
                     break;
                 case BLACK_KNIGHT:
-                    returnBoard[x][y] = 'n';
+                    info.board[x][y] = 'n';
                     break;
                 case BLACK_BISHOP:
-                    returnBoard[x][y] = 'b';
+                    info.board[x][y] = 'b';
                     break;
                 case BLACK_ROOK:
-                    returnBoard[x][y] = 'r';
+                    info.board[x][y] = 'r';
                     break;
                 case BLACK_QUEEN:
-                    returnBoard[x][y] = 'q';
+                    info.board[x][y] = 'q';
                     break;
                 case BLACK_KING:
-                    returnBoard[x][y] = 'k';
+                    info.board[x][y] = 'k';
+                    break;
+                default:
+                    info.board[x][y] = ' ';
                     break;
             }
         }
     }
 
-    char returnTurn = board.turn ? 'w': 'b';
+    info.turn = board.turn ? 'w': 'b';
 
     // convert en passant square
-    std::tuple<int,int> returnEnPassantSquare = std::make_tuple(-1, -1);
+    info.enPassantSquare = std::make_tuple(-1, -1);
     if (board.enPassantSquare != 64) {
-        returnEnPassantSquare = std::make_tuple(board.enPassantSquare % 8, 
+        info.enPassantSquare = std::make_tuple(board.enPassantSquare % 8, 
             board.enPassantSquare / 8);
     }
 
-    return std::make_tuple(returnBoard, returnTurn, board.whiteCastleKingside, 
-        board.whiteCastleQueenside, board.blackCastleKingside, 
-        board.blackCastleQueenside, returnEnPassantSquare, board.halfmoveClock, 
-        board.turnNumber);
+    return info;
 }

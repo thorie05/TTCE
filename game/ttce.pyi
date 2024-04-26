@@ -1,5 +1,26 @@
 from typing import Optional, List, Tuple
 
+
+class BoardInfo:
+    """
+    A class that holds information about the current board state.
+
+    Attributes
+    ----------
+        board : List[List[str]]
+            current piece arrangement
+        turn : str
+            whose turn is it - w or b
+
+    Methods
+    -------
+        None
+    """
+
+    board: List[List[str]]
+    turn: str
+
+
 class Chessboard:
     """
     The main class of the TTCE Chess Engine.
@@ -33,10 +54,9 @@ class Chessboard:
         """
         ...
 
-    def get_board_info() -> Tuple[List[str], str, bool, bool, bool, bool, int,
-        int, int]:
+    def get_board_info() -> BoardInfo:
         """
-        Returns the current board state, like the pieces or castling rights.
+        Returns the current state of the board using the BoardInfo class.
 
         Parameters
         ----------
@@ -44,7 +64,7 @@ class Chessboard:
 
         Returns
         -------
-            boardStatus object (not implemented yet)
+            info : BoardInfo
         """
         ...
 
@@ -68,10 +88,9 @@ class Chessboard:
         """
         ...
 
-    def get_pseudo_legal_moves() -> \
-        List[Tuple[Tuple[int, int], Tuple[int, int], str]]:
+    def get_legal_moves() -> List[Tuple[Tuple[int, int], Tuple[int, int], str]]:
         """
-        Returns all pseudo-legal moves for the current position.
+        Returns all legal moves for the current position.
 
         Parameters
         ----------
@@ -79,7 +98,7 @@ class Chessboard:
 
         Returns
         -------
-            pseudo_legal_moves : List[Tuple[int, int], Tuple[int, int], str]
-                list of all pseudo legal moves for the current position
+            legal_moves : List[Tuple[int, int], Tuple[int, int], str]
+                list of all legal moves for the current position
         """
         ...

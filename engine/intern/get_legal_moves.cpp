@@ -74,6 +74,16 @@ std::vector<U16> Chessboard::getLegalMoves() {
 
             switch (piece) {
                 case WHITE_PAWN: {
+                    U64 moveMask = WHITE_PAWN_LOOKUP[sq];
+                    U64 attackMask = WHITE_PAWN_ATTACK[sq];
+                    U64 combinedMask = (moveMask & ~bitboards[PIECES])
+                        | (attackMask & bitboards[BLACK_PIECES]);
+                    // double pawn push
+                    if (sq / 8 == 1 && (combinedMask & (1ULL << (sq + 8)))
+                        && !(bitboards[PIECES] & (1ULL << (sq + 16)))) {
+                        combinedMask |= 1ULL << (sq + 16);
+                    }
+                    moveMaskToU16(sq, combinedMask, legalMoves);
                     break;
                 }
 
@@ -99,6 +109,13 @@ std::vector<U16> Chessboard::getLegalMoves() {
                 case WHITE_QUEEN: {
                     U64 moveMask = getBishopMask(sq, bitboards, magic)
                         | getRookMask(sq, bitboards, magic);
+                    moveMaskToU16(sq, moveMask, legalMoves);
+                    break;
+                }
+
+                case WHITE_KING: {
+                    U64 moveMask = KING_LOOKUP[sq];
+                    moveMask &= ~bitboards[WHITE_PIECES];
                     moveMaskToU16(sq, moveMask, legalMoves);
                     break;
                 }

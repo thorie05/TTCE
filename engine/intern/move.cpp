@@ -10,7 +10,7 @@ void Chessboard::move(U16 move) {
     // apply move bitmask
     U16 start = move & 63; // first 6 bits represent the start square
     U16 end = (move & 4032) >> 6; // next 6 bits represent the end square
-    // U16 promotion = (move & 64512) >> 12; // last 4 bits contain promotion info
+    U16 promotion = (move & 64512) >> 12; // last 4 bits contain promotion info
 
     // find moving piece and potentially captured piece
     int startPiece = mailbox[start];
@@ -24,6 +24,32 @@ void Chessboard::move(U16 move) {
     // move start piece and remove end piece in the mailbox array
     mailbox[start] = EMPTY_SQUARE;
     mailbox[end] = startPiece;
+
+    // handle promotion
+    if (mailbox[end] == WHITE_PAWN && end / 8 == 7) {
+        int promotionPiece;
+        switch (promotion) {
+            case 0:
+                promotionPiece = WHITE_QUEEN;
+                break;
+            case 1:
+                promotionPiece = WHITE_ROOK;
+                break;
+            case 2:
+                promotionPiece = WHITE_BISHOP;
+                break;
+            case 3:
+                promotionPiece = WHITE_KNIGHT;
+                break;
+            default:
+                promotionPiece = WHITE_QUEEN;
+                break;
+        }
+
+        mailbox[end] = promotionPiece;
+        bitboards[endPiece] ^= 1ULL << end;
+        bitboards[promotionPiece] ^= 1ULL << end;
+    }
 
     // calculate new bitboards
     bitboards[WHITE_PIECES] = bitboards[WHITE_PAWN] | bitboards[WHITE_KNIGHT] 

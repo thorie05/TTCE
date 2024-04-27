@@ -12,6 +12,10 @@ Chessboard::Chessboard(const std::string& fen): inputFen(fen) {
         mailbox[i] = EMPTY_SQUARE;
     }
 
+    for (int i = 0; i < (int)bitboards.size(); i++) {
+        bitboards[i] = 0ULL;
+    }
+
     // split fen by spaces
     std::string s;
     std::stringstream ss(fen);

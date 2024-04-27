@@ -5,7 +5,29 @@
 #include <tuple>
 
 
-void moveMaskToU16(int square, U64 moveMask, std::vector<U16>& legalMoves) {
+void printBoard(const U64& board) {
+    /*
+    prints a board given in bitboard representation
+    */
+
+    for (int i = 56; i >= 0; i++) {
+        if (board & 1ULL << i) {
+            std::cout << 1;
+        }
+        else {
+            std::cout << 0;
+        }
+        if ((i + 1) % 8 == 0) {
+            i -= 16;
+            std::cout << std::endl;
+        }
+    }
+    std::cout << std::endl;
+}
+
+
+void moveMaskToU16(int square, const U64& moveMask,
+    std::vector<U16>& legalMoves) {
     /*
     convert move mask bitboard to U16 format
     */
@@ -63,10 +85,13 @@ U64 getRookMask(int square, const std::array<U64, 16>& bitboards,
 
 
 std::vector<U16> Chessboard::getLegalMoves() {
-    std::vector<U16> legalMoves;
     /*
     returns all legal moves on the current position
     */
+
+    printBoard(bitboards[PIECES]);
+
+    std::vector<U16> legalMoves;
 
     if (turn) { // whites turn
         for (int sq = 0; sq < 64; sq++) {

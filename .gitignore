@@ -2,3 +2,4 @@ game/ttce.cpython-311-x86_64-linux-gnu.so
 .vscode/
 __pycache__/
 auxiliary/magic/magic
+generate_move_masks

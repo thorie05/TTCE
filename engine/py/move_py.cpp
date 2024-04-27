@@ -5,7 +5,9 @@
 
 void Chessboard::movePy(std::tuple<int,int> startSquare, 
     std::tuple<int,int> endSquare, char promotion = 'q') {
-    // moves a piece on the board
+    /*
+    moves a piece on the board
+    */
 
     // translate move tuple to U16
     U16 move = 0;

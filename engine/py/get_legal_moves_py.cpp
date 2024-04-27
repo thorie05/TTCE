@@ -4,7 +4,9 @@
 
 std::vector<std::tuple<std::tuple<int, int>, std::tuple<int, int>, char>> 
     Chessboard::getLegalMovesPy() {
-    // returns all pseudo legal moves
+    /*
+    returns all legal moves on the current position
+    */
 
     // generate legal moves in short move format
     std::vector<U16> legalMoves = getLegalMoves();

@@ -6,7 +6,9 @@
 
 
 Chessboard::Chessboard(const std::string& fen): inputFen(fen) {
-    // initializes the board using the given fen string
+    /*
+    initializes the board using the given fen string
+    */
 
     for (int i = 0; i < 64; i++) {
         mailbox[i] = EMPTY_SQUARE;
@@ -31,44 +33,44 @@ Chessboard::Chessboard(const std::string& fen): inputFen(fen) {
         char currentChar = splitFen[0][i];
 
         bool isPiece = true;
-        int index;
+        int piece;
 
         switch (currentChar) {
             case 'P':
-                index = WHITE_PAWN;
+                piece = WHITE_PAWN;
                 break;
             case 'N':
-                index = WHITE_KNIGHT;
+                piece = WHITE_KNIGHT;
                 break;
             case 'B':
-                index = WHITE_BISHOP;
+                piece = WHITE_BISHOP;
                 break;
             case 'R':
-                index = WHITE_ROOK;
+                piece = WHITE_ROOK;
                 break;
             case 'Q':
-                index = WHITE_QUEEN;
+                piece = WHITE_QUEEN;
                 break;
             case 'K':
-                index = WHITE_KING;
+                piece = WHITE_KING;
                 break;
             case 'p':
-                index = BLACK_PAWN;
+                piece = BLACK_PAWN;
                 break;
             case 'n':
-                index = BLACK_KNIGHT;
+                piece = BLACK_KNIGHT;
                 break;
             case 'b':
-                index = BLACK_BISHOP;
+                piece = BLACK_BISHOP;
                 break;
             case 'r':
-                index = BLACK_ROOK;
+                piece = BLACK_ROOK;
                 break;
             case 'q':
-                index = BLACK_QUEEN;
+                piece = BLACK_QUEEN;
                 break;
             case 'k':
-                index = BLACK_KING;
+                piece = BLACK_KING;
                 break;
             case '/': // new rank
                 currentSquare -= 16;
@@ -83,8 +85,8 @@ Chessboard::Chessboard(const std::string& fen): inputFen(fen) {
         }
 
         if (isPiece) {
-            bitboards[index] |= (1ULL << currentSquare);
-            mailbox[currentSquare] = index;
+            bitboards[piece] |= (1ULL << currentSquare);
+            mailbox[currentSquare] = piece;
             currentSquare++;
         }
     }

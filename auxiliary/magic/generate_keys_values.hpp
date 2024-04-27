@@ -3,6 +3,7 @@ using namespace std;
 
 typedef unsigned long long U64;
 
+
 U64 getMoves(int square, const U64& blockers, 
     const array<int, 4>& directions) {
     /*

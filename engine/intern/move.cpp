@@ -5,7 +5,9 @@
 #include <tuple>
 
 void Chessboard::move(U16 move) {
-    // moves a piece on the board
+    /*
+    moves a piece on the board
+    */
 
     // apply move bitmask
     U16 start = move & 63; // first 6 bits represent the start square

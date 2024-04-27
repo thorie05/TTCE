@@ -3,6 +3,7 @@ using namespace std;
 
 typedef unsigned long long U64;
 
+
 // init random number generator
 random_device rd;
 mt19937_64 eng(rd());

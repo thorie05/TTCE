@@ -3,30 +3,10 @@
 #include "generate_magic_numbers.hpp"
 #include "construct_lookup_arrays.hpp"
 #include "write_magic.hpp"
+#include "../print_board.hpp"
 using namespace std;
 
 typedef unsigned long long U64;
-
-
-void printBoard(const U64& board) {
-    /*
-    prints a board given in bitboard representation
-    */
-
-    for (int i = 56; i >= 0; i++) {
-        if (board & 1ULL << i) {
-            cout << 1;
-        }
-        else {
-            cout << 0;
-        }
-        if ((i + 1) % 8 == 0) {
-            i -= 16;
-            cout << endl;
-        }
-    }
-    cout << endl;
-}
 
 
 int main() {

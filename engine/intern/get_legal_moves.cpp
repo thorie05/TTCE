@@ -1,6 +1,5 @@
 #include "chessboard.hpp"
 #include "constants.hpp"
-#include "position.hpp"
 #include "magic_data.hpp"
 #include <iostream>
 #include <tuple>
@@ -19,13 +18,14 @@ void moveMaskToU16(int square, U64 moveMask, std::vector<U16>& legalMoves) {
 }
 
 
-U64 getBishopMask(int square, const Position& board, const MagicData& magic) {
+U64 getBishopMask(int square, const std::array<U64, 16>& bitboards,
+    const MagicData& magic) {
     /*
     returns move mask for the bishop on the given square
     */
 
     // calculate lookup key
-    U64 key = board.bitboards[PIECES] & magic.bishopMasks[square];
+    U64 key = bitboards[PIECES] & magic.bishopMasks[square];
     key *= magic.bishopMagicNumbers[square];
     key >>= magic.bishopShifts[square];
     key += magic.bishopLookupIndex[square];
@@ -34,19 +34,20 @@ U64 getBishopMask(int square, const Position& board, const MagicData& magic) {
     U64 moveMask = magic.bishopLookup[key];
 
     // remove friendly pieces
-    moveMask &= ~board.bitboards[WHITE_PIECES];
+    moveMask &= ~bitboards[WHITE_PIECES];
 
     return moveMask;
 }
 
 
-U64 getRookMask(int square, const Position& board, const MagicData& magic) {
+U64 getRookMask(int square, const std::array<U64, 16>& bitboards,
+    const MagicData& magic) {
     /*
     returns move mask for the rook on the given square
     */
 
     // calculate lookup key
-    U64 key = board.bitboards[PIECES] & magic.rookMasks[square];
+    U64 key = bitboards[PIECES] & magic.rookMasks[square];
     key *= magic.rookMagicNumbers[square];
     key >>= magic.rookShifts[square];
     key += magic.rookLookupIndex[square];
@@ -55,19 +56,9 @@ U64 getRookMask(int square, const Position& board, const MagicData& magic) {
     U64 moveMask = magic.rookLookup[key];
 
     // remove friendly pieces
-    moveMask &= ~board.bitboards[WHITE_PIECES];
+    moveMask &= ~bitboards[WHITE_PIECES];
 
     return moveMask;
-}
-
-
-U64 getQueenMask(int square, const Position& board, const MagicData& magic) {
-    /*
-    returns move mask for the rook on the given square
-    */
-
-    return getBishopMask(square, board, magic)
-        | getRookMask(square, board, magic);
 }
 
 
@@ -77,29 +68,37 @@ std::vector<U16> Chessboard::getLegalMoves() {
     returns all legal moves on the current position
     */
 
-    if (board.turn) { // whites turn
+    if (turn) { // whites turn
         for (int sq = 0; sq < 64; sq++) {
-            int piece = board.mailbox[sq];
+            int piece = mailbox[sq];
 
             switch (piece) {
                 case WHITE_PAWN: {
                     break;
                 }
 
+                case WHITE_KNIGHT: {
+                    U64 moveMask = KNIGHT_LOOKUP[sq];
+                    moveMask &= ~bitboards[WHITE_PIECES];
+                    moveMaskToU16(sq, moveMask, legalMoves);
+                    break;
+                }
+
                 case WHITE_BISHOP: {
-                    U64 moveMask = getBishopMask(sq, board, magic);
+                    U64 moveMask = getBishopMask(sq, bitboards, magic);
                     moveMaskToU16(sq, moveMask, legalMoves);
                     break;
                 }
 
                 case WHITE_ROOK: {
-                    U64 moveMask = getRookMask(sq, board, magic);
+                    U64 moveMask = getRookMask(sq, bitboards, magic);
                     moveMaskToU16(sq, moveMask, legalMoves);
                     break;
                 }
 
                 case WHITE_QUEEN: {
-                    U64 moveMask = getQueenMask(sq, board, magic);
+                    U64 moveMask = getBishopMask(sq, bitboards, magic)
+                        | getRookMask(sq, bitboards, magic);
                     moveMaskToU16(sq, moveMask, legalMoves);
                     break;
                 }

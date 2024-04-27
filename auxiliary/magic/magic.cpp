@@ -40,6 +40,14 @@ int main() {
     getMasksAndLookupTables(bishopMasks, rookMasks, bishopLookupTable,
         rookLookupTable);
 
+    int b = 0;
+    int r = 0;
+    for (int i = 0; i < 64; i++) {
+        b += bishopLookupTable[i].size();
+        r += rookLookupTable[i].size();
+    }
+    cout << b << " " << r << endl;
+
     // search for magic numbers
 
     array<int, 64> bishopShifts;

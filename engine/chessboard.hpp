@@ -1,7 +1,6 @@
 #ifndef CHESSBOARD_HPP
 #define CHESSBOARD_HPP
 
-#include "position.hpp"
 #include "magic_data.hpp"
 #include "board_info.hpp"
 #include <string>
@@ -19,8 +18,20 @@ typedef unsigned short U16;
 class Chessboard {
     private:
         std::string inputFen;
-        Position board;
+
         MagicData magic;
+
+        std::array<int, 64> mailbox;
+        std::array<U64, 16> bitboards;
+        bool turn;
+        // castling rights
+        bool whiteCastleKingside;
+        bool whiteCastleQueenside;
+        bool blackCastleKingside;
+        bool blackCastleQueenside;
+        int enPassantSquare;
+        int halfmoveClock;
+        int turnNumber;
 
         // engine intern methods
 

@@ -16,7 +16,7 @@ BoardInfo Chessboard::getBoardInfoPy() {
     // construct 2D board from mailbox
     for (int x = 0; x < 8; x++) {
         for (int y = 0; y < 8; y++) {
-            switch (board.mailbox[y * 8 + x]) {
+            switch (mailbox[y * 8 + x]) {
                 case WHITE_PAWN:
                     info.board[x][y] = 'P';
                     break;
@@ -60,13 +60,13 @@ BoardInfo Chessboard::getBoardInfoPy() {
         }
     }
 
-    info.turn = board.turn ? 'w': 'b';
+    info.turn = turn ? 'w': 'b';
 
     // convert en passant square
     info.enPassantSquare = std::make_tuple(-1, -1);
-    if (board.enPassantSquare != 64) {
-        info.enPassantSquare = std::make_tuple(board.enPassantSquare % 8, 
-            board.enPassantSquare / 8);
+    if (enPassantSquare != 64) {
+        info.enPassantSquare = std::make_tuple(enPassantSquare % 8,
+            enPassantSquare / 8);
     }
 
     return info;

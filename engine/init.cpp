@@ -9,7 +9,7 @@ Chessboard::Chessboard(const std::string& fen): inputFen(fen) {
     // initializes the board using the given fen string
 
     for (int i = 0; i < 64; i++) {
-        board.mailbox[i] = EMPTY_SQUARE;
+        mailbox[i] = EMPTY_SQUARE;
     }
 
     // split fen by spaces
@@ -79,55 +79,55 @@ Chessboard::Chessboard(const std::string& fen): inputFen(fen) {
         }
 
         if (isPiece) {
-            board.bitboards[index] |= (1ULL << currentSquare);
-            board.mailbox[currentSquare] = index;
+            bitboards[index] |= (1ULL << currentSquare);
+            mailbox[currentSquare] = index;
             currentSquare++;
         }
     }
 
     // calculate additional bitboards
-    board.bitboards[12] = board.bitboards[0] | board.bitboards[1] 
-        | board.bitboards[2] | board.bitboards[3] | board.bitboards[4] 
-        | board.bitboards[5];
+    bitboards[WHITE_PIECES] = bitboards[WHITE_PAWN] | bitboards[WHITE_KNIGHT] 
+        | bitboards[WHITE_BISHOP] | bitboards[WHITE_ROOK]
+        | bitboards[WHITE_QUEEN] | bitboards[WHITE_KING];
 
-    board.bitboards[13] = board.bitboards[6] | board.bitboards[7] 
-        | board.bitboards[8] | board.bitboards[9] | board.bitboards[10] 
-        | board.bitboards[11];
+    bitboards[BLACK_PIECES] = bitboards[BLACK_PAWN] | bitboards[BLACK_KNIGHT] 
+        | bitboards[BLACK_BISHOP] | bitboards[BLACK_ROOK]
+        | bitboards[BLACK_QUEEN] | bitboards[BLACK_KING];
 
-    board.bitboards[14] = board.bitboards[12] | board.bitboards[13];
+    bitboards[PIECES] = bitboards[WHITE_PIECES] | bitboards[BLACK_PIECES];
 
     // whites turn is true, blacks turn is false
-    board.turn = splitFen[1] == "w" ? true : false;
+    turn = splitFen[1] == "w" ? true : false;
 
     // assign castling rights
     for (int i = 0; i < (int)splitFen[2].length(); i++) {
         if (splitFen[2][i] == 'K') {
-            board.whiteCastleKingside = true;
+            whiteCastleKingside = true;
         }
         if (splitFen[2][i] == 'Q') {
-            board.whiteCastleQueenside = true;
+            whiteCastleQueenside = true;
         }
         if (splitFen[2][i] == 'k') {
-            board.blackCastleKingside = true;
+            blackCastleKingside = true;
         }
         if (splitFen[2][i] == 'q') {
-            board.blackCastleKingside = true;
+            blackCastleKingside = true;
         }
     }
 
     // en passant square
     if (splitFen[3] == "-") { // no en passant square
-        board.enPassantSquare = 64;
+        enPassantSquare = 64;
     }
     else { // convert algebraic notation
         int file = splitFen[4][0] - 'a'; 
         int rank = splitFen[4][1] - '1';
-        board.enPassantSquare = 8 * rank + file;
+        enPassantSquare = 8 * rank + file;
     }
 
     // initialize the half move clock
-    board.halfmoveClock = stoi(splitFen[4]);
+    halfmoveClock = stoi(splitFen[4]);
 
     // initialize the number of full moves
-    board.turnNumber = stoi(splitFen[5]);
+    turnNumber = stoi(splitFen[5]);
 }

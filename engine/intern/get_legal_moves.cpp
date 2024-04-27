@@ -10,8 +10,7 @@ void moveMaskToU16(int square, U64 moveMask, std::vector<U16>& legalMoves) {
     convert move mask bitboard to U16 format
     */
 
-    for (int i = 0; i < 64; i++) {
-        if (moveMask & 1ULL << i) {
+    for (int i = 0; i < 64; i++) { if (moveMask & 1ULL << i) {
             legalMoves.push_back(square | i << 6);
         }
     }
@@ -83,7 +82,18 @@ std::vector<U16> Chessboard::getLegalMoves() {
                         && !(bitboards[PIECES] & (1ULL << (sq + 16)))) {
                         combinedMask |= 1ULL << (sq + 16);
                     }
-                    moveMaskToU16(sq, combinedMask, legalMoves);
+                    // promotion
+                    int maxPromo = 0;
+                    if (sq / 8 == 6) {
+                        maxPromo = 3;
+                    }
+                    for (int promo = 0; promo <= maxPromo; promo++) {
+                        for (int i = 0; i < 64; i++) {
+                            if (combinedMask & 1ULL << i) {
+                                legalMoves.push_back(sq | i << 6 | promo << 12);
+                            }
+                        }
+                    }
                     break;
                 }
 

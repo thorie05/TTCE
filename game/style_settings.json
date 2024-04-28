@@ -5,6 +5,8 @@
         "height": 800
     },
 
+    "font_family": "Augusta",
+
     "tile_width": 0.1,
     "active_square_border_width": 0.05,
     "board_border_width": 0.015,
@@ -22,5 +24,10 @@
         "dark_squares": [135, 62, 35],
         "board_border": [51, 15, 2],
         "legal_moves_circle": [255, 255, 255]
+    },
+
+    "promotion_popup": {
+        "height": 0.35,
+        "aspect_ratio": 1.9
     }
 }

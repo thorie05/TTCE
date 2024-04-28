@@ -63,6 +63,40 @@ U64 getRookMask(int square, const std::array<U64, 16>& bitboards,
 }
 
 
+void getWhitePawnMoves(int square, const std::array<U64, 16>& bitboards,
+    std::vector<U16>& legalMoves) {
+    /*
+    appends all legal moves of the pawn on square to the legal moves vector
+    */
+
+    std::vector<U16> moves;
+
+    if (!(bitboards[PIECES] & 1ULL << (square + 8))) {
+        moves.push_back(square | (square + 8) << 6);
+        if (square / 8 == 1 && !(bitboards[PIECES] & 1ULL << (square + 16))) {
+            moves.push_back(square | (square + 16) << 6);
+        }
+    }
+    if (bitboards[BLACK_PIECES] & 1ULL << (square + 7)) {
+        moves.push_back(square | (square + 7) << 6);
+    }
+    if (bitboards[BLACK_PIECES] & 1ULL << (square + 9)) {
+        moves.push_back(square | (square + 9) << 6);
+    }
+
+    int promotionFlag = 0;
+    if (square / 8 == 6) {
+        promotionFlag = 3;
+    }
+
+    for (int i = 0; i < (int)moves.size(); i++) {
+        for (int j = 0; j <= promotionFlag; j++) {
+            legalMoves.push_back(moves[i] | j << 12);
+        }
+    }
+}
+
+
 std::vector<U16> Chessboard::getLegalMoves() {
     /*
     returns all legal moves on the current position
@@ -70,22 +104,17 @@ std::vector<U16> Chessboard::getLegalMoves() {
 
     std::vector<U16> legalMoves;
 
-    if (turn) { // whites turn
-        for (int sq = 0; sq < 64; sq++) {
+    for (int sq = 0; sq < 64; sq++) {
+        if (!(bitboards[PIECES] & 1ULL << sq)) {
+            continue;
+        }
+
+        if (turn) { // whites turn
             int piece = mailbox[sq];
 
             switch (piece) {
                 case WHITE_PAWN: {
-                    U64 moveMask = WHITE_PAWN_LOOKUP[sq];
-                    U64 attackMask = WHITE_PAWN_ATTACK[sq];
-                    U64 combinedMask = (moveMask & ~bitboards[PIECES])
-                        | (attackMask & bitboards[BLACK_PIECES]);
-                    // double pawn push
-                    if (sq / 8 == 1 && (combinedMask & (1ULL << (sq + 8)))
-                        && !(bitboards[PIECES] & (1ULL << (sq + 16)))) {
-                        combinedMask |= 1ULL << (sq + 16);
-                    }
-                    moveMaskToU16(sq, combinedMask, legalMoves);
+                    getWhitePawnMoves(sq, bitboards, legalMoves);
                     break;
                 }
 
@@ -123,9 +152,9 @@ std::vector<U16> Chessboard::getLegalMoves() {
                 }
             }
         }
-    }
-    else { // blacks turn
+        else { // blacks turn
 
+        }
     }
 
     return legalMoves;

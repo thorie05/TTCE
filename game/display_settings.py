@@ -1,5 +1,6 @@
 import pygame
 import json
+import os
 
 
 class DisplaySettings():
@@ -32,10 +33,16 @@ class DisplaySettings():
             thickness of the board border in pixels
         active_square_border_width : int
             thickness of the border around the active square in pixels
-        legeal_moves_circle_radius : int
+        legal_moves_circle_radius : int
             radius of the circle for highlighting legal moves
+        promotion_popup_width : int
+            width of the promotion popup
+        promotion_popup_height : int
+            height of the promotion popup
         piece_width : int
             width of the piece sprites
+        promotion_font_size : int
+            font size used in the promotion poup
         scaled_piece_sprites : Dict[str, pygame.surface.Surface]
             list containing the sprite for each piece scaled to fit the screen
 
@@ -82,6 +89,15 @@ class DisplaySettings():
         }
         self.icon = pygame.image.load("game/img/icon.svg")
 
+        # load font from font directory else system font
+        font_name = self.style_settings["font_family"]
+        if font_name + ".ttf" in os.listdir("game/fonts"):
+            self.fonts = [pygame.font.Font("game/fonts/" + font_name + ".ttf",
+                i) for i in range(1, 129)]
+        else:
+            self.fonts = [pygame.font.SysFont(font_name, i) \
+                for i in range(1, 129)]
+
         # dynamic variables (change when window is resized)
         self.width = self.style_settings["window"]["width"]
         self.height = self.style_settings["window"]["height"]
@@ -91,7 +107,10 @@ class DisplaySettings():
         self.board_border_width = None
         self.active_square_border_width = None
         self.legal_move_circle_radius = None
+        self.promotion_popup_width = None
+        self.promotion_popup_height = None
         self.piece_width = None
+        self.promotion_popup_font_size = None
         self.scaled_piece_sprites = {}
 
         self.update(self.width, self.height)
@@ -126,8 +145,21 @@ class DisplaySettings():
             * self.style_settings["active_square_border_width"])
         self.legal_move_circle_radius = round(self.tile_width \
             * self.style_settings["legal_move_circle_radius"])
+        self.promotion_popup_height = round(
+            self.style_settings["promotion_popup"]["height"] * self.height)
+        self.promotion_popup_width = round(
+            self.style_settings["promotion_popup"]["aspect_ratio"]\
+            * self.promotion_popup_height)
         self.piece_width = round(self.tile_width \
             * self.style_settings["pieces"]["relative_piece_width"])
+
+        # calculate the font size for the promotion popup
+        promotion_text = "Choose piece for promotion."
+        self.promotion_popup_font_size = 0
+        while self.fonts[self.promotion_popup_font_size].render(promotion_text,
+            True, self.colors["board_border"]).get_width() < 0.8 \
+            * self.promotion_popup_width:
+            self.promotion_popup_font_size += 1
 
         # scale piece sprites to correct size
         for key, piece in self.piece_sprites.items():

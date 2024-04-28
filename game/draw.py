@@ -1,19 +1,21 @@
 import pygame
 from display_settings import ds, screen
 
-def draw(draw_board, active_square, legal_moves, perspective):
+
+def draw(draw_board, active_square, legal_moves, perspective,
+    promotion_popup=None):
     """
     Draws everything to the screen.
     
     Parameters
     ----------
-        draw_board : List[str]
-            mailbox list showing which piece stands on which square
+        board : List[List[str]]
+            current piece arrangement
         active_square : Tuple[int, int]
             square currently selected by the player, i.e. active square
         legal_moves : List[Tuple[Tuple[int, int]]]
             list of legal moves of the piece standing on the selected square
-        perspective : str)
+        perspective : str
             perspective of the player (w or b)
 
     Returns
@@ -98,6 +100,10 @@ def draw(draw_board, active_square, legal_moves, perspective):
                 (ds.start_x_board + round(ds.tile_width / 2) + move[0] \
                 * ds.tile_width, ds.start_y_board + round(ds.tile_width / 2) \
                 + move[1] * ds.tile_width), ds.legal_move_circle_radius)
+
+    # draw promotion popup
+    if promotion_popup:
+        promotion_popup.draw()
 
     # flip screen to show changes
     pygame.display.flip()

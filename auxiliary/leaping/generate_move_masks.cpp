@@ -120,34 +120,6 @@ int main() {
         kingMoveMasks[sq] = mask;
     }
 
-    for (int sq = 0; sq < 64; sq++) {
-        U64 moveMask = 0ULL;
-        U64 attackMask = 0ULL;
-
-        int file = sq % 8;
-        int rank = sq / 8;
-
-        if (rank + 1 < 8) {
-            moveMask |= 1ULL << (sq + 8);
-
-            if (file - 1 >= 0) {
-                attackMask |= 1ULL << (sq + 7);
-            }
-            if (file + 1 < 8) {
-                attackMask |= 1ULL << (sq + 9);
-            }
-        }
-
-        whitePawnMoveMasks[sq] = moveMask;
-        whitePawnAttackMasks[sq] = attackMask;
-    }
-
-    cout << "white pawn moves:" << endl;
-    printHexLookup(whitePawnMoveMasks);
-
-    cout << "white pawn attack:" << endl;
-    printHexLookup(whitePawnAttackMasks);
-
     cout << "knights:" << endl;
     printHexLookup(knightMoveMasks);
 

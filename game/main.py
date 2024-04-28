@@ -3,11 +3,14 @@ os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide" # hide pygame welcome message
 
 import ttce
 import pygame
+
+pygame.init()
+pygame.font.init()
+
 from draw import draw
 from events import events
 from display_settings import ds
-
-pygame.init()
+from promotion_popup import PromotionPopup
 
 
 def main():
@@ -34,6 +37,13 @@ def main():
         # get board status
         board_info = chessboard.get_board_info()
 
+        # calculate legal moves for active square for visualisation
+        legal_active_square_moves = []
+        if active_square:
+            legal_moves = chessboard.get_legal_moves()
+            legal_active_square_moves = [move[1] for move in legal_moves \
+                if move[0] == active_square]
+
         event = events(perspective)
         # if clicked
         if event.event_type == "click":
@@ -54,7 +64,21 @@ def main():
 
                     # if clicked on enemy piece or empty square push move
                     if active_piece_color != new_piece_color: 
-                        chessboard.move(active_square, clicked_pos)
+                        if active_piece == "P" and clicked_pos[1] == 7:
+                            # white promoting
+                            promo = PromotionPopup("w", board_info.board,
+                                active_square, legal_active_square_moves,
+                                perspective).run()
+                            chessboard.move(active_square, clicked_pos, promo)
+                        elif active_piece == "p" and clicked_pos[1] == 0:
+                            # black promoting
+                            promo = PromotionPopup("b", board_info.board,
+                                active_square, legal_active_square_moves,
+                                perspective).run()
+                            chessboard.move(active_square, clicked_pos, promo)
+                        else:
+                            # no promtion
+                            chessboard.move(active_square, clicked_pos)
                         active_square = None
 
                     # if clicked on friendly piece
@@ -75,13 +99,6 @@ def main():
         elif event.event_type == "resized":
             new_width, new_height = pygame.display.get_surface().get_size()
             ds.update(new_width, new_height)
-
-        # calculate legal moves for active square for visualisation
-        legal_active_square_moves = []
-        if active_square:
-            legal_moves = chessboard.get_legal_moves()
-            legal_active_square_moves = [move[1] for move in legal_moves \
-                if move[0] == active_square]
 
         draw(board_info.board, active_square, legal_active_square_moves,
             perspective)

@@ -71,18 +71,16 @@ void getWhitePawnMoves(int square, const std::array<U64, 16>& bitboards,
 
     std::vector<U16> moves;
 
-    if (square + 8 < 64 && !(bitboards[PIECES] & 1ULL << (square + 8))) {
+    if (!(bitboards[PIECES] & 1ULL << (square + 8))) {
         moves.push_back(square | (square + 8) << 6);
         if (square / 8 == 1 && !(bitboards[PIECES] & 1ULL << (square + 16))) {
             moves.push_back(square | (square + 16) << 6);
         }
     }
-    if (square + 7 < 64 && square % 8 - 1 >= 0 && bitboards[BLACK_PIECES]
-        & 1ULL << (square + 7)) {
+    if (bitboards[BLACK_PIECES] & 1ULL << (square + 7) && square % 8 - 1 >= 0) {
         moves.push_back(square | (square + 7) << 6);
     }
-    if (square + 9 < 64 && square % 8 + 1 < 8 && bitboards[BLACK_PIECES]
-        & 1ULL << (square + 9)) {
+    if (bitboards[BLACK_PIECES] & 1ULL << (square + 9) && square % 8 + 1 < 8) {
         moves.push_back(square | (square + 9) << 6);
     }
 
@@ -107,23 +105,21 @@ void getBlackPawnMoves(int square, const std::array<U64, 16>& bitboards,
 
     std::vector<U16> moves;
 
-    if (square - 8 >= 0 && !(bitboards[PIECES] & 1ULL << (square - 8))) {
+    if (!(bitboards[PIECES] & 1ULL << (square - 8))) {
         moves.push_back(square | (square - 8) << 6);
         if (square / 8 == 6 && !(bitboards[PIECES] & 1ULL << (square - 16))) {
             moves.push_back(square | (square - 16) << 6);
         }
     }
-    if (square - 9 >= 0 && square % 8 - 1 >= 0 && bitboards[WHITE_PIECES]
-        & 1ULL << (square - 9)) {
-        moves.push_back(square | (square - 9) << 6);
-    }
-    if (square - 7 >= 0 && square % 8 + 1 < 8 && bitboards[WHITE_PIECES]
-        & 1ULL << (square - 7)) {
+    if (bitboards[WHITE_PIECES] & 1ULL << (square - 7) && square % 8 - 1 >= 0) {
         moves.push_back(square | (square - 7) << 6);
+    }
+    if (bitboards[WHITE_PIECES] & 1ULL << (square - 9) && square % 8 - 1 < 8) {
+        moves.push_back(square | (square - 9) << 6);
     }
 
     int promotionFlag = 0;
-    if (square / 8 == 1) {
+    if (square / 8 == 6) {
         promotionFlag = 3;
     }
 

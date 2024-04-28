@@ -77,10 +77,10 @@ void getWhitePawnMoves(int square, const std::array<U64, 16>& bitboards,
             moves.push_back(square | (square + 16) << 6);
         }
     }
-    if (bitboards[BLACK_PIECES] & 1ULL << (square + 7)) {
+    if (bitboards[BLACK_PIECES] & 1ULL << (square + 7) && square % 8 - 1 >= 0) {
         moves.push_back(square | (square + 7) << 6);
     }
-    if (bitboards[BLACK_PIECES] & 1ULL << (square + 9)) {
+    if (bitboards[BLACK_PIECES] & 1ULL << (square + 9) && square % 8 + 1 < 8) {
         moves.push_back(square | (square + 9) << 6);
     }
 

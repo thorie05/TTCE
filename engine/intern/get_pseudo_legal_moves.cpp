@@ -6,14 +6,14 @@
 
 
 void moveMaskToU16(int square, const U64& moveMask,
-    std::vector<U16>& legalMoves) {
+    std::vector<U16>& pseudoLegalMoves) {
     /*
     convert move mask bitboard to U16 format
     */
 
     for (int i = 0; i < 64; i++) {
         if (moveMask & 1ULL << i) {
-            legalMoves.push_back(square | i << 6);
+            pseudoLegalMoves.push_back(square | i << 6);
         }
     }
 }
@@ -64,9 +64,9 @@ U64 getRookMask(int square, const std::array<U64, 16>& bitboards,
 
 
 void getWhitePawnMoves(int square, const std::array<U64, 16>& bitboards,
-    std::vector<U16>& legalMoves) {
+    std::vector<U16>& pseudoLegalMoves) {
     /*
-    appends all legal moves of the pawn on square to the legal moves vector
+    appends all pseudo legal moves of the pawn on square to the moves vector
     */
 
     std::vector<U16> moves;
@@ -91,16 +91,16 @@ void getWhitePawnMoves(int square, const std::array<U64, 16>& bitboards,
 
     for (int i = 0; i < (int)moves.size(); i++) {
         for (int j = 0; j <= promotionFlag; j++) {
-            legalMoves.push_back(moves[i] | j << 12);
+            pseudoLegalMoves.push_back(moves[i] | j << 12);
         }
     }
 }
 
 
 void getBlackPawnMoves(int square, const std::array<U64, 16>& bitboards,
-    std::vector<U16>& legalMoves) {
+    std::vector<U16>& pseudoLegalMoves) {
     /*
-    appends all legal moves of the pawn on square to the legal moves vector
+    appends all pseudo legal moves of the pawn on square to the moves vector
     */
 
     std::vector<U16> moves;
@@ -125,18 +125,18 @@ void getBlackPawnMoves(int square, const std::array<U64, 16>& bitboards,
 
     for (int i = 0; i < (int)moves.size(); i++) {
         for (int j = 0; j <= promotionFlag; j++) {
-            legalMoves.push_back(moves[i] | j << 12);
+            pseudoLegalMoves.push_back(moves[i] | j << 12);
         }
     }
 }
 
 
-std::vector<U16> Chessboard::getLegalMoves() {
+std::vector<U16> Chessboard::getPseudoLegalMoves() {
     /*
-    returns all legal moves on the current position
+    returns all pseudo pseudo pseudo pseudo legal moves on the current position
     */
 
-    std::vector<U16> legalMoves;
+    std::vector<U16> pseudoLegalMoves;
 
     if (turn) { // whites turn
         for (int sq = 0; sq < 64; sq++) {
@@ -148,28 +148,28 @@ std::vector<U16> Chessboard::getLegalMoves() {
 
             switch (piece) {
                 case WHITE_PAWN: {
-                    getWhitePawnMoves(sq, bitboards, legalMoves);
+                    getWhitePawnMoves(sq, bitboards, pseudoLegalMoves);
                     break;
                 }
 
                 case WHITE_KNIGHT: {
                     U64 moveMask = KNIGHT_LOOKUP[sq];
                     moveMask &= ~bitboards[WHITE_PIECES];
-                    moveMaskToU16(sq, moveMask, legalMoves);
+                    moveMaskToU16(sq, moveMask, pseudoLegalMoves);
                     break;
                 }
 
                 case WHITE_BISHOP: {
                     U64 moveMask = getBishopMask(sq, bitboards, magic,
                         WHITE_PIECES);
-                    moveMaskToU16(sq, moveMask, legalMoves);
+                    moveMaskToU16(sq, moveMask, pseudoLegalMoves);
                     break;
                 }
 
                 case WHITE_ROOK: {
                     U64 moveMask = getRookMask(sq, bitboards, magic,
                         WHITE_PIECES);
-                    moveMaskToU16(sq, moveMask, legalMoves);
+                    moveMaskToU16(sq, moveMask, pseudoLegalMoves);
                     break;
                 }
 
@@ -177,14 +177,14 @@ std::vector<U16> Chessboard::getLegalMoves() {
                     U64 moveMask = getBishopMask(sq, bitboards, magic,
                         WHITE_PIECES) | getRookMask(sq, bitboards, magic,
                         WHITE_PIECES);
-                    moveMaskToU16(sq, moveMask, legalMoves);
+                    moveMaskToU16(sq, moveMask, pseudoLegalMoves);
                     break;
                 }
 
                 case WHITE_KING: {
                     U64 moveMask = KING_LOOKUP[sq];
                     moveMask &= ~bitboards[WHITE_PIECES];
-                    moveMaskToU16(sq, moveMask, legalMoves);
+                    moveMaskToU16(sq, moveMask, pseudoLegalMoves);
                     break;
                 }
             }
@@ -200,28 +200,28 @@ std::vector<U16> Chessboard::getLegalMoves() {
 
             switch (piece) {
                 case BLACK_PAWN: {
-                    getBlackPawnMoves(sq, bitboards, legalMoves);
+                    getBlackPawnMoves(sq, bitboards, pseudoLegalMoves);
                     break;
                 }
 
                 case BLACK_KNIGHT: {
                     U64 moveMask = KNIGHT_LOOKUP[sq];
                     moveMask &= ~bitboards[BLACK_PIECES];
-                    moveMaskToU16(sq, moveMask, legalMoves);
+                    moveMaskToU16(sq, moveMask, pseudoLegalMoves);
                     break;
                 }
 
                 case BLACK_BISHOP: {
                     U64 moveMask = getBishopMask(sq, bitboards, magic,
                         BLACK_PIECES);
-                    moveMaskToU16(sq, moveMask, legalMoves);
+                    moveMaskToU16(sq, moveMask, pseudoLegalMoves);
                     break;
                 }
 
                 case BLACK_ROOK: {
                     U64 moveMask = getRookMask(sq, bitboards, magic,
                         BLACK_PIECES);
-                    moveMaskToU16(sq, moveMask, legalMoves);
+                    moveMaskToU16(sq, moveMask, pseudoLegalMoves);
                     break;
                 }
 
@@ -229,19 +229,19 @@ std::vector<U16> Chessboard::getLegalMoves() {
                     U64 moveMask = getBishopMask(sq, bitboards, magic,
                         BLACK_PIECES) | getRookMask(sq, bitboards, magic,
                         BLACK_PIECES);
-                    moveMaskToU16(sq, moveMask, legalMoves);
+                    moveMaskToU16(sq, moveMask, pseudoLegalMoves);
                     break;
                 }
 
                 case BLACK_KING: {
                     U64 moveMask = KING_LOOKUP[sq];
                     moveMask &= ~bitboards[BLACK_PIECES];
-                    moveMaskToU16(sq, moveMask, legalMoves);
+                    moveMaskToU16(sq, moveMask, pseudoLegalMoves);
                     break;
                 }
             }
         }
     }
 
-    return legalMoves;
+    return pseudoLegalMoves;
 }

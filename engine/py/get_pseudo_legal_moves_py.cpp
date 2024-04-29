@@ -3,19 +3,19 @@
 #include <tuple>
 
 std::vector<std::tuple<std::tuple<int, int>, std::tuple<int, int>, char>> 
-    Chessboard::getLegalMovesPy() {
+    Chessboard::getPseudoLegalMovesPy() {
     /*
-    returns all legal moves on the current position
+    returns all pseudo legal moves on the current position
     */
 
-    // generate legal moves in short move format
-    std::vector<U16> legalMoves = getLegalMoves();
+    // generate pseudo legal moves in short move format
+    std::vector<U16> pseudoLegalMoves = getPseudoLegalMoves();
     std::vector<std::tuple<std::tuple<int, int>, std::tuple<int, int>, char>> 
         returnMoves;
 
-    for (int i = 0; i < (int)legalMoves.size(); i++) {
+    for (int i = 0; i < (int)pseudoLegalMoves.size(); i++) {
         // read values from short move format
-        U16 move = legalMoves[i];
+        U16 move = pseudoLegalMoves[i];
         int start = move & 63;
         int end = (move & 4032) >> 6;
         int promotion = (move & 64512) >> 12;

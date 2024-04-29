@@ -35,7 +35,7 @@ class Chessboard {
 
         // engine intern methods
 
-        std::vector<U16> getLegalMoves();
+        std::vector<U16> getPseudoLegalMoves();
 
         void move(U16 move);
 
@@ -45,7 +45,7 @@ class Chessboard {
         // methods for the python module
 
         std::vector<std::tuple<std::tuple<int, int>, std::tuple<int, int>, 
-            char>> getLegalMovesPy();
+            char>> getPseudoLegalMovesPy();
 
         BoardInfo getBoardInfoPy();
 

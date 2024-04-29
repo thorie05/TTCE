@@ -133,7 +133,7 @@ void getBlackPawnMoves(int square, const std::array<U64, 16>& bitboards,
 
 std::vector<U16> Chessboard::getPseudoLegalMoves() {
     /*
-    returns all pseudo pseudo pseudo pseudo legal moves on the current position
+    returns all pseudo legal moves on the current position
     */
 
     std::vector<U16> pseudoLegalMoves;

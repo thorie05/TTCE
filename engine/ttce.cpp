@@ -18,16 +18,19 @@ PYBIND11_MODULE(ttce, handle) {
 
     py::class_<Chessboard>(handle, "Chessboard")
 
-        .def(py::init<const std::string&>(),
-            py::arg("fen") = DEFAULT_FEN)
+        .def(py::init<const std::string&>(), py::arg("fen") = DEFAULT_FEN)
 
-        .def("get_board_info", &Chessboard::getBoardInfoPy)
+        .def("get_pseudo_legal_moves", &Chessboard::getPseudoLegalMovesPy)
+
+        .def("get_legal_moves", &Chessboard::getLegalMovesPy)
+
+        .def("is_legal_move", &Chessboard::isLegalMovePy)
 
         .def("move", py::overload_cast<std::tuple<int,int>, 
             std::tuple<int,int>, char>(&Chessboard::movePy), 
             py::arg("start_square"), py::arg("end_square"), 
             py::arg("promotion_piece") = 'q')
 
-        .def("get_pseudo_legal_moves", &Chessboard::getPseudoLegalMovesPy)
+        .def("get_board_info", &Chessboard::getBoardInfoPy)
     ;
 }

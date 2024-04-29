@@ -54,9 +54,10 @@ class Chessboard:
         """
         ...
 
-    def get_board_info() -> BoardInfo:
+    def get_pseudo_legal_moves() -> List[Tuple[Tuple[int, int], Tuple[int, int],
+        str]]:
         """
-        Returns the current state of the board using the BoardInfo class.
+        Returns all pseudo legal moves on the current position.
 
         Parameters
         ----------
@@ -64,9 +65,43 @@ class Chessboard:
 
         Returns
         -------
-            info : BoardInfo
+            pseudo_legal_moves : List[Tuple[int, int], Tuple[int, int], str]
+                list of all pseudo legal moves for the current position
         """
         ...
+
+    def get_legal_moves() -> List[Tuple[Tuple[int, int], Tuple[int, int], str]]:
+        """
+        Returns all legal moves on the current position.
+
+        Parameters
+        ----------
+            None
+
+        Returns
+        -------
+            legal_moves : List[Tuple[int, int], Tuple[int, int], str]
+                list of all legal moves for the current position
+        """
+        ...
+
+    def is_legal_move(move: Tuple[Tuple[int, int], Tuple[int, int],
+        Optional[str]]) -> bool:
+        """
+        Returns wether the given move is legal on the current position.
+
+        Parameters
+        ----------
+            move : Tuple[Tuple[int, int], Tuple[int, int], Optional[str]]
+                given move to be checked
+
+        Returns
+        -------
+            is_valid : bool
+                is the given move valid (True or False)
+        """
+        ...
+
 
     def move(start_square: Tuple[int, int], end_square: Tuple[int, int], 
         promotion_piece: Optional[str]) -> None:
@@ -88,9 +123,9 @@ class Chessboard:
         """
         ...
 
-    def get_legal_moves() -> List[Tuple[Tuple[int, int], Tuple[int, int], str]]:
+    def unmake_move() -> None:
         """
-        Returns all legal moves for the current position.
+        Unmakes the last played move.
 
         Parameters
         ----------
@@ -98,7 +133,20 @@ class Chessboard:
 
         Returns
         -------
-            legal_moves : List[Tuple[int, int], Tuple[int, int], str]
-                list of all legal moves for the current position
+            None
+        """
+        ...
+
+    def get_board_info() -> BoardInfo:
+        """
+        Returns the current state of the board using the BoardInfo class.
+
+        Parameters
+        ----------
+            None
+
+        Returns
+        -------
+            info : BoardInfo
         """
         ...

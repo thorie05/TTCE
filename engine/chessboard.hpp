@@ -37,33 +37,38 @@ class Chessboard {
 
         // engine intern methods
 
-        U16 pyMoveToU16(std::tuple<int,int>, std::tuple<int,int>, char);
+        U16 pyMoveToU16(const std::tuple<int, int>&,
+            const std::tuple<int, int>&, char);
 
-        std::tuple<std::tuple<int,int>, std::tuple<int,int>, char>
-            U16toPyMove(U16);
+        std::tuple<std::tuple<int, int>, std::tuple<int, int>, char>
+            U16toPyMove(const U16);
 
         std::vector<U16> getPseudoLegalMoves();
 
         std::vector<U16> getLegalMoves();
 
-        bool isLegalMove(U16);
+        bool isLegalMove(const U16);
 
-        void move(U16 move);
+        void move(const U16);
 
     public:
-        Chessboard(const std::string& fen); // init
+        Chessboard(const std::string&); // init
+
+        void unmakeMove();
 
         // methods for the python module
 
-        std::vector<std::tuple<std::tuple<int, int>, std::tuple<int, int>, 
-            char>> getPseudoLegalMovesPy();
+        std::vector<std::tuple<std::tuple<int, int>,
+            std::tuple<int, int>, char>> getPseudoLegalMovesPy();
 
-        std::vector<std::tuple<std::tuple<int, int>, std::tuple<int, int>, 
-            char>> getLegalMovesPy();
+        std::vector<std::tuple<std::tuple<int, int>,
+            std::tuple<int, int>, char>> getLegalMovesPy();
 
-        bool isLegalMovePy(std::tuple<int, int>, std::tuple<int, int>, char);
+        bool isLegalMovePy(const std::tuple<int, int>&,
+            const std::tuple<int, int>&, char);
 
-        void movePy(std::tuple<int,int>, std::tuple<int,int>, char);
+        void movePy(const std::tuple<int, int>&, const std::tuple<int, int>&,
+            char);
 
         BoardInfo getBoardInfoPy();
 };

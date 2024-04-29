@@ -26,10 +26,12 @@ PYBIND11_MODULE(ttce, handle) {
 
         .def("is_legal_move", &Chessboard::isLegalMovePy)
 
-        .def("move", py::overload_cast<std::tuple<int,int>, 
-            std::tuple<int,int>, char>(&Chessboard::movePy), 
-            py::arg("start_square"), py::arg("end_square"), 
+        .def("move", py::overload_cast<const std::tuple<int,int>&,
+            const std::tuple<int, int>&, char>(&Chessboard::movePy),
+            py::arg("start_square"), py::arg("end_square"),
             py::arg("promotion_piece") = 'q')
+
+        .def("unmake_move", &Chessboard::unmakeMove)
 
         .def("get_board_info", &Chessboard::getBoardInfoPy)
     ;

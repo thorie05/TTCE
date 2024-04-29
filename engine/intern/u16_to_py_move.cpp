@@ -3,7 +3,7 @@
 
 
 std::tuple<std::tuple<int, int>, std::tuple<int, int>, char>
-    Chessboard::U16toPyMove(U16 move) {
+    Chessboard::U16toPyMove(const U16 move) {
     /*
     translates U16 to python move
     */

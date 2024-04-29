@@ -27,11 +27,11 @@ def main():
     """
 
     # initialize chessboard class from the ttce module
-    fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1"
+    fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
     chessboard = ttce.Chessboard(fen)
 
     active_square = None # square currently clicked by the player
-    perspective = "b" # perspective of the drawn chessboard (w or b)
+    perspective = "w" # perspective of the drawn chessboard (w or b)
 
     # main loop
     while True:
@@ -41,7 +41,7 @@ def main():
         # calculate legal moves for active square for visualisation
         legal_active_square_moves = []
         if active_square:
-            legal_moves = chessboard.get_pseudo_legal_moves()
+            legal_moves = chessboard.get_legal_moves()
             legal_active_square_moves = [move[1] for move in legal_moves \
                 if move[0] == active_square]
 

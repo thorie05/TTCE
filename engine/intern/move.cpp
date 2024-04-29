@@ -4,7 +4,7 @@
 #include <iostream>
 #include <tuple>
 
-void Chessboard::move(U16 move) {
+void Chessboard::move(const U16 move) {
     /*
     moves a piece on the board
     */

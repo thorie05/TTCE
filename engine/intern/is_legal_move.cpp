@@ -1,7 +1,7 @@
 #include "chessboard.hpp"
 
 
-bool Chessboard::isLegalMove(U16) {
+bool Chessboard::isLegalMove(const U16) {
     /*
     returns if the given move is legal on the current position
     */

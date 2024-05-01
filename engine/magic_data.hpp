@@ -11,6 +11,11 @@ typedef unsigned long long U64;
 
 
 struct MagicData {
+    /*
+    MagicData contains all relevant information necessary for generating sliding
+    piece moves using the magic bitboards technique.
+    */
+
     // bishops
     std::array<U64, 64> bishopMagicNumbers;
     std::array<int, 64> bishopShifts;

@@ -96,10 +96,17 @@ def main():
                     active_square = clicked_pos
             else: # if clicked outside of the board remove active square
                 active_square = None
+
         # if resized window
         elif event.event_type == "resized":
             new_width, new_height = pygame.display.get_surface().get_size()
             ds.update(new_width, new_height)
+
+        # if key pressed
+        elif event.event_type == "keypress":
+            if event.pressed_keys[pygame.K_LCTRL] \
+                and event.pressed_keys[pygame.K_z]:
+                chessboard.unmake_move()
 
         draw(board_info.board, active_square, legal_active_square_moves,
             perspective)

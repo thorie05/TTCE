@@ -15,7 +15,9 @@ class GameEvent():
         event_type : str
             event type of the event (click or resized)
         clicked_pos : Tuple[int, int]
-            position of the click if clicked else None
+            position of the click if inside the chessboard else None
+        pressed_keys : pygame.key.ScancodeWrapper
+            list of bools representing pressed keys
 
     Methods
     -------
@@ -24,6 +26,7 @@ class GameEvent():
 
     event_type: str
     clicked_pos: Tuple[int, int] = None
+    pressed_keys: pygame.key.ScancodeWrapper = None
 
 
 def events(perspective):
@@ -50,7 +53,7 @@ def events(perspective):
             return GameEvent(event_type="resized")
 
         # mouse clicked
-        if event.type == pygame.MOUSEBUTTONUP:
+        elif event.type == pygame.MOUSEBUTTONUP:
             # left mouse button clicked
             if event.button == 1:
                 # calculate coordinates of the clicked square
@@ -72,4 +75,9 @@ def events(perspective):
 
                 return GameEvent(event_type="click", clicked_pos=clicked_pos)
 
-    return GameEvent("none")
+        # key pressed
+        elif event.type == pygame.KEYDOWN:
+            return GameEvent(event_type="keypress",
+                pressed_keys=pygame.key.get_pressed())
+
+    return GameEvent(event_type="none")

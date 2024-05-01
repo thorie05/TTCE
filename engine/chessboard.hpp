@@ -43,6 +43,12 @@ class Chessboard {
         std::tuple<std::tuple<int, int>, std::tuple<int, int>, char>
             U16toPyMove(const U16);
 
+        U64 getPawnMoveMask(int);
+
+        U64 getBishopMoveMask(int);
+
+        U64 getRookMoveMask(int);
+
         std::vector<U16> getPseudoLegalMoves();
 
         std::vector<U16> getLegalMoves();

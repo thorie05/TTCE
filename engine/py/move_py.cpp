@@ -5,12 +5,12 @@
 
 
 void Chessboard::movePy(const std::tuple<int, int>& startSquare, 
-    const std::tuple<int, int>& endSquare, char promotion = 'q') {
+    const std::tuple<int, int>& endSquare, char promotionPiece = 'q') {
     /*
     moves a piece on the board
     */
 
-    U16 move = pyMoveToU16(startSquare, endSquare, promotion);
+    Move move = pyMoveToStruct(startSquare, endSquare, promotionPiece);
 
     Chessboard::move(move);
 }

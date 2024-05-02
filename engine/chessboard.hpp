@@ -4,6 +4,7 @@
 #include "magic_data.hpp"
 #include "unmake_info.hpp"
 #include "board_info.hpp"
+#include "move.hpp"
 #include <string>
 #include <stack>
 #include <tuple>
@@ -14,7 +15,6 @@
 #include <stack>
 
 typedef unsigned long long U64;
-typedef unsigned short U16;
 
 
 class Chessboard {
@@ -45,11 +45,11 @@ class Chessboard {
 
         // engine intern methods
 
-        U16 pyMoveToU16(const std::tuple<const int, const int>&,
-            const std::tuple<const int, const int>&, const char);
+        Move pyMoveToStruct(const std::tuple<const int, const int>&,
+            const std::tuple<const int, const int>&, char);
 
         std::tuple<std::tuple<int, int>, std::tuple<int, int>, char>
-            U16toPyMove(const U16);
+            structToPyMove(const Move);
 
         U64 getPawnMoveMask(const int);
 
@@ -57,13 +57,13 @@ class Chessboard {
 
         U64 getRookMoveMask(const int);
 
-        std::vector<U16> getPseudoLegalMoves();
+        std::vector<Move> getPseudoLegalMoves();
 
-        std::vector<U16> getLegalMoves();
+        std::vector<Move> getLegalMoves();
 
-        bool isLegalMove(const U16);
+        bool isLegalMove(const Move);
 
-        void move(const U16);
+        void move(const Move);
 
     public:
         Chessboard(const std::string&); // init

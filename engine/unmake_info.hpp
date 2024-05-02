@@ -1,7 +1,6 @@
 #ifndef UNMAKE_INFO_HPP
 #define UNMAKE_INFO_HPP
 
-typedef unsigned short U16;
 
 struct UnmakeInfo {
     /*
@@ -9,7 +8,8 @@ struct UnmakeInfo {
     game state, like the last played move or the en passant square.
     */
 
-    U16 move;
+    int from;
+    int to;
     int capturedPiece = EMPTY_SQUARE;
     bool promotion = false;
 };

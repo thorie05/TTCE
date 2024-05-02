@@ -12,29 +12,25 @@ void Chessboard::unmakeMove() {
     UnmakeInfo last = unmakeStack.top();
     unmakeStack.pop();
 
-    // apply move bitmask
-    U16 startSquare = last.move & 63;
-    U16 endSquare = (last.move & 4032) >> 6;
-
-    int movedPiece = mailbox[endSquare];
+    int movedPiece = mailbox[last.to];
 
     // restore bitboards
-    bitboards[movedPiece] ^= 1ULL << endSquare;
-    bitboards[movedPiece] |= 1ULL << startSquare;
-    bitboards[last.capturedPiece] |= 1ULL << endSquare;
+    bitboards[movedPiece] ^= 1ULL << last.to;
+    bitboards[movedPiece] |= 1ULL << last.from;
+    bitboards[last.capturedPiece] |= 1ULL << last.to;
 
     // restore mailbox array
-    mailbox[startSquare] = movedPiece;
-    mailbox[endSquare] = last.capturedPiece;
+    mailbox[last.from] = movedPiece;
+    mailbox[last.to] = last.capturedPiece;
 
     // handle promotion
     if (last.promotion) {
-        bitboards[movedPiece] ^= 1ULL << startSquare;
+        bitboards[movedPiece] ^= 1ULL << last.from;
         if (isWhite(movedPiece)) {
-            mailbox[startSquare] = WHITE_PAWN;
+            mailbox[last.from] = WHITE_PAWN;
         }
         else {
-            mailbox[startSquare] = BLACK_PAWN;
+            mailbox[last.from] = BLACK_PAWN;
         }
     }
 

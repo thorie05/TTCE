@@ -38,6 +38,12 @@ constexpr bool isWhite(int piece) {
     return false;
 }
 
+constexpr std::array<int, 4> WHITE_PROMO_PIECES =
+    {WHITE_KNIGHT, WHITE_BISHOP, WHITE_ROOK, WHITE_QUEEN};
+
+constexpr std::array<int, 4> BLACK_PROMO_PIECES =
+    {BLACK_KNIGHT, BLACK_BISHOP, BLACK_ROOK, BLACK_QUEEN};
+
 // lookup arrays for knights and kings with move masks for every square
 
 constexpr std::array<U64, 64> KNIGHT_LOOKUP = {

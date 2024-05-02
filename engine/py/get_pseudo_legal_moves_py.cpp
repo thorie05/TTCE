@@ -9,12 +9,12 @@ std::vector<std::tuple<std::tuple<int, int>, std::tuple<int, int>, char>>
     */
 
     // generate pseudo legal moves
-    std::vector<U16> pseudoLegalMoves = getPseudoLegalMoves();
+    std::vector<Move> pseudoLegalMoves = getPseudoLegalMoves();
     std::vector<std::tuple<std::tuple<int, int>, std::tuple<int, int>, char>> 
         returnMoves;
 
     for (int i = 0; i < (int)pseudoLegalMoves.size(); i++) {
-        returnMoves.push_back(U16toPyMove(pseudoLegalMoves[i]));
+        returnMoves.push_back(structToPyMove(pseudoLegalMoves[i]));
     }
 
     return returnMoves;

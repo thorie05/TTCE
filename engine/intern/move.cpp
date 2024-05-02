@@ -1,74 +1,42 @@
 #include "chessboard.hpp"
 #include "unmake_info.hpp"
 #include "constants.hpp"
+#include "move.hpp"
 #include <array>
 #include <iostream>
 #include <tuple>
 
-void Chessboard::move(const U16 move) {
+void Chessboard::move(const Move move) {
     /*
     moves a piece on the board
     */
 
     UnmakeInfo currentUnmakeInfo;
-    currentUnmakeInfo.move = move;
+    currentUnmakeInfo.from = move.from;
+    currentUnmakeInfo.to = move.to;
 
-    // apply move bitmask
-    U16 startSquare = move & 63; // first 6 bits represent the start square
-    U16 endSquare = (move & 4032) >> 6; // next 6 bits represent the end square
-    U16 promotion = (move & 64512) >> 12; // last 4 bits contain promotion info
+    // find moving piece and captured piece
+    int movedPiece = mailbox[move.from];
+    int capturedPiece = mailbox[move.to];
 
-    // find moving piece and potentially captured piece
-    int movedPiece = mailbox[startSquare];
-    int capturedPiece = mailbox[endSquare];
     currentUnmakeInfo.capturedPiece = capturedPiece;
 
     // move start piece and remove end piece on the bitboards
-    bitboards[movedPiece] ^= 1ULL << startSquare;
-    bitboards[movedPiece] |= 1ULL << endSquare;
-    bitboards[capturedPiece] ^= 1ULL << endSquare;
+    bitboards[movedPiece] ^= 1ULL << move.from;
+    bitboards[movedPiece] |= 1ULL << move.to;
+    bitboards[capturedPiece] ^= 1ULL << move.to;
 
     // move start piece and remove end piece in the mailbox array
-    mailbox[startSquare] = EMPTY_SQUARE;
-    mailbox[endSquare] = movedPiece;
+    mailbox[move.from] = EMPTY_SQUARE;
+    mailbox[move.to] = movedPiece;
 
     // handle promotion
-    if ((movedPiece == WHITE_PAWN && endSquare / 8 == 7)
-        || (movedPiece == BLACK_PAWN && endSquare / 8 == 0)) {
-
+    if (move.promotion) {
         currentUnmakeInfo.promotion = true;
 
-        int promotionPiece;
-        switch (promotion | (movedPiece == WHITE_PAWN ? 0 : 1) << 2) {
-            case 0: // white promotes to queen
-                promotionPiece = WHITE_QUEEN;
-                break;
-            case 1: // white promotes to rook
-                promotionPiece = WHITE_ROOK;
-                break;
-            case 2: // white promotes to bishop
-                promotionPiece = WHITE_BISHOP;
-                break;
-            case 3: // white promotes to knight
-                promotionPiece = WHITE_KNIGHT;
-                break;
-            case 4: // black promotes to queen
-                promotionPiece = BLACK_QUEEN;
-                break;
-            case 5: // black promotes to rook
-                promotionPiece = BLACK_ROOK;
-                break;
-            case 6: // black promotes to bishop
-                promotionPiece = BLACK_BISHOP;
-                break;
-            case 7: // black promotes to knight
-                promotionPiece = BLACK_KNIGHT;
-                break;
-        }
-
-        bitboards[movedPiece] ^= 1ULL << endSquare;
-        bitboards[promotionPiece] |= 1ULL << endSquare;
-        mailbox[endSquare] = promotionPiece;
+        bitboards[movedPiece] ^= 1ULL << move.to;
+        bitboards[move.promotionPiece] |= 1ULL << move.to;
+        mailbox[move.to] = move.promotionPiece;
     }
 
     // calculate new bitboards

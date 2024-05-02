@@ -50,5 +50,19 @@ void Chessboard::move(const Move move) {
 
     bitboards[PIECES] = bitboards[WHITE_PIECES] | bitboards[BLACK_PIECES];
 
+    currentUnmakeInfo.halfmoveClock = halfmoveClock;
+
+    // increment or reset halfmove clock
+    halfmoveClock++;
+    if (capturedPiece != EMPTY_SQUARE || movedPiece == WHITE_PAWN
+        || movedPiece == BLACK_PAWN) {
+        // if capture or pawn moved
+        halfmoveClock = 0;
+    }
+
+    if (!isWhite(movedPiece)) {
+        turnNumber++;
+    }
+
     unmakeStack.push(currentUnmakeInfo);
 }

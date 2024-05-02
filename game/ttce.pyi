@@ -19,6 +19,8 @@ class BoardInfo:
 
     board: List[List[str]]
     turn: str
+    turn_number : int
+    halfmove_clock : int
 
 
 class Chessboard:

@@ -12,6 +12,7 @@ struct UnmakeInfo {
     int to;
     int capturedPiece = EMPTY_SQUARE;
     bool promotion = false;
+    int halfmoveClock = 0;
 };
 
 #endif

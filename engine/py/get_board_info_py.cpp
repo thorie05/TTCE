@@ -69,5 +69,8 @@ BoardInfo Chessboard::getBoardInfoPy() {
             enPassantSquare / 8);
     }
 
+    info.turnNumber = turnNumber;
+    info.halfmoveClock = halfmoveClock;
+
     return info;
 }

@@ -14,6 +14,10 @@ PYBIND11_MODULE(ttce, handle) {
         .def_readwrite("board", &BoardInfo::board)
 
         .def_readwrite("turn", &BoardInfo::turn)
+
+        .def_readwrite("halfmove_clock", &BoardInfo::halfmoveClock)
+
+        .def_readwrite("turn_number", &BoardInfo::turnNumber)
     ;
 
     py::class_<Chessboard>(handle, "Chessboard")

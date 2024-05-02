@@ -44,4 +44,9 @@ void Chessboard::unmakeMove() {
         | bitboards[BLACK_QUEEN] | bitboards[BLACK_KING];
 
     bitboards[PIECES] = bitboards[WHITE_PIECES] | bitboards[BLACK_PIECES];
+
+    halfmoveClock = last.halfmoveClock;
+    if (!isWhite(movedPiece)) {
+        turnNumber--;
+    }
 }

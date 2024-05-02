@@ -2,8 +2,9 @@
 #include <tuple>
 
 
-U16 Chessboard::pyMoveToU16(const std::tuple<int, int>& startSquare, 
-    const std::tuple<int, int>& endSquare, char promotion = 'q') {
+U16 Chessboard::pyMoveToU16(const std::tuple<const int, const int>& startSquare,
+    const std::tuple<const int, const int>& endSquare,
+    const char promotion = 'q') {
     /*
     translates python move to U16
     */

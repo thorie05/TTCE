@@ -45,17 +45,17 @@ class Chessboard {
 
         // engine intern methods
 
-        U16 pyMoveToU16(const std::tuple<int, int>&,
-            const std::tuple<int, int>&, char);
+        U16 pyMoveToU16(const std::tuple<const int, const int>&,
+            const std::tuple<const int, const int>&, const char);
 
         std::tuple<std::tuple<int, int>, std::tuple<int, int>, char>
             U16toPyMove(const U16);
 
-        U64 getPawnMoveMask(int);
+        U64 getPawnMoveMask(const int);
 
-        U64 getBishopMoveMask(int);
+        U64 getBishopMoveMask(const int);
 
-        U64 getRookMoveMask(int);
+        U64 getRookMoveMask(const int);
 
         std::vector<U16> getPseudoLegalMoves();
 

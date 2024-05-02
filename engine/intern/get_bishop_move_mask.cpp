@@ -1,7 +1,7 @@
 #include "chessboard.hpp"
 
 
-U64 Chessboard::getBishopMoveMask(int square) {
+U64 Chessboard::getBishopMoveMask(const int square) {
     /*
     returns move mask for the bishop on the given square
     */

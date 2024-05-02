@@ -1,7 +1,7 @@
 #include "chessboard.hpp"
 
 
-U64 Chessboard::getRookMoveMask(int square) {
+U64 Chessboard::getRookMoveMask(const int square) {
     /*
     returns move mask for the rook on the given square
     */

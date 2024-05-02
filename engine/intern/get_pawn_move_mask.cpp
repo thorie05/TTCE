@@ -1,7 +1,7 @@
 #include "chessboard.hpp"
 
 
-U64 Chessboard::getPawnMoveMask(int square) {
+U64 Chessboard::getPawnMoveMask(const int square) {
     /*
     returns move mask for the pawn on the given square
     */

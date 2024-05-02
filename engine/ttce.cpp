@@ -24,8 +24,6 @@ PYBIND11_MODULE(ttce, handle) {
 
         .def("get_legal_moves", &Chessboard::getLegalMovesPy)
 
-        .def("is_legal_move", &Chessboard::isLegalMovePy)
-
         .def("move", py::overload_cast<const std::tuple<int,int>&,
             const std::tuple<int, int>&, char>(&Chessboard::movePy),
             py::arg("start_square"), py::arg("end_square"),

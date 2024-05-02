@@ -85,24 +85,6 @@ class Chessboard:
         """
         ...
 
-    def is_legal_move(move: Tuple[Tuple[int, int], Tuple[int, int],
-        Optional[str]]) -> bool:
-        """
-        Returns wether the given move is legal on the current position.
-
-        Parameters
-        ----------
-            move : Tuple[Tuple[int, int], Tuple[int, int], Optional[str]]
-                given move to be checked
-
-        Returns
-        -------
-            is_valid : bool
-                is the given move valid (True or False)
-        """
-        ...
-
-
     def move(start_square: Tuple[int, int], end_square: Tuple[int, int], 
         promotion_piece: Optional[str]) -> None:
         """

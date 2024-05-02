@@ -78,9 +78,6 @@ class Chessboard {
         std::vector<std::tuple<std::tuple<int, int>,
             std::tuple<int, int>, char>> getLegalMovesPy();
 
-        bool isLegalMovePy(const std::tuple<int, int>&,
-            const std::tuple<int, int>&, char);
-
         void movePy(const std::tuple<int, int>&, const std::tuple<int, int>&,
             char);
 

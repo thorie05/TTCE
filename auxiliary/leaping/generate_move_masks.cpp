@@ -1,43 +1,13 @@
 #include "bits/stdc++.h"
-#include "../print_board.hpp"
+#include "../helper_functions.hpp"
 using namespace std;
 
 typedef unsigned long long U64;
 
 
-void printHexLookup(const array<U64, 64>& lookup) {
-    /*
-    prints the contents of a lookup array in hexadecimal and formats it
-    */
-
-    int tabSize = 4;
-    int currentLineLength = tabSize;
-    cout << "    ";
-    for (int i = 0; i < 64; i++) {
-        int nextLength = 4;
-        if (lookup[i] > 0) {
-            nextLength = 4 + log(lookup[i]) / log(16);
-        }
-        if (currentLineLength + 1 + nextLength > 80) {
-            currentLineLength = tabSize;
-            cout << endl << "    ";
-        }
-        if (currentLineLength != tabSize) {
-            cout << " ";
-            currentLineLength++;
-        }
-        currentLineLength += nextLength;
-        cout << "0x" << hex << lookup[i] << ",";
-    }
-    cout << endl;
-}
-
-
 int main() {
-    array<U64, 64> whitePawnMoveMasks;
-    array<U64, 64> whitePawnAttackMasks;
-    array<U64, 64> knightMoveMasks;
-    array<U64, 64> kingMoveMasks;
+    vector<U64> knightMoveMasks(64);
+    vector<U64> kingMoveMasks(64);
 
     // knights
     for (int sq = 0; sq < 64; sq++) {

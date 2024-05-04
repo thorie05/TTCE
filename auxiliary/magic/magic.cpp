@@ -3,7 +3,7 @@
 #include "generate_magic_numbers.hpp"
 #include "construct_lookup_arrays.hpp"
 #include "write_magic.hpp"
-#include "../print_board.hpp"
+#include "../helper_functions.hpp"
 using namespace std;
 
 typedef unsigned long long U64;

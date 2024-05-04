@@ -3,6 +3,7 @@
 #include "magic_data.hpp"
 #include "move.hpp"
 #include <iostream>
+#include <array>
 
 
 std::vector<Move> Chessboard::getPseudoLegalMoves() {
@@ -26,14 +27,17 @@ std::vector<Move> Chessboard::getPseudoLegalMoves() {
 
         switch (piece) {
             case WHITE_PAWN:
-            case BLACK_PAWN:
-                moveMask = getPawnMoveMask(sq);
-
-                // set promotion flag if pawn reaches back rank
-                if ((piece == WHITE_PAWN && sq / 8 == 6)
-                    || (piece == BLACK_PAWN && sq / 8 == 1)) {
+                moveMask = getWhitePawnMoveMask(sq);
+                if (sq / 8 == 6) {
                     promotion = true;
                 }
+                break;
+
+            case BLACK_PAWN:
+                if (sq / 8 == 1) {
+                    promotion = true;
+                }
+                moveMask = getBlackPawnMoveMask(sq);
                 break;
 
             case WHITE_KNIGHT:
@@ -64,24 +68,22 @@ std::vector<Move> Chessboard::getPseudoLegalMoves() {
 
         moveMask &= ~friendlyPieces;
 
-        if (!promotion) {
+        if (promotion) {
+            std::array<int, 4> promoPieces = turn ? WHITE_PROMO_PIECES
+                : BLACK_PROMO_PIECES;
             for (int i = 0; i < 64; i++) {
-                if (moveMask & 1ULL << i) {
-                    pseudoLegalMoves.push_back(Move(sq, i));
+                for (int j = 0; j < (int)promoPieces.size(); j++) {
+                    if (moveMask & 1ULL << i) {
+                        pseudoLegalMoves.push_back(Move(sq, i, true,
+                            promoPieces[j]));
+                    }
                 }
             }
         }
         else {
-            // include possible promotion pieces
-            std::array<int, 4> promoPieces = turn ? WHITE_PROMO_PIECES
-                : BLACK_PROMO_PIECES;
-
             for (int i = 0; i < 64; i++) {
                 if (moveMask & 1ULL << i) {
-                    for (int j = 0; j < (int)promoPieces.size(); j++) {
-                        pseudoLegalMoves.push_back(Move(sq, i, true,
-                            promoPieces[j]));
-                    }
+                    pseudoLegalMoves.push_back(Move(sq, i));
                 }
             }
         }

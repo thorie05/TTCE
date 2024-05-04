@@ -51,7 +51,9 @@ class Chessboard {
         std::tuple<std::tuple<int, int>, std::tuple<int, int>, char>
             structToPyMove(const Move);
 
-        U64 getPawnMoveMask(const int);
+        U64 getWhitePawnMoveMask(const int);
+
+        U64 getBlackPawnMoveMask(const int);
 
         U64 getBishopMoveMask(const int);
 

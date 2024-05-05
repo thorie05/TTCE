@@ -26,7 +26,6 @@ int main() {
         b += bishopLookupTable[i].size();
         r += rookLookupTable[i].size();
     }
-    cout << b << " " << r << endl;
 
     // search for magic numbers
 

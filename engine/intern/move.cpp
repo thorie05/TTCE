@@ -11,10 +11,6 @@ void Chessboard::move(const Move move) {
     moves a piece on the board
     */
 
-    // find moving piece and captured piece
-    int movedPiece = mailbox[move.from];
-    int capturedPiece = mailbox[move.to];
-
     // set unmake info
     UnmakeInfo currentUnmakeInfo;
     currentUnmakeInfo.from = move.from;
@@ -24,8 +20,12 @@ void Chessboard::move(const Move move) {
     currentUnmakeInfo.blackCastleKingside = blackCastleKingside;
     currentUnmakeInfo.blackCastleQueenside = blackCastleQueenside;
     currentUnmakeInfo.halfmoveClock = halfmoveClock;
+
+    // find moving piece and captured piece
+    int movedPiece = mailbox[move.from];
+    int capturedPiece = mailbox[move.to];
+
     currentUnmakeInfo.capturedPiece = capturedPiece;
-    unmakeStack.push(currentUnmakeInfo);
 
     // move start piece and remove end piece on the bitboards
     bitboards[movedPiece] ^= 1ULL << move.from;
@@ -72,6 +72,12 @@ void Chessboard::move(const Move move) {
         else if (movedPiece == WHITE_ROOK && move.from == 7) {
             whiteCastleKingside = false;
         }
+        if (move.to == 0) {
+            whiteCastleQueenside = false;
+        }
+        if (move.to == 7) {
+            whiteCastleKingside = false;
+        }
     }
     else {
         if (movedPiece == BLACK_KING) {
@@ -99,6 +105,12 @@ void Chessboard::move(const Move move) {
         else if (movedPiece == BLACK_ROOK && move.from == 63) {
             blackCastleKingside = false;
         }
+        if (move.to == 56) {
+            whiteCastleQueenside = false;
+        }
+        if (move.to == 63) {
+            whiteCastleKingside = false;
+        }
     }
 
     // calculate new bitboards
@@ -123,4 +135,6 @@ void Chessboard::move(const Move move) {
     if (!isWhite(movedPiece)) {
         turnNumber++;
     }
+
+    unmakeStack.push(currentUnmakeInfo);
 }

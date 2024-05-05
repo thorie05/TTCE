@@ -10,9 +10,8 @@ Move Chessboard::pyMoveToStruct(const std::tuple<const int, const int>& from,
     translates python move to Move struct
     */
 
-    Move move;
-    move.from = std::get<1>(from) * 8 + std::get<0>(from);
-    move.to = std::get<1>(to) * 8 + std::get<0>(to);
+    Move move(std::get<1>(from) * 8 + std::get<0>(from),
+        std::get<1>(to) * 8 + std::get<0>(to));
 
     // handle promotion
     if ((mailbox[move.from] == WHITE_PAWN && move.to / 8 == 7)

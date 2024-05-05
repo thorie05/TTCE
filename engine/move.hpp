@@ -10,14 +10,12 @@ struct Move {
 
     int from;
     int to;
-    bool promotion;
-    int promotionPiece;
+    bool enPassant = false;
+    bool promotion = false;
+    int promotionPiece = EMPTY_SQUARE;
 
     // constructor
-    Move() : from(0), to(0), promotion(false), promotionPiece(EMPTY_SQUARE) {}
-    Move(int from, int to, bool promotion = false,
-        int promotionPiece = EMPTY_SQUARE) : from(from), to(to),
-        promotion(promotion), promotionPiece(promotionPiece) {}
+    Move(int from, int to) : from(from), to(to) {}
 };
 
 #endif

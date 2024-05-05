@@ -45,7 +45,14 @@ void Chessboard::unmakeMove() {
 
     bitboards[PIECES] = bitboards[WHITE_PIECES] | bitboards[BLACK_PIECES];
 
+    // restore castling rights
+    whiteCastleKingside = last.whiteCastleKingside;
+    whiteCastleQueenside = last.whiteCastleQueenside;
+    blackCastleKingside = last.blackCastleKingside;
+    blackCastleQueenside = last.blackCastleQueenside;
+
     halfmoveClock = last.halfmoveClock;
+
     if (!isWhite(movedPiece)) {
         turnNumber--;
     }

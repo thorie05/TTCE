@@ -12,6 +12,10 @@ struct UnmakeInfo {
     int to;
     int capturedPiece = EMPTY_SQUARE;
     bool promotion = false;
+    bool whiteCastleKingside;
+    bool whiteCastleQueenside;
+    bool blackCastleKingside;
+    bool blackCastleQueenside;
     int halfmoveClock = 0;
 };
 

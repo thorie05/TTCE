@@ -123,7 +123,7 @@ Chessboard::Chessboard(const std::string& fen): inputFen(fen) {
 
     // en passant square
     if (splitFen[3] == "-") { // no en passant square
-        enPassantSquare = 64;
+        enPassantSquare = NONE_SQUARE;
     }
     else { // convert algebraic notation
         int file = splitFen[4][0] - 'a'; 

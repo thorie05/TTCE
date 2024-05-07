@@ -12,6 +12,7 @@ struct UnmakeInfo {
     int to;
     int capturedPiece = EMPTY_SQUARE;
     bool promotion = false;
+    bool enPassant = false;
     bool whiteCastleKingside;
     bool whiteCastleQueenside;
     bool blackCastleKingside;

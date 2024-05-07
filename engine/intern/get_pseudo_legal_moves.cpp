@@ -27,17 +27,35 @@ std::vector<Move> Chessboard::getPseudoLegalMoves() {
 
         switch (piece) {
             case WHITE_PAWN:
+                // get move mask for the white pawns normal moves
                 moveMask = getWhitePawnMoveMask(sq);
+                // set promotion flag if promoting
                 if (sq / 8 == 6) {
                     promotion = true;
+                }
+                // add en passant move directly to the moves vector
+                else if (enPassantSquare / 8 == sq / 8
+                    && std::abs(enPassantSquare - sq) == 1) {
+                    Move move(sq, enPassantSquare + 8);
+                    move.enPassant = true;
+                    pseudoLegalMoves.push_back(move);
                 }
                 break;
 
             case BLACK_PAWN:
+                // get move mask for the white pawns normal moves
+                moveMask = getBlackPawnMoveMask(sq);
+                // set promotion flag if promoting
                 if (sq / 8 == 1) {
                     promotion = true;
                 }
-                moveMask = getBlackPawnMoveMask(sq);
+                // add en passant move directly to the moves vector
+                else if (enPassantSquare / 8 == sq / 8
+                    && std::abs(enPassantSquare - sq) == 1) {
+                    Move move(sq, enPassantSquare - 8);
+                    move.enPassant = true;
+                    pseudoLegalMoves.push_back(move);
+                }
                 break;
 
             case WHITE_KNIGHT:

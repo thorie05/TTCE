@@ -69,6 +69,17 @@ void Chessboard::unmakeMove() {
             mailbox[56] = BLACK_ROOK;
         }
     }
+    // handle en passant
+    else if (last.enPassant) {
+        if (movedPiece == WHITE_PAWN) {
+            bitboards[BLACK_PAWN] |= 1ULL << (last.to - 8);
+            mailbox[last.to - 8] = BLACK_PAWN;
+        }
+        else {
+            bitboards[WHITE_PAWN] |= 1ULL << (last.to + 8);
+            mailbox[last.to + 8] = WHITE_PAWN;
+        }
+    }
 
     // recalculate other bitboards
     bitboards[WHITE_PIECES] = bitboards[WHITE_PAWN] | bitboards[WHITE_KNIGHT] 

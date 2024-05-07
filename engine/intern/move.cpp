@@ -45,9 +45,10 @@ void Chessboard::move(const Move move) {
         mailbox[move.to] = move.promotionPiece;
     }
 
-    // handle castling with castling rights
+    // handle castling with castling rights and en passant
     if (isWhite(movedPiece)) {
         if (movedPiece == WHITE_KING) {
+            // remove castling rights for both sides if king moved
             whiteCastleKingside = false;
             whiteCastleQueenside = false;
 
@@ -66,21 +67,40 @@ void Chessboard::move(const Move move) {
                 mailbox[3] = WHITE_ROOK;
             }
         }
+        // if rook moves remove castling right for that side
         else if (movedPiece == WHITE_ROOK && move.from == 0) {
             whiteCastleQueenside = false;
         }
         else if (movedPiece == WHITE_ROOK && move.from == 7) {
             whiteCastleKingside = false;
         }
-        if (move.to == 0) {
-            whiteCastleQueenside = false;
+
+        // if white captures black rook remove castling right for that side
+        if (move.to == 56) {
+            blackCastleQueenside = false;
         }
-        if (move.to == 7) {
-            whiteCastleKingside = false;
+        if (move.to == 63) {
+            blackCastleKingside = false;
+        }
+
+        // capture en passant
+        if (move.enPassant) {
+            bitboards[BLACK_PAWN] ^= 1ULL << enPassantSquare;
+            mailbox[enPassantSquare] = EMPTY_SQUARE;
+
+            currentUnmakeInfo.enPassant = true;
+        }
+
+        // add en passant square if double pawn push
+        enPassantSquare = NONE_SQUARE;
+        if (movedPiece == WHITE_PAWN
+            && move.from / 8 == 1 && move.to / 8 == 3) {
+                enPassantSquare = move.to;
         }
     }
     else {
         if (movedPiece == BLACK_KING) {
+            // remove castling rights for both sides if king moved
             blackCastleKingside = false;
             blackCastleQueenside = false;
 
@@ -99,17 +119,35 @@ void Chessboard::move(const Move move) {
                 mailbox[59] = BLACK_ROOK;
             }
         }
+        // if rook moves remove castling right for that side
         else if (movedPiece == BLACK_ROOK && move.from == 56) {
             blackCastleQueenside = false;
         }
         else if (movedPiece == BLACK_ROOK && move.from == 63) {
             blackCastleKingside = false;
         }
-        if (move.to == 56) {
+
+        // if black captures white rook remove castling right for that side
+        if (move.to == 0) {
             whiteCastleQueenside = false;
         }
-        if (move.to == 63) {
+        if (move.to == 7) {
             whiteCastleKingside = false;
+        }
+
+        // add en passant square if double pawn push
+        enPassantSquare = NONE_SQUARE;
+        if (movedPiece == BLACK_PAWN
+            && move.from / 8 == 6 && move.to / 8 == 4) {
+                enPassantSquare = move.to;
+        }
+
+        // capture en passant
+        if (move.enPassant) {
+            bitboards[WHITE_PAWN] ^= 1ULL << (move.to + 8);
+            mailbox[move.to + 8] = EMPTY_SQUARE;
+
+            currentUnmakeInfo.enPassant = true;
         }
     }
 
@@ -124,11 +162,11 @@ void Chessboard::move(const Move move) {
 
     bitboards[PIECES] = bitboards[WHITE_PIECES] | bitboards[BLACK_PIECES];
 
-    // increment or reset halfmove clock
+    // increment halfmove clock
     halfmoveClock++;
     if (capturedPiece != EMPTY_SQUARE || movedPiece == WHITE_PAWN
         || movedPiece == BLACK_PAWN) {
-        // if capture or pawn moved
+        // if capture or pawn moved reset halfmove clock
         halfmoveClock = 0;
     }
 

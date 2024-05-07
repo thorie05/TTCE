@@ -13,13 +13,10 @@ Move Chessboard::pyMoveToStruct(const std::tuple<const int, const int>& from,
     Move move(std::get<1>(from) * 8 + std::get<0>(from),
         std::get<1>(to) * 8 + std::get<0>(to));
 
-    // handle promotion
-    if ((mailbox[move.from] == WHITE_PAWN && move.to / 8 == 7)
-        || (mailbox[move.from] == BLACK_PAWN && move.to / 8 == 0)) {
-
-        move.promotion = true;
-
-        if (isWhite(mailbox[move.from])) {
+    // handle promotion and en passant
+    if (mailbox[move.from] == WHITE_PAWN) {
+        if (move.to / 8 == 7) {
+            // set promotion piece for white
             switch (promotionPiece) {
                 case 'n':
                     move.promotionPiece = WHITE_KNIGHT;
@@ -34,8 +31,18 @@ Move Chessboard::pyMoveToStruct(const std::tuple<const int, const int>& from,
                     move.promotionPiece = WHITE_QUEEN;
                     break;
             }
+            move.promotion = true;
+
         }
-        else {
+        // set en passant flag if en passant 
+        else if (move.from != enPassantSquare && move.to == enPassantSquare + 8
+            && mailbox[enPassantSquare + 8] == EMPTY_SQUARE) {
+            move.enPassant = true;
+        }
+    }
+    else if (mailbox[move.from] == BLACK_PAWN) {
+        if (move.to / 8 == 0) {
+            // set promotion piece for black
             switch (promotionPiece) {
                 case 'n':
                     move.promotionPiece = BLACK_KNIGHT;
@@ -50,6 +57,12 @@ Move Chessboard::pyMoveToStruct(const std::tuple<const int, const int>& from,
                     move.promotionPiece = BLACK_QUEEN;
                     break;
             }
+            move.promotion = true;
+        }
+        // set en passant flag if en passant 
+        else if (move.from != enPassantSquare && move.to == enPassantSquare - 8
+            && mailbox[enPassantSquare - 8] == EMPTY_SQUARE) {
+            move.enPassant = true;
         }
     }
 

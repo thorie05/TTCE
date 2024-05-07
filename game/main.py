@@ -27,11 +27,11 @@ def main():
     """
 
     # initialize chessboard class from the ttce module
-    fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+    fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1"
     chessboard = ttce.Chessboard(fen)
 
     active_square = None # square currently clicked by the player
-    perspective = "w" # perspective of the drawn chessboard (w or b)
+    perspective = "b" # perspective of the drawn chessboard (w or b)
 
     # main loop
     while True:

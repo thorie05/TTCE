@@ -31,6 +31,8 @@ constexpr int PIECES = 14;
 
 constexpr int EMPTY_SQUARE = 15;
 
+constexpr int NONE_SQUARE = 1024;
+
 constexpr bool isWhite(int piece) {
     if (piece < BLACK_PAWN || piece == WHITE_PIECES) {
         return true;

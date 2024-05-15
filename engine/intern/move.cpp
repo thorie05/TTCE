@@ -174,5 +174,7 @@ void Chessboard::move(const Move move) {
         turnNumber++;
     }
 
+    turn = !turn;
+
     unmakeStack.push(currentUnmakeInfo);
 }

@@ -5,7 +5,7 @@
 #include <array>
 
 
-Chessboard::Chessboard(const std::string& fen): inputFen(fen) {
+Chessboard::Chessboard(const std::string& fen) {
     /*
     initializes the board using the given fen string
     */

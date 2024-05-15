@@ -103,4 +103,6 @@ void Chessboard::unmakeMove() {
     if (!isWhite(movedPiece)) {
         turnNumber--;
     }
+
+    turn = !turn;
 }

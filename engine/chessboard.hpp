@@ -5,6 +5,7 @@
 #include "unmake_info.hpp"
 #include "board_info.hpp"
 #include "move.hpp"
+#include "constants.hpp"
 #include <string>
 #include <stack>
 #include <tuple>
@@ -23,6 +24,7 @@ class Chessboard {
     */
 
     private:
+    public:
         std::string inputFen;
 
         MagicData magic;
@@ -67,7 +69,6 @@ class Chessboard {
 
         void move(const Move);
 
-    public:
         Chessboard(const std::string&); // init
 
         void unmakeMove();
